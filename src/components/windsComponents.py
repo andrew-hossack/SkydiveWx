@@ -56,26 +56,19 @@ def renderTable() -> html.Div:
             'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
         }],
     )
+    wind_speed_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
+                               x=[data['speed'][str(altFt)]
+                                  for altFt in data['altFt'] if altFt <= 20000],
+                               mode='lines',
+                               name='Wind Speed (Kts)')
 
-    scatterpolar_trace = [
-        Scatterpolar(
-            r=[data['speed'][str(altFt)]
-               for altFt in data['altFt'] if altFt <= 20000],
-            theta=[data['direction'][str(altFt)]
-                   for altFt in data['altFt'] if altFt <= 20000],
-            mode='markers',
-            marker=dict(
-                color=[altFt for altFt in data['altFt'] if altFt <= 20000],
-                colorscale='Jet',
-                size=10,
-                colorbar=dict(
-                    title='Altitude'
-                )
-            ),
-            text=[f'{altFt} Ft' for altFt in data['altFt'] if altFt <= 20000],
-            name='Wind Velocity'
-        )
-    ]
+    wind_dir_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
+                             x=[data['direction'][str(altFt)]
+                                for altFt in data['altFt'] if altFt <= 20000],
+                             xaxis='x2',
+                             mode='markers',
+                             name='Wind Direction (°)')
+
 
     return html.Div(
         style={
@@ -98,33 +91,29 @@ def renderTable() -> html.Div:
                      style={
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
-                id='polar-plot',
+                id='example-graph',
                 style={'width': '80vw'},
                 figure=dict(
-                    data=scatterpolar_trace,
+                    data=[wind_speed_trace, wind_dir_trace],
                     layout=dict(
-                        title='Polar Plot - Wind Speed, Direction, and Altitude',
-                        polar=dict(
-                            radialaxis=dict(
-                                visible=True,
-                                range=[min(data['speed'].values()),
-                                       max(data['speed'].values())]
-                            ),
-                            angularaxis=dict(
-                                visible=True,
-                                range=[min(data['direction'].values()),
-                                       max(data['direction'].values())]
-                            )
-                        ),
-                        showlegend=True,
+                        xaxis=dict(domain=[0, 0.45], title='Wind Speed (Kts)',
+                                   showgrid=True, gridcolor='rgba(255, 255, 255, 0.2)'),
+                        xaxis2=dict(domain=[0.55, 1], title='Wind Direction (°)', showgrid=True, gridcolor='rgba(255, 255, 255, 0.2)', range=[
+                                    min(data['direction'].values()), max(data['direction'].values())]),
+                        yaxis=dict(title='Altitude', showgrid=True,
+                                   gridcolor='rgba(255, 255, 255, 0.2)'),
+                        hovermode="x",
                         template='plotly_dark',
                         plot_bgcolor='rgba(47, 62, 70, 0.5)',
                         paper_bgcolor='rgba(47, 62, 70, 1)',
                         font={'color': 'white'},
+                        legend={'orientation': 'h', 'y': 1.1,
+                                'x': 0.5, 'xanchor': 'center'},
                     )
                 ),
                 config=dict(displayModeBar=False),
             ),
+            
             html.Div(table, style={'paddingTop': '20px'})
         ]
     )
