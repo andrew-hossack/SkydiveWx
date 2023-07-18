@@ -9,7 +9,7 @@ from components import headerComponent, footerComponent
 from pages import weatherPage, webcamPage, windsAloftPage, calendarPage
 
 app = dash.Dash(
-    title="Skydive Utah - Current Weather",
+    title="Skydive Utah - Live Conditions",
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     name=__name__,
     update_title=None,
@@ -62,9 +62,7 @@ def update_time(n):
 if __name__ == "__main__":
     print('TODO:')
     print('\t- Refresh metar data regularily with callback')
-    print('\t- Style homepage better')
     print('\t- Make winds aloft chart')
-    print('\t- Host somewhere')
     print('\t- Set up ci/cd')
     print('\t- Get better fonts')
-    app.run_server(debug=False, port=8050)
+    app.run_server(debug=True, port=8050)

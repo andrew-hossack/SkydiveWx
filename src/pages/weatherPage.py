@@ -10,6 +10,7 @@ def render() -> html.Div:
     return html.Div(
         [
             weatherComponents.renderCurrentWeather(metar=currentMetar),
+            weatherComponents.renderWeatherForecast(),
         ],
         style={
             'display': 'flex',
