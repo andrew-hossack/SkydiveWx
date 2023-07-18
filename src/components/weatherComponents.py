@@ -89,7 +89,7 @@ def renderCurrentWeather() -> html.Div:
                          children=[
                     html.Strong('Gust: ', style={'marginRight': '10px'}),
                     html.Span(
-                        metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
+                        metar.wind_gust.string("MPH") if metar.wind_gust else 'No gusts, winds are steady!')
                 ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                          children=[
