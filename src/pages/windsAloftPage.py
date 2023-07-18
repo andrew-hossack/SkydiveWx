@@ -1,10 +1,19 @@
 from dash import html
-# from components.weatherComponents import renderWindsAloft
+
+from components import windsComponents
 
 
 def render() -> html.Div:
-    return html.H2('In Progress', style={'color':'white'}),
-
-
-# https://markschulze.net/winds/winds.php?lat=", 40.6125533, "&lon=", -112.3507775, "&hourOffset=", 0&referrer=SkydiveUtah
-# 40.6125533,-112.3507775
+    return html.Div(
+        [
+            windsComponents.renderTable(),
+        ],
+        style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center',
+            'flex-direction': 'column',
+            'marginTop': '0',
+            'backgroundColor': 'transparent',
+        }
+    )

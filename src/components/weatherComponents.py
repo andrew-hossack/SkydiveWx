@@ -3,6 +3,7 @@ from dash import html, dcc, html
 from metar import Metar
 from datetime import datetime
 from pytz import timezone
+import pytz
 from utils import weatherUtils
 from datetime import datetime
 
@@ -19,7 +20,20 @@ def _format_datetime_in_mst(dt: datetime) -> str:
     return f"{mt_time.strftime('%A, %B %-d %Y at %I:%M %p').replace('AM', 'am').replace('PM', 'pm')}"
 
 
-def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
+def _time_diff(time):
+    # print('TODO time diff X minutes ago')
+    # dt_utc = datetime.now()
+    # Change from MST to America/Denver
+    dt_mst = time.astimezone(pytz.timezone("America/Denver"))
+    return f'{dt_mst.strftime("%a %m/%d %I:%M:%S %p")} MST - TODO diff'
+    # now = datetime.now(pytz.timezone('MST'))
+    # diff = now - time
+    # minutes = int(diff.total_seconds() / 60)
+    # return f"Updated {minutes} minutes ago"
+
+
+def renderCurrentWeather() -> html.Div:
+    metar = weatherUtils.get_metar()
     return html.Div(
         style={
             'padding': '20px',
@@ -41,39 +55,39 @@ def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
                         }),
                 renderWind(metar),
                 html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
-                        children=[
-                        html.Strong('Updated: ', style={'marginRight': '10px'}),
-                        html.Span(_format_datetime_in_mst(metar.time))
-                        ]),
+                         children=[
+                    html.Strong('Updated: ', style={'marginRight': '10px'}),
+                    html.Span(_time_diff(metar.time))
+                ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                        children=[
-                        html.Strong('Sky: ', style={'marginRight': '10px'}),
-                        html.Span(str.capitalize(metar.sky_conditions()))
-                        ]),
+                         children=[
+                    html.Strong('Sky: ', style={'marginRight': '10px'}),
+                    html.Span(str.capitalize(metar.sky_conditions()))
+                ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                        children=[
-                        html.Strong('Visibility: ', style={
-                                    'marginRight': '10px'}),
-                        html.Span(str(metar.vis))
-                        ]),
+                         children=[
+                    html.Strong('Visibility: ', style={
+                        'marginRight': '10px'}),
+                    html.Span(str(metar.vis))
+                ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                        children=[
-                        html.Strong('Wind: ', style={'marginRight': '10px'}),
-                        html.Span(str.capitalize(metar.wind("MPH")))
-                        ]),
+                         children=[
+                    html.Strong('Wind: ', style={'marginRight': '10px'}),
+                    html.Span(str.capitalize(metar.wind("MPH")))
+                ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                        children=[
-                        html.Strong('Gust: ', style={'marginRight': '10px'}),
-                        html.Span(
-                            metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
-                        ]),
+                         children=[
+                    html.Strong('Gust: ', style={'marginRight': '10px'}),
+                    html.Span(
+                        metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
+                ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                        children=[
-                        html.Strong('Temperature: ', style={
-                                    'marginRight': '10px'}),
-                        html.Span(metar.temp.string('F'))
-                        ]),
-            ], style={'minWidth':'80vw'})
+                         children=[
+                    html.Strong('Temperature: ', style={
+                        'marginRight': '10px'}),
+                    html.Span(metar.temp.string('F'))
+                ]),
+            ], style={'minWidth': '80vw'})
         ]
     )
 
@@ -114,8 +128,18 @@ def renderWindsAloft() -> html.Div:
 
 def renderWeatherForecast() -> html.Div:
     weather_forecasts = weatherUtils.get_weather_forecast()[:12]
+    # historical_weather = weatherUtils.get_metar(hours=4)
+    # print(historical_weather)
+    # metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!
+    # wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
+    # df_historical = pd.DataFrame([(metar.time, metar.wind("MPH") if metar.wind("MPH") else 0, metar.wind_gust if metar.wind_gust else 0) for metar in historical_weather], 
+    #                          columns=['time', 'windspeed_10m', 'windgusts_10m'])
+
+    # print(df_historical)
 
     df = pd.DataFrame(weather_forecasts)
+
+    # df = pd.concat([df_historical, df]).reset_index(drop=True)
 
     return html.Div(
         style={
@@ -128,7 +152,7 @@ def renderWeatherForecast() -> html.Div:
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
         },
         children=[
-            html.H2('Weather Forecasts',
+            html.H2('Weather Forecasts - todo add historical',
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',
@@ -144,15 +168,10 @@ def renderWeatherForecast() -> html.Div:
                 style={'width': '80vw'},
                 figure={
                     'data': [
-                        {'x': df['time'], 'y': df['temperature_2m'],
-                         'type': 'bar', 'name': 'Temperature (°F)'},
                         {'x': df['time'], 'y': df['windspeed_10m'],
-                         'type': 'bar', 'name': 'Wind speed (mph)'},
-                        {'x': df['time'], 'y': df['rain'],
-                         'type': 'line', 'name': 'Rain'},
-                        {'x': [None], 'y': [None],
-                         'mode': 'markers', 'marker': {'color': 'red'},
-                         'showlegend': True, 'name': '15 mph'},
+                         'type': 'line', 'name': 'Wind speed (mph)'},
+                        {'x': df['time'], 'y': df['windgusts_10m'],
+                         'type': 'line', 'name': 'Wind gusts (mph)'},
                     ],
                     'layout': {
                         'plot_bgcolor': 'rgba(47, 62, 70, 0.5)',
@@ -160,19 +179,6 @@ def renderWeatherForecast() -> html.Div:
                         'font': {
                             'color': 'white'
                         },
-                        'shapes': [
-                            {
-                                'type': 'line',
-                                'x0': df['time'].min(),
-                                'y0': 15,
-                                'x1': df['time'].max(),
-                                'y1': 15,
-                                'line': {
-                                    'color': 'red',
-                                    'width': 2,
-                                },
-                            },
-                        ],
                         'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
                     }
                 }
