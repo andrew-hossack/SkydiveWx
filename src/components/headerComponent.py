@@ -34,7 +34,6 @@ def render() -> html.Div:
                         ],
                         horizontal="center",
                         pills=True,
-                        style={'paddingTop': '5px'}
                     )
                 ],
                 style={

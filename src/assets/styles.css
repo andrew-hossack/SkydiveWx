@@ -5,7 +5,7 @@
 
 .wind-direction-text {
   text-align: center;
-  font-size: 20px;
+  font-size: 30px;
   margin-bottom: 10px;
   font-weight: bold;
 }
@@ -17,10 +17,10 @@ a[target="_blank"]::after {
     brightness(90%) contrast(101%);
 }
 
-
 body::after {
   content: "";
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/assets/background.jpeg");
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("/assets/background.jpeg");
   background-size: cover;
   background-position: center;
   position: fixed;

@@ -1,4 +1,4 @@
-from metar import Metar
+from utils.metar import Metar
 import requests
 from bs4 import BeautifulSoup
 

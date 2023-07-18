@@ -46,7 +46,7 @@ def renderWeather(metar: Metar.Metar) -> html.Div:
             html.Div(style={'marginBottom': '8px'},
                      children=[
                      html.Strong('Wind: '),
-                     html.Span(metar.wind())
+                     html.Span(metar.wind("MPH"))
                      ]),
             html.Div(style={'marginBottom': '8px'},
                      children=[
@@ -56,7 +56,7 @@ def renderWeather(metar: Metar.Metar) -> html.Div:
             html.Div(style={'marginBottom': '8px'},
                      children=[
                      html.Strong('Temperature: '),
-                     html.Span(str(metar.temp))
+                     html.Span(metar.temp.string('F'))
                      ]),
         ]
     )
@@ -65,20 +65,20 @@ def renderWeather(metar: Metar.Metar) -> html.Div:
 def renderWind(metar: Metar.Metar) -> html.Div:
     # Access the wind direction and speed
     wind_dir = metar.wind_dir.value() if metar.wind_dir.value() else 0
-    wind_speed = metar.wind_speed.string("KT") if metar.wind_speed else 0
+    wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
 
     # Convert the wind direction degrees to rotation in css
-    css_degrees = (wind_dir + 180) % 360 if wind_speed != '0 knots' else 0
+    css_degrees = (wind_dir + 180) % 360 if wind_speed != '0 mph' else 0
 
     return html.Div(
         children=[
             html.Div(
-                'Winds from {}° at {}'.format(wind_dir, wind_speed),
+                f'Winds from {metar.wind_dir.compass()} ({wind_dir}°) at {wind_speed}',
                 className='wind-direction-text'
             ),
             html.Div(
                 # Arrow unicode for windy condition, cloud unicode for calm condition
-                '⬆' if wind_speed != '0 knots' else '☁',
+                '⬆' if wind_speed != '0 mph' else '☁',
                 className='wind-arrow',
                 style={
                     'transform': 'rotate({}deg)'.format(css_degrees),
@@ -86,7 +86,7 @@ def renderWind(metar: Metar.Metar) -> html.Div:
                     '-moz-transform': 'rotate({}deg)'.format(css_degrees),
                     '-ms-transform': 'rotate({}deg)'.format(css_degrees),
                     '-o-transform': 'rotate({}deg)'.format(css_degrees)
-                } if wind_speed != '0 knots' else {}  # if condition also added for the css style
+                } if wind_speed != '0 mph' else {}  # if condition also added for the css style
             )
         ]
     )
