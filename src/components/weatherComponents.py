@@ -155,7 +155,7 @@ def renderWeatherForecast() -> html.Div:
                     ],
                     'layout': {
                         'plot_bgcolor': 'rgba(47, 62, 70, 0.5)',
-                        'paper_bgcolor': 'rgba(47, 62, 70, 0.5)',
+                        'paper_bgcolor': 'rgba(47, 62, 70, 1)',
                         'font': {
                             'color': 'white'
                         },
