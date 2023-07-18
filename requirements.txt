@@ -7,3 +7,4 @@ setuptools==67.6.1
 gunicorn==21.0.1
 git+https://github.com/python-metar/python-metar.git#egg=metar
 pandas==2.0.3
+dash-loading-spinners==1.0.0

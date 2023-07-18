@@ -2,7 +2,6 @@ from metar import Metar
 import requests
 from bs4 import BeautifulSoup
 import requests
-import json
 
 
 def _get_raw_metar(airport_code):

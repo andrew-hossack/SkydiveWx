@@ -8,7 +8,7 @@ def render() -> html.Div:
     return html.Div([
         html.Div([
             html.Footer([
-                f'{currentMetar.code} ',
+                html.A(f'{currentMetar.code} ', id='footer-metar-data'),
                 html.A('View Raw METAR', href='https://www.aviationweather.gov/metar/data?ids=ktvy&format=decoded&hours=1&taf=off&layout=on', target='_blank')
             ])
         ], style={

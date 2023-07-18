@@ -1,9 +1,7 @@
-import dash_core_components as dcc
-import dash_html_components as html
 import pandas as pd
-from dash import html, dcc
+from dash import html, dcc, html
 from metar import Metar
-from datetime import datetime, timedelta
+from datetime import datetime
 from pytz import timezone
 from utils import weatherUtils
 from datetime import datetime
@@ -33,46 +31,49 @@ def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
         },
         children=[
-            html.H2('Current Weather',
-                    style={
-                        'textAlign': 'center',
-                        'fontSize': '26px',
-                        'color': '#3498db'
-                    }),
-            renderWind(metar),
-            html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
-                     children=[
-                     html.Strong('Updated: ', style={'marginRight': '10px'}),
-                     html.Span(_format_datetime_in_mst(metar.time))
-                     ]),
-            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                     children=[
-                     html.Strong('Sky: ', style={'marginRight': '10px'}),
-                     html.Span(str.capitalize(metar.sky_conditions()))
-                     ]),
-            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                     children=[
-                     html.Strong('Visibility: ', style={
-                                 'marginRight': '10px'}),
-                     html.Span(str(metar.vis))
-                     ]),
-            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                     children=[
-                     html.Strong('Wind: ', style={'marginRight': '10px'}),
-                     html.Span(str.capitalize(metar.wind("MPH")))
-                     ]),
-            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                     children=[
-                     html.Strong('Gust: ', style={'marginRight': '10px'}),
-                     html.Span(
-                         metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
-                     ]),
-            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
-                     children=[
-                     html.Strong('Temperature: ', style={
-                                 'marginRight': '10px'}),
-                     html.Span(metar.temp.string('F'))
-                     ]),
+            html.Div([
+
+                html.H2('Current Weather',
+                        style={
+                            'textAlign': 'center',
+                            'fontSize': '26px',
+                            'color': '#3498db'
+                        }),
+                renderWind(metar),
+                html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
+                        children=[
+                        html.Strong('Updated: ', style={'marginRight': '10px'}),
+                        html.Span(_format_datetime_in_mst(metar.time))
+                        ]),
+                html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                        children=[
+                        html.Strong('Sky: ', style={'marginRight': '10px'}),
+                        html.Span(str.capitalize(metar.sky_conditions()))
+                        ]),
+                html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                        children=[
+                        html.Strong('Visibility: ', style={
+                                    'marginRight': '10px'}),
+                        html.Span(str(metar.vis))
+                        ]),
+                html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                        children=[
+                        html.Strong('Wind: ', style={'marginRight': '10px'}),
+                        html.Span(str.capitalize(metar.wind("MPH")))
+                        ]),
+                html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                        children=[
+                        html.Strong('Gust: ', style={'marginRight': '10px'}),
+                        html.Span(
+                            metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
+                        ]),
+                html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                        children=[
+                        html.Strong('Temperature: ', style={
+                                    'marginRight': '10px'}),
+                        html.Span(metar.temp.string('F'))
+                        ]),
+            ], style={'minWidth':'80vw'})
         ]
     )
 
