@@ -83,10 +83,9 @@ def update_time(n):
 
 
 if __name__ == "__main__":
-    # print('TODO:')
-    # print('\t- Calendar iFrame src')
-    # print('\t- Add historical metar for weather forecasts')
-    # print('\t- Webcam page')
+    print('TODO:')
+    print('\t- Calendar iFrame src')
+    print('\t- Add historical metar for weather forecasts')
     # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30
-    app.run_server(debug=False, port=8050)
+    app.run_server(debug=True, port=8050)
