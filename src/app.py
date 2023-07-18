@@ -83,7 +83,7 @@ def update_time(n):
 
 
 if __name__ == "__main__":
-    print('TODO:')
-    print('\t- Make winds aloft chart')
-    print('\t- Set up ci/cd')
+    # print('TODO:')
+    # print('\t- Make winds aloft chart')
+    # print('\t- Set up ci/cd')
     app.run_server(debug=False, port=8050)
