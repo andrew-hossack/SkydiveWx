@@ -20,16 +20,26 @@ def _format_datetime_in_mst(dt: datetime) -> str:
     return f"{mt_time.strftime('%A, %B %-d %Y at %I:%M %p').replace('AM', 'am').replace('PM', 'pm')}"
 
 
+def _convert_utc_to_mst(time):
+    # Make dt timezone aware
+    utc_tz = timezone('UTC')
+    dt = utc_tz.localize(time)
+
+    # Convert to MST
+    mst_tz = timezone('US/Mountain')
+    return dt.astimezone(mst_tz)
+
+
 def _time_diff(time):
-    # print('TODO time diff X minutes ago')
-    # dt_utc = datetime.now()
-    # Change from MST to America/Denver
-    dt_mst = time.astimezone(pytz.timezone("America/Denver"))
-    return f'{dt_mst.strftime("%a %m/%d %I:%M:%S %p")} MST - TODO diff'
-    # now = datetime.now(pytz.timezone('MST'))
-    # diff = now - time
-    # minutes = int(diff.total_seconds() / 60)
-    # return f"Updated {minutes} minutes ago"
+    metar_time = _convert_utc_to_mst(time)
+    now_time = _convert_utc_to_mst(datetime.utcnow())
+    diff = now_time - metar_time
+
+    # Get the difference in days, hours, minutes, seconds
+    seconds =diff.seconds
+    minutes = (seconds % 3600) // 60
+
+    return f'{minutes} minutes ago'
 
 
 def renderCurrentWeather() -> html.Div:
@@ -132,7 +142,7 @@ def renderWeatherForecast() -> html.Div:
     # print(historical_weather)
     # metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!
     # wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
-    # df_historical = pd.DataFrame([(metar.time, metar.wind("MPH") if metar.wind("MPH") else 0, metar.wind_gust if metar.wind_gust else 0) for metar in historical_weather], 
+    # df_historical = pd.DataFrame([(metar.time, metar.wind("MPH") if metar.wind("MPH") else 0, metar.wind_gust if metar.wind_gust else 0) for metar in historical_weather],
     #                          columns=['time', 'windspeed_10m', 'windgusts_10m'])
 
     # print(df_historical)
