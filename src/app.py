@@ -11,6 +11,8 @@ from pages import weatherPage, webcamPage, windsAloftPage, calendarPage
 app = dash.Dash(
     title="Skydive Utah - Current Weather",
     external_stylesheets=[dbc.themes.BOOTSTRAP],
+    name=__name__,
+    update_title=None,
 )
 
 
@@ -64,4 +66,5 @@ if __name__ == "__main__":
     print('\t- Make winds aloft chart')
     print('\t- Host somewhere')
     print('\t- Set up ci/cd')
+    print('\t- Get better fonts')
     app.run_server(debug=False, port=8050)
