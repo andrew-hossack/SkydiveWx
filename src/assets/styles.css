@@ -1,0 +1,33 @@
+.wind-arrow {
+  font-size: 50px;
+  text-align: center;
+}
+
+.wind-direction-text {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+a[target="_blank"]::after {
+  content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+  margin: 0 3px 0 5px;
+  filter: invert(35%) sepia(100%) saturate(3494%) hue-rotate(197deg)
+    brightness(90%) contrast(101%);
+}
+
+
+body::after {
+  content: "";
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/assets/background.jpeg");
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+  top: -10%;
+  bottom: -10%;
+  left: -10%;
+  right: -10%;
+  z-index: -1;
+  filter: blur(10px);
+}
