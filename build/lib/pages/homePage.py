@@ -1,8 +1,7 @@
 import dash_bootstrap_components as dbc
-from dash import html
-
-from components import weatherComponents
-from utils import weatherUtils
+from dash import Input, Output, dcc, html, dash
+from ..components import weatherComponents
+from ..utils import weatherUtils
 
 
 def render() -> html.Div:

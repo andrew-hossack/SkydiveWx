@@ -23,7 +23,7 @@ from components import headerComponent, footerComponent
 from pages import homePage, webcamPage, windsAloftPage
 
 app = dash.Dash(
-    title="KTVY Weather App",
+    title="SkydiveUtahApp",
     external_stylesheets=[dbc.themes.BOOTSTRAP],
 )
 

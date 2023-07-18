@@ -1,5 +1,5 @@
 from dash import html
-from utils import weatherUtils
+from ..utils import weatherUtils
 
 
 def render() -> html.Div:
