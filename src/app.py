@@ -13,6 +13,7 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
 )
 
+
 app.layout = html.Div(
     [
         dcc.Location(id="url"),
@@ -45,7 +46,7 @@ def render_page_content(pathname):
 
 @app.callback(
     Output("live-clock", "children"),
-    Input("interval", "n_intervals")
+    Input("header-interval", "n_intervals")
 )
 def update_time(n):
     dt_utc = datetime.datetime.now()
@@ -55,4 +56,10 @@ def update_time(n):
 
 
 if __name__ == "__main__":
+    print('TODO:')
+    print('\t- Refresh metar data regularily with callback')
+    print('\t- Style homepage better')
+    print('\t- Make winds aloft chart')
+    print('\t- Host somewhere')
+    print('\t- Set up ci/cd')
     app.run_server(debug=True, port=8050)

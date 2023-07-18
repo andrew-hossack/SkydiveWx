@@ -1,4 +1,5 @@
 from dash import html
+from components.weatherComponents import renderWindsAloft
 
 
 def render() -> html.Div:

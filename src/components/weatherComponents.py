@@ -16,7 +16,7 @@ def _format_datetime_in_mst(dt: datetime) -> str:
     return mt_time.strftime("%A, %B %-d %Y at %I:%M %p").replace('AM', 'am').replace('PM', 'pm')
 
 
-def renderWeather(metar: Metar.Metar) -> html.Div:
+def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
     return html.Div(
         style={
             'border': 'thin lightgrey solid',
@@ -24,13 +24,14 @@ def renderWeather(metar: Metar.Metar) -> html.Div:
             'padding': '20px',
             'margin': '20px',
             'maxWidth': '500px',
-            'backgroundColor':'white'
+            'backgroundColor':'white',
+            'fontSize':'20px'
         },
         children=[
-            html.H2('Weather Report', style={'textAlign': 'center'}),
+            html.H2('Current Weather', style={'textAlign': 'center', 'fontWeight':'bold'}),
             html.Div(style={'marginBottom': '8px'},
                      children=[
-                     html.Strong('Time: '),
+                     html.Strong('Updated: '),
                      html.Span(_format_datetime_in_mst(metar.time))
                      ]),
             html.Div(style={'marginBottom': '8px'},
