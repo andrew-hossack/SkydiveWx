@@ -1,5 +1,5 @@
 from dash import html
-from utils.metar import Metar
+from metar import Metar
 from datetime import datetime
 from pytz import timezone
 

@@ -64,4 +64,4 @@ if __name__ == "__main__":
     print('\t- Make winds aloft chart')
     print('\t- Host somewhere')
     print('\t- Set up ci/cd')
-    app.run_server(debug=True, port=8050)
+    app.run_server(debug=False, port=8050)
