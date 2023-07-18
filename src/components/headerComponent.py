@@ -38,10 +38,10 @@ def render() -> html.Div:
                     )
                 ],
                 style={
-                    'backgroundColor': 'rgba(51, 51, 51, 0.8)', 
+                    'backgroundColor': 'rgba(51, 51, 51, 0.5)', 
                     'padding': '10px', 
                     'position': 'sticky', 
-                    'top': '32px'
+                    'top': '32px',
                 }
             )
         ]

@@ -9,7 +9,7 @@ def render() -> html.Div:
     currentMetar = weatherUtils.get_metar()
     return html.Div(
         [
-            weatherComponents.renderWind(metar=currentMetar),
+            # weatherComponents.renderWind(metar=currentMetar),
             weatherComponents.renderCurrentWeather(metar=currentMetar),
         ],
         style={
@@ -17,6 +17,7 @@ def render() -> html.Div:
             'justify-content': 'center',
             'align-items': 'center',
             'flex-direction': 'column',
-            'marginTop': '0'
+            'marginTop': '0',
+            'backgroundColor':'transparent'
         }
     )

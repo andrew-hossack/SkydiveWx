@@ -13,48 +13,53 @@ def _format_datetime_in_mst(dt: datetime) -> str:
     mt_time = utc_time.astimezone(mt)
 
     # Output in the format: "Monday, January 14th 2023 at 02:55PM"
-    return mt_time.strftime("%A, %B %-d %Y at %I:%M %p").replace('AM', 'am').replace('PM', 'pm')
+    return f"{mt_time.strftime('%A, %B %-d %Y at %I:%M %p').replace('AM', 'am').replace('PM', 'pm')}"
 
 
 def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
     return html.Div(
         style={
-            'border': 'thin lightgrey solid',
-            'border-radius': '5px',
             'padding': '20px',
             'margin': '20px',
-            'maxWidth': '500px',
-            'backgroundColor':'white',
-            'fontSize':'20px'
+            'maxWidth': '1000px',
+            'backgroundColor': 'transparent',
+            'fontSize': '20px',
+            'color': 'white'
         },
         children=[
-            html.H2('Current Weather', style={'textAlign': 'center', 'fontWeight':'bold'}),
-            html.Div(style={'marginBottom': '8px'},
+            html.H2('Current Weather',
+                    style={
+                        'textAlign': 'center',
+                        'fontSize': '20px',
+                    }),
+            renderWind(metar),
+            html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
                      html.Strong('Updated: '),
                      html.Span(_format_datetime_in_mst(metar.time))
                      ]),
-            html.Div(style={'marginBottom': '8px'},
+            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
                      html.Strong('Sky: '),
                      html.Span(str.capitalize(metar.sky_conditions()))
                      ]),
-            html.Div(style={'marginBottom': '8px'},
+            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
                      html.Strong('Visibility: '),
                      html.Span(str(metar.vis))
                      ]),
-            html.Div(style={'marginBottom': '8px'},
+            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
                      html.Strong('Wind: '),
                      html.Span(metar.wind("MPH"))
                      ]),
-            html.Div(style={'marginBottom': '8px'},
+            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
                      html.Strong('Gust: '),
-                     html.Span(metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
+                     html.Span(
+                         metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
                      ]),
-            html.Div(style={'marginBottom': '8px'},
+            html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
                      html.Strong('Temperature: '),
                      html.Span(metar.temp.string('F'))

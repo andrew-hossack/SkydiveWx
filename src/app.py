@@ -6,7 +6,7 @@ import pytz
 from dash import Input, Output, dcc, html
 
 from components import headerComponent, footerComponent
-from pages import homePage, webcamPage, windsAloftPage
+from pages import weatherPage, webcamPage, windsAloftPage
 
 app = dash.Dash(
     title="Skydive Utah - Current Weather",
@@ -35,13 +35,13 @@ server = app.server
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def render_page_content(pathname):
     if pathname == "/":
-        return homePage.render()
+        return weatherPage.render()
     elif pathname == "/winds":
         return windsAloftPage.render()
     elif pathname == "/webcam":
         return webcamPage.render()
     else:
-        return homePage.render()
+        return weatherPage.render()
 
 
 @app.callback(
@@ -52,7 +52,7 @@ def update_time(n):
     dt_utc = datetime.datetime.now()
     # Change from MST to America/Denver
     dt_mst = dt_utc.astimezone(pytz.timezone("America/Denver"))
-    return dt_mst.strftime("%a %m/%d %I:%M:%S %p")
+    return f'{dt_mst.strftime("%a %m/%d %I:%M:%S %p")} MST'
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ def render() -> html.Div:
         ], style={
             'textAlign': 'center',
             'paddingTop': '10px',
-            'backgroundColor': 'rgba(51, 51, 51, 0.8)',
+            'backgroundColor': 'rgba(51, 51, 51, 0.5)',
             'position': 'fixed',
             'bottom': '0',
             'height': '10px',
