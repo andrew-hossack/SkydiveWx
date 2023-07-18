@@ -6,7 +6,7 @@ import pytz
 from dash import Input, Output, dcc, html
 
 from components import headerComponent, footerComponent
-from pages import weatherPage, webcamPage, windsAloftPage
+from pages import weatherPage, webcamPage, windsAloftPage, calendarPage
 
 app = dash.Dash(
     title="Skydive Utah - Current Weather",
@@ -40,6 +40,8 @@ def render_page_content(pathname):
         return windsAloftPage.render()
     elif pathname == "/webcam":
         return webcamPage.render()
+    elif pathname == "/calendar":
+        return calendarPage.render()
     else:
         return weatherPage.render()
 

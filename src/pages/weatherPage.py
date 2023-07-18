@@ -9,7 +9,6 @@ def render() -> html.Div:
     currentMetar = weatherUtils.get_metar()
     return html.Div(
         [
-            # weatherComponents.renderWind(metar=currentMetar),
             weatherComponents.renderCurrentWeather(metar=currentMetar),
         ],
         style={

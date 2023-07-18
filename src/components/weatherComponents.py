@@ -35,33 +35,35 @@ def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
             renderWind(metar),
             html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
-                     html.Strong('Updated: '),
+                     html.Strong('Updated: ', style={'marginRight': '10px'}),
                      html.Span(_format_datetime_in_mst(metar.time))
                      ]),
             html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
-                     html.Strong('Sky: '),
+                     html.Strong('Sky: ', style={'marginRight': '10px'}),
                      html.Span(str.capitalize(metar.sky_conditions()))
                      ]),
             html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
-                     html.Strong('Visibility: '),
+                     html.Strong('Visibility: ', style={
+                                 'marginRight': '10px'}),
                      html.Span(str(metar.vis))
                      ]),
             html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
-                     html.Strong('Wind: '),
-                     html.Span(metar.wind("MPH"))
+                     html.Strong('Wind: ', style={'marginRight': '10px'}),
+                     html.Span(str.capitalize(metar.wind("MPH")))
                      ]),
             html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
-                     html.Strong('Gust: '),
+                     html.Strong('Gust: ', style={'marginRight': '10px'}),
                      html.Span(
                          metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!')
                      ]),
             html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                      children=[
-                     html.Strong('Temperature: '),
+                     html.Strong('Temperature: ', style={
+                                 'marginRight': '10px'}),
                      html.Span(metar.temp.string('F'))
                      ]),
         ]
@@ -84,7 +86,7 @@ def renderWind(metar: Metar.Metar) -> html.Div:
             ),
             html.Div(
                 # Arrow unicode for windy condition, cloud unicode for calm condition
-                '⬆' if wind_speed != '0 mph' else '☁',
+                '⬆' if wind_speed != '0 mph' else '💤',
                 className='wind-arrow',
                 style={
                     'transform': 'rotate({}deg)'.format(css_degrees),
@@ -99,4 +101,4 @@ def renderWind(metar: Metar.Metar) -> html.Div:
 
 
 def renderWindsAloft() -> html.Div:
-    return html.Div()
+    return html.Div("In Progress", style={'color':'white'})
