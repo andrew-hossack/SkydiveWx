@@ -29,9 +29,9 @@ def render() -> html.Div:
                         [
                             dbc.NavLink("Home", href="/", active="exact"),
                             dbc.NavLink("Winds Aloft", href="/winds", active="exact"),
-                            dbc.NavLink("Webcam", href="/webcam", active="exact"),
                             dbc.NavLink("Event Calendar", href="/calendar", active="exact"),
                             dbc.NavLink("Live Manifest", href="https://dzm.burblesoft.com/jmp?dz_id=385", target="_blank", className="external"),
+                            dbc.NavLink("Webcam - Unavailable", href="/webcam", active="exact", disabled=True),
                         ],
                         horizontal="center",
                         pills=True,

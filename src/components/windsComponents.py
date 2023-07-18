@@ -1,7 +1,10 @@
-from plotly.graph_objs import Scatter
 import json
-from dash import html, dcc, dash_table
+
 import requests
+from dash import dash_table, dcc, html
+from plotly.graph_objs import Scatter, Scatterpolar
+
+from utils import timeUtils
 
 
 def _get_data():
@@ -54,23 +57,25 @@ def renderTable() -> html.Div:
         }],
     )
 
-    wind_speed_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
-                               x=[data['speed'][str(altFt)]
-                                  for altFt in data['altFt'] if altFt <= 20000],
-                               mode='lines',
-                               name='Wind Speed (Kts)')
-
-    temp_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
-                         x=[(data['temp'][str(altFt)]*(9/5)+32)
-                            for altFt in data['altFt'] if altFt <= 20000],
-                         mode='lines',
-                         name='Temperature (°F)')
-
-    wind_dir_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
-                             x=[data['direction'][str(altFt)]
-                                for altFt in data['altFt'] if altFt <= 20000],
-                             mode='markers',
-                             name='Wind Direction (°)')
+    scatterpolar_trace = [
+        Scatterpolar(
+            r=[data['speed'][str(altFt)]
+               for altFt in data['altFt'] if altFt <= 20000],
+            theta=[data['direction'][str(altFt)]
+                   for altFt in data['altFt'] if altFt <= 20000],
+            mode='markers',
+            marker=dict(
+                color=[altFt for altFt in data['altFt'] if altFt <= 20000],
+                colorscale='Jet',
+                size=10,
+                colorbar=dict(
+                    title='Altitude'
+                )
+            ),
+            text=[f'{altFt} Ft' for altFt in data['altFt'] if altFt <= 20000],
+            name='Wind Velocity'
+        )
+    ]
 
     return html.Div(
         style={
@@ -89,27 +94,37 @@ def renderTable() -> html.Div:
                         'fontSize': '26px',
                         'color': '#3498db'
                     }),
-            html.Div(children='''Windspeed, Temperature and Direction at altitude.''',
+            html.Div(children=f'Last reported at {timeUtils.zulu_to_mst_string(data["validtime"])}',
                      style={
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
-                id='example-graph',
+                id='polar-plot',
                 style={'width': '80vw'},
                 figure=dict(
-                    data=[wind_speed_trace, temp_trace, wind_dir_trace],
+                    data=scatterpolar_trace,
                     layout=dict(
+                        title='Polar Plot - Wind Speed, Direction, and Altitude',
+                        polar=dict(
+                            radialaxis=dict(
+                                visible=True,
+                                range=[min(data['speed'].values()),
+                                       max(data['speed'].values())]
+                            ),
+                            angularaxis=dict(
+                                visible=True,
+                                range=[min(data['direction'].values()),
+                                       max(data['direction'].values())]
+                            )
+                        ),
+                        showlegend=True,
                         template='plotly_dark',
                         plot_bgcolor='rgba(47, 62, 70, 0.5)',
                         paper_bgcolor='rgba(47, 62, 70, 1)',
                         font={'color': 'white'},
-                        legend={'orientation': 'h', 'y': 1.1,
-                                'x': 0.5, 'xanchor': 'center'},
-                        yaxis_title='Altitude',
-                        xaxis_title='Value'
                     )
                 ),
                 config=dict(displayModeBar=False),
             ),
-            html.Div(table, style={'paddingTop': '10px'})
+            html.Div(table, style={'paddingTop': '20px'})
         ]
     )

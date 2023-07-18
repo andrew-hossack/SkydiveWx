@@ -1,45 +1,8 @@
 import pandas as pd
-from dash import html, dcc, html
+from dash import dcc, html
 from metar import Metar
-from datetime import datetime
-from pytz import timezone
-import pytz
-from utils import weatherUtils
-from datetime import datetime
 
-
-def _format_datetime_in_mst(dt: datetime) -> str:
-    # Convert to datetime object and set it to UTC
-    utc_time = timezone('UTC').localize(dt)
-
-    # Convert to the appropriate Mountain Time (could be MST or MDT)
-    mt = timezone('America/Denver')
-    mt_time = utc_time.astimezone(mt)
-
-    # Output in the format: "Monday, January 14th 2023 at 02:55PM"
-    return f"{mt_time.strftime('%A, %B %-d %Y at %I:%M %p').replace('AM', 'am').replace('PM', 'pm')}"
-
-
-def _convert_utc_to_mst(time):
-    # Make dt timezone aware
-    utc_tz = timezone('UTC')
-    dt = utc_tz.localize(time)
-
-    # Convert to MST
-    mst_tz = timezone('US/Mountain')
-    return dt.astimezone(mst_tz)
-
-
-def _time_diff(time):
-    metar_time = _convert_utc_to_mst(time)
-    now_time = _convert_utc_to_mst(datetime.utcnow())
-    diff = now_time - metar_time
-
-    # Get the difference in days, hours, minutes, seconds
-    seconds =diff.seconds
-    minutes = (seconds % 3600) // 60
-
-    return f'{minutes} minutes ago'
+from utils import timeUtils, weatherUtils
 
 
 def renderCurrentWeather() -> html.Div:
@@ -67,7 +30,7 @@ def renderCurrentWeather() -> html.Div:
                 html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                          children=[
                     html.Strong('Updated: ', style={'marginRight': '10px'}),
-                    html.Span(_time_diff(metar.time))
+                    html.Span(timeUtils.time_diff(metar.time))
                 ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                          children=[
@@ -162,7 +125,7 @@ def renderWeatherForecast() -> html.Div:
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
         },
         children=[
-            html.H2('Weather Forecasts - todo add historical',
+            html.H2('Weather Forecasts',
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',
