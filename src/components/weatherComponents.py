@@ -3,7 +3,7 @@ import dash_html_components as html
 import pandas as pd
 from dash import html, dcc
 from metar import Metar
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 from utils import weatherUtils
 from datetime import datetime
@@ -26,16 +26,18 @@ def renderCurrentWeather(metar: Metar.Metar) -> html.Div:
         style={
             'padding': '20px',
             'margin': '20px',
-            'maxWidth': '1000px',
-            'backgroundColor': 'transparent',
+            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'fontSize': '20px',
-            'color': 'white'
+            'color': 'white',
+            'borderRadius': '15px',
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
         },
         children=[
             html.H2('Current Weather',
                     style={
                         'textAlign': 'center',
-                        'fontSize': '20px',
+                        'fontSize': '26px',
+                        'color': '#3498db'
                     }),
             renderWind(metar),
             html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
@@ -110,21 +112,19 @@ def renderWindsAloft() -> html.Div:
 
 
 def renderWeatherForecast() -> html.Div:
-    weather_forecasts = weatherUtils.get_weather_forecast()[:11]
+    weather_forecasts = weatherUtils.get_weather_forecast()[:12]
 
     df = pd.DataFrame(weather_forecasts)
-    df['time'] = pd.to_datetime(df['time'])
 
     return html.Div(
         style={
             'padding': '20px',
             'margin': '20px',
-            'width': '500px',
-            'backgroundColor': '#2f3e46',
+            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'fontSize': '20px',
             'color': 'white',
             'borderRadius': '15px',
-            'boxShadow': '3px 3px 3px grey'
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
         },
         children=[
             html.H2('Weather Forecasts',
@@ -136,10 +136,11 @@ def renderWeatherForecast() -> html.Div:
 
             html.Div(children='''Weather forecasts for the next 12 hours.''',
                      style={
-                         'textAlign': 'center', 'color': '#3498db'}),
+                         'textAlign': 'center', 'color': 'white'}),
 
             dcc.Graph(
                 id='example-graph',
+                style={'width': '80vw'},
                 figure={
                     'data': [
                         {'x': df['time'], 'y': df['temperature_2m'],
@@ -153,9 +154,8 @@ def renderWeatherForecast() -> html.Div:
                          'showlegend': True, 'name': '15 mph'},
                     ],
                     'layout': {
-                        'title': 'Weather forecasts',
-                        'plot_bgcolor': '#2f3e46',
-                        'paper_bgcolor': '#2f3e46',
+                        'plot_bgcolor': 'rgba(47, 62, 70, 0.5)',
+                        'paper_bgcolor': 'rgba(47, 62, 70, 0.5)',
                         'font': {
                             'color': 'white'
                         },
@@ -172,6 +172,7 @@ def renderWeatherForecast() -> html.Div:
                                 },
                             },
                         ],
+                        'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
                     }
                 }
             )

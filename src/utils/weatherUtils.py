@@ -30,27 +30,6 @@ def get_metar() -> Metar.Metar:
     return Metar.Metar(metar)
 
 
-# https://api.open-meteo.com/v1/forecast?latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,cloudcover,visibility,windspeed_10m
-
-# async def _getweather():
-#     async with python_weather.Client(unit=python_weather.IMPERIAL) as client:
-#         weather = await client.get('4663 N Airport Rd, Erda, UT 84074')
-#         forecasts = []
-#         # get the weather forecast for a few days
-#         for forecast in weather.forecasts:
-#             # hourly forecasts
-#             for hourly in forecast.hourly:
-#                 forecasts.append(hourly)
-#         return forecasts
-
-
-# def get_weather_forecast():
-#     if os.name == 'nt':
-#         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-#     # Capture the returned weather object
-#     return asyncio.run(_getweather())[:3]
-
-
 def get_weather_forecast():
     # https://open-meteo.com/en/docs#latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,visibility,windspeed_10m&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FDenver&forecast_days=1
     response = requests.get('https://api.open-meteo.com/v1/forecast?latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,cloudcover,visibility,windspeed_10m&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FDenver&forecast_days=1')
