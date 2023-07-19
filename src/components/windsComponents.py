@@ -13,6 +13,7 @@ def _get_data():
     response = requests.get(url)
     return json.loads(response.text)
 
+
 def _render_table(data) -> dash_table.DataTable:
     # Prepare data for the table
     table_data = [dict(Altitude=f'{altFt} Ft',
@@ -67,7 +68,6 @@ def resolve_wind_direction(data: dict, altitudes: list) -> (list, list):
             wrapped_altitudes.append(temp_alts)
             wrapped_wind_dirs.append(temp_dirs)
             temp_alts = [altitudes[i]]
-            # temp_dirs = [dir_data[i] + (360 if dir_data[i-1] > dir_data[i] else -360)]
             temp_dirs = [dir_data[i]]
         else:
             temp_alts.append(altitudes[i])
@@ -86,7 +86,7 @@ def renderWindsAloft() -> html.Div:
     # # Wrap right
     # wind_dir = [70, 80, 90, 100, 110, 120, 130, 140, 150, 200,
     #             250, 300, 350, 50, 60, 70, 80, 90, 95, 100, 100]
-    
+
     # # Wrap left
     # # wind_dir = [150, 140, 140, 130, 110, 100, 100, 100, 50, 350,
     # #             300, 280, 250, 240, 180, 160, 140, 120, 110, 100, 100]
@@ -108,20 +108,22 @@ def renderWindsAloft() -> html.Div:
                                name='Wind Speed (Kts)',
                                line=dict(color='coral'))
 
-    altitudes_by_trace, winds_by_trace = resolve_wind_direction(data, altitude_list)
-    wind_dir_traces = [Scatter(y=altitudes_by_trace[i], 
-                           x=winds_by_trace[i],
-                           mode='lines',
-                           xaxis='x2' if i % 2 == 0 else 'x3',
-                           name='Wind Direction (°)',
-                           showlegend=True if i==0 else False,
-                           line=dict(shape='linear'),
-                           marker=dict(color='mintcream'))
-                    for i in range(len(altitudes_by_trace))]
-    
-    tickrange = [min(int(value) for value in data['direction'].values()), max(int(value) for value in data['direction'].values())]
-    tickvals= [i for i in range(min(tickrange), max(tickrange) + 1, 30)]
-    ticktext= [f"{i%360}°" for i in tickvals]
+    altitudes_by_trace, winds_by_trace = resolve_wind_direction(
+        data, altitude_list)
+    wind_dir_traces = [Scatter(y=altitudes_by_trace[i],
+                               x=winds_by_trace[i],
+                               mode='lines',
+                               xaxis='x2' if i % 2 == 0 else 'x3',
+                               name='Wind Direction (°)',
+                               showlegend=True if i == 0 else False,
+                               line=dict(shape='linear'),
+                               marker=dict(color='mintcream'))
+                       for i in range(len(altitudes_by_trace))]
+
+    tickrange = [min(int(value) for value in data['direction'].values()), max(
+        int(value) for value in data['direction'].values())]
+    tickvals = [i for i in range(min(tickrange), max(tickrange) + 1, 30)]
+    ticktext = [f"{i%360}°" for i in tickvals]
 
     return html.Div(
         style={
@@ -154,7 +156,7 @@ def renderWindsAloft() -> html.Div:
                                    showgrid=True,
                                    gridcolor='rgba(255, 255, 255, 0.2)',
                                    color='coral',
-                                   showline=True,
+                                   showline=False,
                                    linecolor='coral',
                                    fixedrange=True),
                         xaxis2=dict(title='Wind Direction (°)',
@@ -162,7 +164,6 @@ def renderWindsAloft() -> html.Div:
                                     side='top',
                                     showgrid=False,
                                     gridcolor='rgba(255, 255, 255, 0.2)',
-                                    # Set range from 180 to 540 (equivalent to 180° on the left to 360° in the middle and back to 179° on the right)
                                     range=tickrange,
                                     tickvals=tickvals,
                                     ticktext=ticktext,
@@ -170,22 +171,15 @@ def renderWindsAloft() -> html.Div:
                                     showline=False,
                                     linecolor='mintcream',
                                     fixedrange=True),
-                            xaxis3=dict(overlaying='x', side='bottom', 
-                                showgrid=False, 
-                                # Set range from 180 to 540 (equivalent to 180° on the left to 360° in the middle and back to 179° on the right)
-                                # range=[180, 540],
-                                range=tickrange,
-                                tickvals=tickvals,
-                                ticktext=ticktext,
-                                # # Set tick values every 30°
-                                # tickvals=list(range(180, 541, 30)),
-                                # # Set tick text to display from 180° to 179°
-                                # ticktext=[
-                                #         f"{i%360}°" for i in range(180, 541, 30)],
-                                color='mintcream', 
-                                showline=False,
-                                showticklabels=False,
-                                fixedrange=True), # disables zoom
+                        xaxis3=dict(overlaying='x', side='bottom',
+                                    showgrid=False,
+                                    range=tickrange,
+                                    tickvals=tickvals,
+                                    ticktext=ticktext,
+                                    color='mintcream',
+                                    showline=False,
+                                    showticklabels=False,
+                                    fixedrange=True),
                         yaxis=dict(title='Altitude',
                                    showgrid=True,
                                    gridcolor='rgba(255, 255, 255, 0.2)',
