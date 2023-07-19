@@ -15,6 +15,7 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.MATERIA],
     name=__name__,
     update_title=None,
+    suppress_callback_exceptions=True
 )
 
 
