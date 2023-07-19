@@ -6,7 +6,7 @@ from components import windsComponents
 def render() -> html.Div:
     return html.Div(
         [
-            windsComponents.renderTable(),
+            windsComponents.renderWindsAloft(),
         ],
         style={
             'display': 'flex',

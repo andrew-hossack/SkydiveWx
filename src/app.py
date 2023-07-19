@@ -46,17 +46,18 @@ server = app.server
 ###### CALLBACKS #######
 ########################
 
-@app.callback(
-    Output("url", "pathname"),
-    [Input("refresh-interval", "n_intervals")],
-    [State('url','pathname')])
-def refresh_page(refresh, currentPathname):
-    metar = weatherUtils.get_metar()
-    if int(timeUtils.time_diff(metar.time).replace(' minutes ago','')) > 15:
-        # Force a page refresh every 15 minutes
-        return currentPathname
-    else:
-        raise dash.exceptions.PreventUpdate
+# @app.callback(
+#     Output("url", "pathname"),
+#     [Input("refresh-interval", "n_intervals")],
+#     [State('url','pathname')])
+# def refresh_page(refresh, currentPathname):
+#     metar = weatherUtils.get_metar()
+#     if int(timeUtils.time_diff(metar.time).replace(' minutes ago','')) > 15:
+#         # Force a page refresh every 15 minutes
+#         return currentPathname
+#     else:
+#         raise dash.exceptions.PreventUpdate
+# TODO refresh callback
 
 
 @app.callback(
@@ -94,8 +95,10 @@ def update_time(n):
 
 if __name__ == "__main__":
     # print('TODO:')
+    # print('\t- Handle refreshing data')
     # print('\t- Calendar iFrame src')
     # Improvement: do some smart shit with the client and only query the api's when we need to, not based on client refresh
+    # Dont actualy refresh the whole page; only the components we need
     # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30
     app.run_server(debug=False, port=8050)
