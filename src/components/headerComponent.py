@@ -7,7 +7,7 @@ def render() -> html.Div:
         [
             html.Div(
                 [
-                    html.H2("Skydive Utah - Live App", className="display-7",
+                    html.H2("Skydive Utah - Live Dashboard", className="display-7",
                             style={'color': 'white', 'textAlign': 'center'}),
                     html.Div(
                         [

@@ -30,7 +30,7 @@ def renderCurrentWeather() -> html.Div:
                 html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                          children=[
                     html.Strong('Updated: ', style={'marginRight': '10px'}),
-                    html.Span(timeUtils.time_diff(metar.time))
+                    html.Span(timeUtils.time_diff(metar.time), id='time-since-last-update')
                 ]),
                 html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
                          children=[

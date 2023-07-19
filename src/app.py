@@ -4,14 +4,14 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_loading_spinners as dls
 import pytz
-from dash import Input, Output, dcc, html
+from dash import Input, Output, dcc, html, State
 
 from components import footerComponent, headerComponent
 from pages import calendarPage, weatherPage, webcamPage, windsAloftPage
-from utils import weatherUtils
+from utils import timeUtils, weatherUtils
 
 app = dash.Dash(
-    title="Skydive Utah - Live Conditions",
+    title="Skydive Utah - Live Dashboard",
     external_stylesheets=[dbc.themes.MATERIA],
     name=__name__,
     update_title=None,
@@ -21,9 +21,8 @@ app = dash.Dash(
 app.layout = html.Div(
     [
         dcc.Location(id="url"),
-        # 10 minute refresh interval
-        dcc.Interval(id='refresh-interval',
-                     interval=10*60*1000, n_intervals=0),
+        # Interval to check if metar is older than X minutes; every minute
+        dcc.Interval(id='refresh-interval', interval=1000*60, n_intervals=0),
         headerComponent.render(),
         html.Div(
             [
@@ -46,6 +45,18 @@ server = app.server
 ###### CALLBACKS #######
 ########################
 
+@app.callback(
+    Output("url", "pathname"),
+    [Input("refresh-interval", "n_intervals")],
+    [State('url','pathname')])
+def refresh_page(refresh, currentPathname):
+    metar = weatherUtils.get_metar()
+    if int(timeUtils.time_diff(metar.time).replace(' minutes ago','')) > 15:
+        # Force a page refresh every 15 minutes
+        return currentPathname
+    else:
+        raise dash.exceptions.PreventUpdate
+
 
 @app.callback(
     [
@@ -54,10 +65,8 @@ server = app.server
     ],
     [
         Input("url", "pathname"),
-        Input("refresh-interval", "n_intervals"),
     ])
-def render_page_content(pathname, refresh):
-    # Refresh the footer and page every 10 minutes
+def render_page_content(pathname):
     currentMetar = weatherUtils.get_metar()
     if pathname == "/":
         return [weatherPage.render(), f'{currentMetar.code} ']
@@ -85,7 +94,6 @@ def update_time(n):
 if __name__ == "__main__":
     # print('TODO:')
     # print('\t- Calendar iFrame src')
-    # print('\t- Update metar every 15min')
     # Improvement: do some smart shit with the client and only query the api's when we need to, not based on client refresh
     # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30
