@@ -60,15 +60,16 @@ def renderTable() -> html.Div:
                                x=[data['speed'][str(altFt)]
                                   for altFt in data['altFt'] if altFt <= 20000],
                                mode='lines',
-                               name='Wind Speed (Kts)')
+                               name='Wind Speed (Kts)',
+                               line=dict(color='coral'))
 
     wind_dir_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
                              x=[data['direction'][str(altFt)]
                                 for altFt in data['altFt'] if altFt <= 20000],
                              xaxis='x2',
-                             mode='markers',
-                             name='Wind Direction (°)')
-
+                             mode='lines',
+                             name='Wind Direction (°)',
+                             marker=dict(color='mintcream'))
 
     return html.Div(
         style={
@@ -78,7 +79,8 @@ def renderTable() -> html.Div:
             'fontSize': '20px',
             'color': 'black',
             'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
+            'width': '80vw'
         },
         children=[
             html.H2('Winds Aloft',
@@ -92,14 +94,14 @@ def renderTable() -> html.Div:
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
                 id='example-graph',
-                style={'width': '80vw'},
+                style={'width': '100%', 'display': 'inline-block'},
                 figure=dict(
                     data=[wind_speed_trace, wind_dir_trace],
                     layout=dict(
-                        xaxis=dict(domain=[0, 0.45], title='Wind Speed (Kts)',
-                                   showgrid=True, gridcolor='rgba(255, 255, 255, 0.2)'),
-                        xaxis2=dict(domain=[0.55, 1], title='Wind Direction (°)', showgrid=True, gridcolor='rgba(255, 255, 255, 0.2)', range=[
-                                    min(data['direction'].values()), max(data['direction'].values())]),
+                        xaxis=dict(title='Wind Speed (Kts)',
+                                   showgrid=True, gridcolor='rgba(255, 255, 255, 0.2)', color='coral', showline=True, linecolor='coral'),
+                        xaxis2=dict(title='Wind Direction (°)', overlaying='x', side='top', showgrid=True, gridcolor='rgba(255, 255, 255, 0.2)', range=[
+                                    min(data['direction'].values()), max(data['direction'].values())], color='mintcream', showline=True, linecolor='mintcream'),
                         yaxis=dict(title='Altitude', showgrid=True,
                                    gridcolor='rgba(255, 255, 255, 0.2)'),
                         hovermode="x",
@@ -107,13 +109,14 @@ def renderTable() -> html.Div:
                         plot_bgcolor='rgba(47, 62, 70, 0.5)',
                         paper_bgcolor='rgba(47, 62, 70, 1)',
                         font={'color': 'white'},
-                        legend={'orientation': 'h', 'y': 1.1,
-                                'x': 0.5, 'xanchor': 'center'},
+                        legend={'traceorder': 'reversed', 'y': 1,
+                                'x': 0, 'bgcolor': 'rgba(0,0,0,0)'},
+                        autosize=True,
                     )
                 ),
                 config=dict(displayModeBar=False),
             ),
-            
+
             html.Div(table, style={'paddingTop': '20px'})
         ]
     )

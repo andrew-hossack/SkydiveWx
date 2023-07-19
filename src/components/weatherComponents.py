@@ -100,19 +100,11 @@ def renderWindsAloft() -> html.Div:
 
 
 def renderWeatherForecast() -> html.Div:
-    weather_forecasts = weatherUtils.get_weather_forecast()[:12]
-    # historical_weather = weatherUtils.get_metar(hours=4)
-    # print(historical_weather)
-    # metar.wind_gust if metar.wind_gust else 'No gusts, winds are steady!
-    # wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
-    # df_historical = pd.DataFrame([(metar.time, metar.wind("MPH") if metar.wind("MPH") else 0, metar.wind_gust if metar.wind_gust else 0) for metar in historical_weather],
-    #                          columns=['time', 'windspeed_10m', 'windgusts_10m'])
+    # List of metar objects
+    historical_weather = weatherUtils.get_metar(hours=4)
 
-    # print(df_historical)
-
-    df = pd.DataFrame(weather_forecasts)
-
-    # df = pd.concat([df_historical, df]).reset_index(drop=True)
+    df_historical = pd.DataFrame([(timeUtils.convert_utc_to_mst(metar.time).strftime('%-I:%M%p'), int(metar.wind_speed.string("MPH").replace(" mph", "")) if metar.wind_speed else 0, int(metar.wind_gust.string("MPH").replace(" mph", "")) if metar.wind_gust else 0) for metar in historical_weather],
+                             columns=['time', 'windspeed_10m', 'windgusts_10m']).iloc[::-1]
 
     return html.Div(
         style={
@@ -125,25 +117,25 @@ def renderWeatherForecast() -> html.Div:
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
         },
         children=[
-            html.H2('Weather Forecasts',
+            html.H2('Wind Trends',
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',
                         'color': '#3498db'
                     }),
 
-            html.Div(children='''Weather forecasts for the next 12 hours.''',
+            html.Div(children='Wind and gust trends from the past 4 hours',
                      style={
                          'textAlign': 'center', 'color': 'white'}),
 
             dcc.Graph(
                 id='example-graph',
-                style={'width': '80vw'},
+                style={'width': '80vw', 'height':'60vh'},
                 figure={
                     'data': [
-                        {'x': df['time'], 'y': df['windspeed_10m'],
+                        {'x': df_historical['time'], 'y': df_historical['windspeed_10m'],
                          'type': 'line', 'name': 'Wind speed (mph)'},
-                        {'x': df['time'], 'y': df['windgusts_10m'],
+                        {'x': df_historical['time'], 'y': df_historical['windgusts_10m'],
                          'type': 'line', 'name': 'Wind gusts (mph)'},
                     ],
                     'layout': {
@@ -153,6 +145,7 @@ def renderWeatherForecast() -> html.Div:
                             'color': 'white'
                         },
                         'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
+                        'autosize': True,
                     }
                 }
             )
