@@ -1,10 +1,8 @@
 import datetime
 
-import dash
 import dash_bootstrap_components as dbc
-import dash_loading_spinners as dls
 import pytz
-from dash import Input, Output, dcc, html
+from dash import Input, Output, dcc, html, Dash
 
 from components.footer import footerComponent
 from components.header import headerComponent
@@ -12,7 +10,7 @@ from components.weather import weatherComponents
 from components.winds import windsComponents
 from pages import calendarPage, weatherPage, windsAloftPage
 
-app = dash.Dash(
+app = Dash(
     title="Skydive Utah - Live Dashboard",
     external_stylesheets=[dbc.themes.MATERIA],
     name=__name__,
@@ -29,13 +27,6 @@ app.layout = html.Div(
         html.Div(id='header-container', children=headerComponent.render()),
         html.Div(
             id='page-content',
-            children=[
-                # TODO fix grid updating on each component update
-                # dls.Grid(id="page-content",
-                #          color="#435278",
-                #          speed_multiplier=2,
-                #          ),
-            ],
             style={
                 "padding": "2rem 1rem",
             },
@@ -100,9 +91,10 @@ def refresh_winds(refresh):
 
 
 if __name__ == "__main__":
-    # print('TODO:')
-    # print('\t- Calendar iFrame src')
+    print('TODO:')
+    print('\t- Calendar iFrame src')
+    print('\t- Loading component that doesnt run on each callback update')
     # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30
     # Improvement: Fix the weather direction plot to be continuous
-    app.run_server(debug=False, port=8050)
+    app.run_server(debug=True, port=8050)

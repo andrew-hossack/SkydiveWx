@@ -11,7 +11,7 @@ def render() -> html.Div:
                             style={'color': 'white', 'textAlign': 'center'}),
                     html.Div(
                         [
-                            html.H1(id="live-clock", children="current time",
+                            html.H1(id="live-clock", children="Loading...",
                                     style={'textAlign': 'center',
                                         'color': '#fff',
                                         'padding': '0px',

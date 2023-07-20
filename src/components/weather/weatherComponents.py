@@ -1,6 +1,6 @@
 import pandas as pd
 from dash import dcc, html
-from metar import Metar
+from utils.metar import Metar
 
 from utils import timeUtils, weatherUtils
 
