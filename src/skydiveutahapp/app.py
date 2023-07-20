@@ -12,7 +12,9 @@ from pages import calendarPage, weatherPage, windsAloftPage
 
 app = Dash(
     title="Skydive Utah - Live Dashboard",
-    external_stylesheets=[dbc.themes.MATERIA],
+    external_stylesheets=[
+        dbc.themes.MATERIA, 
+        "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600"],
     name=__name__,
     update_title=None,
     suppress_callback_exceptions=True,
@@ -97,4 +99,5 @@ if __name__ == "__main__":
     # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30
     # Improvement: Fix the weather direction plot to be continuous
+    # Improvement: Webcam page
     app.run_server(debug=True, port=8050)

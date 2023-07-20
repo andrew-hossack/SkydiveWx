@@ -3,6 +3,7 @@ from dash import dcc, html
 
 from utils import timeUtils, weatherUtils
 
+
 def renderCurrentWeather() -> html.Div:
     metar = weatherUtils.get_metar()
     return html.Div(
@@ -17,7 +18,7 @@ def renderCurrentWeather() -> html.Div:
         },
         children=[
             html.Div([
-                html.H2('Current Weather',
+                html.H2('Current Conditions',
                         style={
                             'textAlign': 'center',
                             'fontSize': '26px',
@@ -73,6 +74,38 @@ def renderCurrentWeather() -> html.Div:
     )
 
 
+def _generate_compass_component(direction, speed, rotation) -> html.Div:
+    return html.Div(
+        [
+            html.Div(
+                [
+                    html.P(
+                        [
+                            direction,
+                            html.Br(),
+                            html.Span(f'{speed}')
+                        ],
+                        style={'marginTop':'20px'}
+                    )
+                ],
+                className="direction"
+            ),
+            html.Div(
+                [],
+                className="arrow",
+                style={
+                    'transform': f'rotate({rotation}deg)',
+                    '-webkit-transform': f'rotate({rotation}deg)',
+                    '-moz-transform': f'rotate({rotation}deg)',
+                    '-ms-transform': f'rotate({rotation}deg)',
+                    '-o-transform': f'rotate({rotation}deg)'
+                }
+            )
+        ],
+        className="compass"
+    )
+
+
 def renderWind() -> html.Div:
     metar = weatherUtils.get_metar()
     # Access the wind direction and speed
@@ -88,19 +121,18 @@ def renderWind() -> html.Div:
                 f'Winds from {metar.wind_dir.compass()} ({wind_dir}°) at {wind_speed}',
                 className='wind-direction-text'
             ),
-            html.Div(
-                # Arrow unicode for windy condition, cloud unicode for calm condition
-                '⬆' if wind_speed != '0 mph' else '💤',
-                className='wind-arrow',
-                style={
-                    'transform': 'rotate({}deg)'.format(css_degrees),
-                    '-webkit-transform': 'rotate({}deg)'.format(css_degrees),
-                    '-moz-transform': 'rotate({}deg)'.format(css_degrees),
-                    '-ms-transform': 'rotate({}deg)'.format(css_degrees),
-                    '-o-transform': 'rotate({}deg)'.format(css_degrees)
-                } if wind_speed != '0 mph' else {}  # if condition also added for the css style
-            )
-        ]
+            _generate_compass_component(
+                metar.wind_dir.compass(), wind_speed, css_degrees),
+        ],
+        className='outer-div',
+        style={
+            'display': 'flex',
+            'flex-direction': 'column',
+            'align-items': 'center',
+            'justify-content': 'center',
+            'height': '100%',  # this ensures the div takes up the full height of its container
+            'paddingBottom': '15px'
+        }
     )
 
 
@@ -155,6 +187,7 @@ def renderWeatherForecast() -> html.Div:
             )
         ]
     )
+
 
 def getAllComponents() -> list[html.Div]:
     return [

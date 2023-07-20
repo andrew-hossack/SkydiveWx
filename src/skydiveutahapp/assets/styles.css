@@ -20,7 +20,7 @@ a[target="_blank"]::after {
 
 body::after {
   content: "";
-  background: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)),
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url("/assets/background.jpeg");
   background-size: cover;
   background-position: center;
@@ -31,4 +31,93 @@ body::after {
   right: -10%;
   z-index: -1;
   filter: blur(10px);
+}
+
+.compass {
+  font-weight: bold;
+  display: block;
+  width: 140px;
+  height: 140px;
+  border-radius: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.85);
+  position: relative;
+  font-family: "Dosis";
+  color: #555;
+  text-shadow: 1px 1px 1px white;
+  &:before {
+    font-weight: bold;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    content: "N";
+    font-size: 14px;
+    top: -2px;
+  }
+  .direction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: #f2f6f5;
+    background: -moz-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
+    background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      color-stop(0%, #f2f6f5),
+      color-stop(100%, #cbd5d6)
+    );
+    background: -webkit-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
+    background: -o-linear-gradient(top, #f2f6f5 0%, #cbd5d6 100%);
+    border-radius: 100%;
+    p {
+      line-height: 1;
+      margin-top: 0;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      font-size: 28px;
+      font-weight: bold;
+      span {
+        display: block;
+        line-height: 1;
+        margin-top: -24px;
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: normal;
+      }
+    }
+  }
+  .arrow {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    &:after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 25px solid red;
+      position: absolute;
+      bottom: -6px; /* This line is added and "top" is removed because arrow is now pointing downwards */
+      left: 50%;
+      margin-left: -5px;
+      z-index: 99;
+    }
+  }
+  [class^="degree"] {
+    transform: rotate(calc(attr(class) * 1deg));
+  }
 }
