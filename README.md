@@ -6,14 +6,17 @@ Skydive Utah app developed in Python with the [Plotly Dash](https://dash.plotly.
 
 ## Development
 
-To install the package, run:
+To build the package, run the following command:
 
 ```bash
 pip install .
 ```
 
-For development and to view any live changes, run the app locally with:
+For development and to view any live changes, run the app locally with the following command:
+
+_**Note:** If changes do not appear on refresh, please delete all `/build` and `*.egg-info` files, then rebuild the package._
 
 ```bash
 python src/skydiveutahapp/app.py
 ```
+
