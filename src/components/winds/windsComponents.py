@@ -2,7 +2,7 @@ import json
 
 import requests
 from dash import dash_table, dcc, html
-from plotly.graph_objs import Scatter, Scatterpolar
+from plotly.graph_objs import Scatter
 
 from utils import timeUtils
 
@@ -55,7 +55,7 @@ def _render_table(data) -> dash_table.DataTable:
     )
 
 
-def resolve_wind_direction(data: dict, altitudes: list) -> (list, list):
+def _resolve_wind_direction(data: dict, altitudes: list) -> list[list]:
     # This method probably sucks, I used chatgpt for help lol
     wrapped_altitudes = []
     wrapped_wind_dirs = []
@@ -108,7 +108,7 @@ def renderWindsAloft() -> html.Div:
                                name='Wind Speed (Kts)',
                                line=dict(color='coral'))
 
-    altitudes_by_trace, winds_by_trace = resolve_wind_direction(
+    altitudes_by_trace, winds_by_trace = _resolve_wind_direction(
         data, altitude_list)
     wind_dir_traces = [Scatter(y=altitudes_by_trace[i],
                                x=winds_by_trace[i],
@@ -200,3 +200,8 @@ def renderWindsAloft() -> html.Div:
             html.Div(_render_table(data), style={'paddingTop': '20px'})
         ]
     )
+
+
+def getAllComponents() -> list[html.Div]:
+    return [renderWindsAloft()]
+

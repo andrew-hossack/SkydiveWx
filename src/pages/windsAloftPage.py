@@ -1,13 +1,12 @@
 from dash import html
 
-from components import windsComponents
+from components.winds import windsComponents
 
 
 def render() -> html.Div:
     return html.Div(
-        [
-            windsComponents.renderWindsAloft(),
-        ],
+        id='winds-page-container',
+        children=windsComponents.getAllComponents(),
         style={
             'display': 'flex',
             'justify-content': 'center',

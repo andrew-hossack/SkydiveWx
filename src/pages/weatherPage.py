@@ -1,14 +1,12 @@
-from dash import html
+from dash import Dash, html
 
-from components import weatherComponents
+from components.weather import weatherComponents
 
 
 def render() -> html.Div:
     return html.Div(
-        [
-            weatherComponents.renderCurrentWeather(),
-            weatherComponents.renderWeatherForecast(),
-        ],
+        id='weather-page-container',
+        children=weatherComponents.getAllComponents(),
         style={
             'display': 'flex',
             'justify-content': 'center',

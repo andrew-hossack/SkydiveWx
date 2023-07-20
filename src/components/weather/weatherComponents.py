@@ -4,7 +4,6 @@ from metar import Metar
 
 from utils import timeUtils, weatherUtils
 
-
 def renderCurrentWeather() -> html.Div:
     metar = weatherUtils.get_metar()
     return html.Div(
@@ -26,7 +25,7 @@ def renderCurrentWeather() -> html.Div:
                             'fontSize': '26px',
                             'color': '#3498db'
                         }),
-                renderWind(metar),
+                renderWind(),
                 html.Div(style={
                     'backgroundColor': 'rgba(47, 62, 70, 0.5)',
                     'paddingLeft': '10px',
@@ -76,7 +75,8 @@ def renderCurrentWeather() -> html.Div:
     )
 
 
-def renderWind(metar: Metar.Metar) -> html.Div:
+def renderWind() -> html.Div:
+    metar = weatherUtils.get_metar()
     # Access the wind direction and speed
     wind_dir = metar.wind_dir.value() if metar.wind_dir.value() else 0
     wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
@@ -157,3 +157,9 @@ def renderWeatherForecast() -> html.Div:
             )
         ]
     )
+
+def getAllComponents() -> list[html.Div]:
+    return [
+        renderCurrentWeather(),
+        renderWeatherForecast(),
+    ]
