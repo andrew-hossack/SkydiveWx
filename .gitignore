@@ -1,6 +1,6 @@
 .DS_Store
 config.ini
 */__pycache__/*
-skydiveapp.egg-info
 build/
 __pycache__
+*.egg-info
