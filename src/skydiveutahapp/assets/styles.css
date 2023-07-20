@@ -37,6 +37,8 @@ body::after {
   font-weight: bold;
   display: block;
   width: 140px;
+  margin-top: 10px;
+  margin-bottom: 5px;
   height: 140px;
   border-radius: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.85);
