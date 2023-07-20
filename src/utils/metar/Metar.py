@@ -10,8 +10,8 @@ import datetime
 import warnings
 import logging
 
-from metar import __version__, __author__, __email__, __LICENSE__
-from metar.Datatypes import (
+from utils.metar import __version__, __author__, __email__, __LICENSE__
+from utils.metar.Datatypes import (
     temperature,
     pressure,
     speed,

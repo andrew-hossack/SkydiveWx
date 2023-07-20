@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from re import Match
 from typing import Callable, List, Literal, Optional, Tuple, Union
 
-from metar.Datatypes import (
+from utils.metar.Datatypes import (
     direction,
     distance,
     precipitation,

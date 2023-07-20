@@ -1,6 +1,6 @@
 from typing import Dict, Optional
 
-from metar.Datatypes import position
+from utils.metar.Datatypes import position
 
 class station:
     id: str
