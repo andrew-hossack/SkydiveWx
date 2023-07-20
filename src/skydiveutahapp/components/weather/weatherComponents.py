@@ -17,7 +17,6 @@ def renderCurrentWeather() -> html.Div:
         },
         children=[
             html.Div([
-
                 html.H2('Current Weather',
                         style={
                             'textAlign': 'center',

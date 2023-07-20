@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
     requirements = f.readlines()
 
 setuptools.setup(
-    name="skydiveapp",
+    name="skydiveutahapp",
     version="0.0.1",
     author="Andrew Hossack",
     author_email="andrew_hossack@outlook.com",
