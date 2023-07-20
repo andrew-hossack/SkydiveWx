@@ -1,12 +1,19 @@
-# Dash Sidebar App Template: SkydiveUtahApp
+# Skydive Utah App
 
-Created on 2023-07-17 20:10:07.914155
+Skydive Utah app developed in Python with the [Plotly Dash](https://dash.plotly.com/) framework.
 
-Welcome to your [Plotly Dash](https://plotly.com/dash/) App! This is a template for your SkydiveUtahApp app.
+![](docs/docs_img.png)
 
-See [Faculty.ai](https://dash-bootstrap-components.opensource.faculty.ai/examples/) for more information.
+## Development
 
-## Running the App
+Install the package:
 
-Run `src/app.py` and navigate to http://127.0.0.1:8050/ in your browser.
+```bash
+pip install .
+```
 
+Run the app locally with:
+
+```bash
+python src/app.py
+```
