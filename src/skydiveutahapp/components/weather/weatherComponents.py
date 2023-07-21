@@ -69,7 +69,7 @@ def renderCurrentWeather() -> html.Div:
                         html.Span(metar.temp.string('F'))
                     ]),
                 ])
-            ], style={'margin':'auto'})
+            ], style={'margin': 'auto'})
         ]
     )
 
@@ -165,7 +165,7 @@ def renderWindTrends() -> html.Div:
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
                 id='example-graph',
-                style={'margin':'auto', 'height': '60vh'},
+                style={'margin': 'auto', 'height': '60vh'},
                 figure={
                     'data': [
                         {'x': df_historical['time'], 'y': df_historical['windspeed_10m'],
@@ -199,18 +199,22 @@ def renderWeatherOutlook() -> html.Div:
     forecast_num_hours = 4
     forecast_data = weatherUtils.get_forecast(hours=forecast_num_hours)
 
+    if not forecast_data:
+        return "Weather data not available. Please try again later."
+
     # Calculate the maximum probability of rain
     max_rain_chance = max(
-        [data.get('probabilityOfPrecipitation').get('value') for data in forecast_data])
-    rain_hours = [data for data in forecast_data if data.get(
-        'probabilityOfPrecipitation').get('value') == max_rain_chance][0]['endTime']
-
-    rain_hours = timeUtils.convert_to_mst_from_ISO_8601(rain_hours)
+        [data.get('probabilityOfPrecipitation').get('value', 0) for data in forecast_data])
+    rain_hours = [data for data in forecast_data[::-1] if data.get(
+        'probabilityOfPrecipitation').get('value', 0) == max_rain_chance]
+    rain_hours = timeUtils.convert_to_mst_from_ISO_8601(
+        rain_hours[0]['endTime']) if rain_hours else None
 
     # Calculate wind speed changes
     wind_speeds = [int(data.get('windSpeed').split()[0])
-                   for data in forecast_data]
-    min_wind_speed, max_wind_speed = min(wind_speeds), max(wind_speeds)
+                   for data in forecast_data if data.get('windSpeed')]
+    min_wind_speed, max_wind_speed = min(
+        wind_speeds), max(wind_speeds) if wind_speeds else (0, 0)
 
     wind_speed_info = ""
     if min_wind_speed == max_wind_speed:
@@ -221,18 +225,19 @@ def renderWeatherOutlook() -> html.Div:
             min_wind_speed, max_wind_speed)
 
     # Determine wind direction
-    wind_directions = {data.get('windDirection') for data in forecast_data}
+    wind_directions = {data.get('windDirection')
+                       for data in forecast_data if data.get('windDirection')}
     if len(wind_directions) > 1:
         wind_direction_info = " The wind direction will change and vary among **{}.**".format(
             ", ".join(wind_directions))
     else:
         wind_direction_info = " The wind direction will consistently be **{}**.".format(
-            next(iter(wind_directions)))
+            next(iter(wind_directions), "unknown"))
 
     # Generate weather forecast summary
     forecast_summary = ("In the next {} hours, there is a **{}%** chance of rain till {}.{}{}".format(forecast_num_hours,
                                                                                                       max_rain_chance,
-                                                                                                      rain_hours,
+                                                                                                      rain_hours if rain_hours else "unknown",
                                                                                                       wind_speed_info,
                                                                                                       wind_direction_info))
     return html.Div(
@@ -261,7 +266,7 @@ def renderWeatherOutlook() -> html.Div:
         ], style={'maxWidth': '80vw',
                   'flex-direction': 'column',
                   'margin': '0 auto',
-                  'maxWidth': '550px',})
+                  'maxWidth': '550px', })
     )
 
 
@@ -275,7 +280,7 @@ def getAllComponents() -> list[html.Div]:
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
-            'width':'80vw',
-            'maxWidth':'750px',
+            'width': '80vw',
+            'maxWidth': '750px',
         }),
     ]

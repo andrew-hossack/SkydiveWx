@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pytz import timezone
+import pytz
 
 
 def zulu_to_mst_string(time):
@@ -52,15 +53,17 @@ def get_time_now_mst():
 
     return now_mst.strftime('%Y-%m-%d %H:%M:%S %Z%z')
 
-def convert_to_mst_from_ISO_8601(time_str):
-    # Parse string to datetime object
-    dt = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S%z")
 
-    # Convert to Mountain Standard Time
-    mst = timezone('MST')
-    dt_mst = dt.astimezone(mst)
+def convert_to_mst_from_ISO_8601(iso_string):
+    try:
+        # Parse the ISO 8601 formatted string to a datetime object
+        dt = datetime.fromisoformat(iso_string)
+        # Get the Mountain Time (US/Mountain) timezone
+        mst = pytz.timezone('US/Mountain')
+        mst_time = dt.astimezone(mst).strftime('%I:%M%p')
+        return mst_time
+        # 2023-07-21T14:00:00-06:00
+        # 02:00PM
 
-    # Format time in a more human-readable way
-    formatted_time = dt_mst.strftime('%I:%M%p')
-
-    return formatted_time
+    except ValueError:
+        raise ValueError("Invalid ISO 8601 formatted datetime string.")
