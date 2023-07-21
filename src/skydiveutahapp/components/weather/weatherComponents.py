@@ -199,9 +199,6 @@ def renderWeatherOutlook() -> html.Div:
     forecast_num_hours = 4
     forecast_data = weatherUtils.get_forecast(hours=forecast_num_hours)
 
-    if not forecast_data:
-        return "Weather data not available. Please try again later."
-
     # Calculate the maximum probability of rain
     max_rain_chance = max(
         [data.get('probabilityOfPrecipitation').get('value', 0) for data in forecast_data])
@@ -218,20 +215,20 @@ def renderWeatherOutlook() -> html.Div:
 
     wind_speed_info = ""
     if min_wind_speed == max_wind_speed:
-        wind_speed_info = " The wind speed will be consistently about **{} mph**.".format(
+        wind_speed_info = " The wind speed may be consistently about **{} mph**.".format(
             min_wind_speed)
     else:
-        wind_speed_info = " The wind speed will change from **{} mph** to **{} mph**.".format(
+        wind_speed_info = " The wind speed may change from **{} mph** to **{} mph**.".format(
             min_wind_speed, max_wind_speed)
 
     # Determine wind direction
     wind_directions = {data.get('windDirection')
                        for data in forecast_data if data.get('windDirection')}
     if len(wind_directions) > 1:
-        wind_direction_info = " The wind direction will change and vary among **{}.**".format(
+        wind_direction_info = " The wind direction may change and vary among **{}.**".format(
             ", ".join(wind_directions))
     else:
-        wind_direction_info = " The wind direction will consistently be **{}**.".format(
+        wind_direction_info = " The wind direction may consistently be **{}**.".format(
             next(iter(wind_directions), "unknown"))
 
     # Generate weather forecast summary
@@ -248,7 +245,6 @@ def renderWeatherOutlook() -> html.Div:
             'maxHeight': '650px',
             'margin': 'auto'
         },
-        # additional div for children to control their actual width
         children=html.Div([
             html.H2('Weather Outlook',
                     style={
