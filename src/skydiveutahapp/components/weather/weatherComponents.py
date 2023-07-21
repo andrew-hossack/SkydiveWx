@@ -69,7 +69,7 @@ def renderCurrentWeather() -> html.Div:
                         html.Span(metar.temp.string('F'))
                     ]),
                 ])
-            ], style={'minWidth': '80vw',})
+            ], style={'margin':'auto'})
         ]
     )
 
@@ -165,7 +165,7 @@ def renderWindTrends() -> html.Div:
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
                 id='example-graph',
-                style={'width': '80vw', 'height': '60vh'},
+                style={'margin':'auto', 'height': '60vh'},
                 figure={
                     'data': [
                         {'x': df_historical['time'], 'y': df_historical['windspeed_10m'],
@@ -275,6 +275,6 @@ def getAllComponents() -> list[html.Div]:
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
-            'maxWidth':'90vw',
+            'minWidth':'730px',
         }),
     ]
