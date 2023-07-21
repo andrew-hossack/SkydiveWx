@@ -129,12 +129,8 @@ def renderWindsAloft() -> html.Div:
         style={
             'padding': '20px',
             'margin': '20px',
-            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'fontSize': '20px',
             'color': 'black',
-            'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
-            'width': '80vw'
         },
         children=[
             html.H2('Winds Aloft',
@@ -200,10 +196,20 @@ def renderWindsAloft() -> html.Div:
             html.Div(_render_table(data), style={'paddingTop': '20px'}),
             dcc.Markdown('''
             Credit to Mark Schulze ([markschulze.net/winds](http://markschulze.net/winds)) for providing API access to winds aloft data.
-            ''', style={'color': 'white', 'font-size': '12px','margin-top':'10px'})
+            ''', style={'color': 'white', 'font-size': '12px', 'margin-top': '10px'})
         ]
     )
 
 
 def getAllComponents() -> list[html.Div]:
-    return [renderWindsAloft()]
+    return [
+        html.Div([
+            renderWindsAloft()
+        ], style={
+            'borderRadius': '15px',
+            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
+            'width': '80vw',
+            'maxWidth': '750px',
+        }),
+    ]
