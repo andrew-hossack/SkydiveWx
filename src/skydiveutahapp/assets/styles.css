@@ -11,11 +11,17 @@
   font-weight: bold;
 }
 
-a[target="_blank"]::after {
-  content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+.nav-link .external-link {
   margin: 0 3px 0 5px;
-  filter: invert(35%) sepia(100%) saturate(3494%) hue-rotate(197deg)
-    brightness(120%) contrast(101%);
+  filter: invert(58%) sepia(77%) saturate(4376%) hue-rotate(185deg) brightness(101%) contrast(91%);
+  transition: filter 0.15s ease-in-out;
+
+}
+
+.nav-link:hover .external-link {
+  margin: 0 3px 0 5px;
+  filter: invert(32%) sepia(97%) saturate(881%) hue-rotate(179deg) brightness(98%) contrast(90%);
+  transition: filter .15s ease-in-out;
 }
 
 body::after {
