@@ -32,7 +32,9 @@ def renderCurrentWeather() -> html.Div:
                     'borderRadius': '5px',
                     'maxWidth': '550px',
                     'margin': 'auto',
-                }, children=[
+                },
+                    className='right-align',
+                    children=[
                     html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Updated: ', style={

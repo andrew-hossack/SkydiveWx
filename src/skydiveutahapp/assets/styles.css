@@ -160,3 +160,7 @@ body::after {
     transform: rotate(calc(attr(class) * 1deg));
   }
 }
+
+.right-align {
+  text-align: right;
+}
