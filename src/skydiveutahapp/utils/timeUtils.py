@@ -51,3 +51,16 @@ def get_time_now_mst():
     now_mst = now_utc.astimezone(mst_tz)
 
     return now_mst.strftime('%Y-%m-%d %H:%M:%S %Z%z')
+
+def convert_to_mst_from_ISO_8601(time_str):
+    # Parse string to datetime object
+    dt = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S%z")
+
+    # Convert to Mountain Standard Time
+    mst = timezone('MST')
+    dt_mst = dt.astimezone(mst)
+
+    # Format time in a more human-readable way
+    formatted_time = dt_mst.strftime('%I:%M%p')
+
+    return formatted_time

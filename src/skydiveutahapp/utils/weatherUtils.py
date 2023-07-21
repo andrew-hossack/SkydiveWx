@@ -23,26 +23,38 @@ def get_metar(hours=0) -> Metar.Metar:
         return [Metar.Metar(metar.text) for metar in _get_raw_metar("KTVY", hours=hours)]
 
 
-def get_weather_forecast():
-    # https://open-meteo.com/en/docs#latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,cloudcover,visibility,windspeed_10m,windgusts_10m&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FDenver&forecast_days=1
-    response = requests.get('https://api.open-meteo.com/v1/forecast?latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,cloudcover,visibility,windspeed_10m,windgusts_10m&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FDenver&forecast_days=1')
-    data = response.json()
+def _fetch_hourly_forecast_data():
+    response = requests.get("https://api.weather.gov/gridpoints/SLC/85,170/forecast/hourly")
+    json_response = response.json()
+  
+    return json_response.get("properties").get("periods")
 
-    # Extract hourly data
-    hourly_data = data["hourly"]
+# Function to get forecast for specific hours
+def get_forecast(hours: int):
+    data = _fetch_hourly_forecast_data()
+    return data[:hours]
 
-    # Create a list of dictionaries, each representing an hour's weather forecast
-    forecast_data = [
-        {
-            "time": hourly_data["time"][i],
-            "temperature_2m": hourly_data["temperature_2m"][i],
-            "rain": hourly_data["rain"][i],
-            "cloudcover": hourly_data["cloudcover"][i],
-            "visibility": hourly_data["visibility"][i],
-            "windspeed_10m": hourly_data["windspeed_10m"][i],
-            "windgusts_10m": hourly_data["windgusts_10m"][i]
-        }
-        for i in range(len(hourly_data["time"]))
-    ]
 
-    return forecast_data
+# def get_weather_forecast():
+#     # https://open-meteo.com/en/docs#latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,cloudcover,visibility,windspeed_10m,windgusts_10m&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FDenver&forecast_days=1
+#     response = requests.get('https://api.open-meteo.com/v1/forecast?latitude=40.6127&longitude=-112.3044&hourly=temperature_2m,rain,cloudcover,visibility,windspeed_10m,windgusts_10m&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FDenver&forecast_days=1')
+#     data = response.json()
+
+#     # Extract hourly data
+#     hourly_data = data["hourly"]
+
+#     # Create a list of dictionaries, each representing an hour's weather forecast
+#     forecast_data = [
+#         {
+#             "time": hourly_data["time"][i],
+#             "temperature_2m": hourly_data["temperature_2m"][i],
+#             "rain": hourly_data["rain"][i],
+#             "cloudcover": hourly_data["cloudcover"][i],
+#             "visibility": hourly_data["visibility"][i],
+#             "windspeed_10m": hourly_data["windspeed_10m"][i],
+#             "windgusts_10m": hourly_data["windgusts_10m"][i]
+#         }
+#         for i in range(len(hourly_data["time"]))
+#     ]
+
+#     return forecast_data

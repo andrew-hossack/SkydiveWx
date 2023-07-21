@@ -73,7 +73,7 @@ body::after {
     content: 'W';
     font-size: 14px;
     left: 5px; /* Adjust this as needed */
-    bottom: 45%; /* Adjust this as needed */
+    bottom: 42%; /* Adjust this as needed */
   }
   
   .east::after { /* 'E' label */
@@ -82,7 +82,7 @@ body::after {
     content: 'E';
     font-size: 14px;
     right: 5px; /* Adjust this as needed */
-    bottom: 45%;  /* Adjust this as needed */
+    bottom: 42%;  /* Adjust this as needed */
   }
   .direction {
     font-weight:900;

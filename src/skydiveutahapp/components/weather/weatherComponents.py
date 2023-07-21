@@ -1,5 +1,7 @@
+from datetime import datetime
 import pandas as pd
 from dash import dcc, html
+import plotly.graph_objs as go
 
 from utils import timeUtils, weatherUtils
 
@@ -14,7 +16,7 @@ def renderCurrentWeather() -> html.Div:
             'fontSize': '20px',
             'color': 'white',
             'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
         },
         children=[
             html.Div([
@@ -33,7 +35,7 @@ def renderCurrentWeather() -> html.Div:
                     'paddingBottom': '1px',
                     'borderRadius': '5px',
                     'maxWidth': '550px',
-                    'margin': 'auto'
+                    'margin': 'auto',
                 }, children=[
                     html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
@@ -140,7 +142,7 @@ def renderWind() -> html.Div:
     )
 
 
-def renderWeatherHistory() -> html.Div:
+def renderWindTrends() -> html.Div:
     # List of metar objects
     historical_weather = weatherUtils.get_metar(hours=4)
 
@@ -156,7 +158,7 @@ def renderWeatherHistory() -> html.Div:
             'color': 'white',
             'borderRadius': '15px',
             'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
-            'maxHeight': '650px'
+            'maxHeight': '650px',
         },
         children=[
             html.H2('Wind Trends',
@@ -200,8 +202,73 @@ def renderWeatherHistory() -> html.Div:
     )
 
 
+def renderWeatherOutlook() -> html.Div:
+    # Fetch weather data
+    forecast_data = weatherUtils.get_forecast(hours=4)
+
+    # Calculate the maximum probability of rain
+    max_rain_chance = max(
+        [data.get('probabilityOfPrecipitation').get('value') for data in forecast_data])
+    rain_hours = [data for data in forecast_data if data.get(
+        'probabilityOfPrecipitation').get('value') == max_rain_chance][0]['endTime']
+    
+    rain_hours = timeUtils.convert_to_mst_from_ISO_8601(rain_hours)
+
+    # Calculate wind speed changes
+    wind_speeds = [int(data.get('windSpeed').split()[0])
+                   for data in forecast_data]
+    min_wind_speed, max_wind_speed = min(wind_speeds), max(wind_speeds)
+
+    wind_speed_info = ""
+    if min_wind_speed == max_wind_speed:
+        wind_speed_info = " The wind speed will be consistently about **{} mph**.".format(
+            min_wind_speed)
+    else:
+        wind_speed_info = " The wind speed will change from **{} mph** to **{} mph**.".format(
+            min_wind_speed, max_wind_speed)
+
+    # Determine wind direction
+    wind_directions = {data.get('windDirection') for data in forecast_data}
+    if len(wind_directions) > 1:
+        wind_direction_info = " The wind direction will change and vary among **{}.**".format(
+            ", ".join(wind_directions))
+    else:
+        wind_direction_info = " The wind direction will consistently be **{}**.".format(
+            next(iter(wind_directions)))
+
+    # Generate weather forecast summary
+    forecast_summary = ("There is a **{}%** chance of rain till {}.{}{}".format(max_rain_chance,
+                                                                            rain_hours,
+                                                                            wind_speed_info,
+                                                                            wind_direction_info))
+    return html.Div(
+        style={
+            'padding': '20px',
+            'margin': '20px',
+            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
+            'fontSize': '20px',
+            'color': 'white',
+            'borderRadius': '15px',
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
+            'maxHeight': '650px',
+        },
+        children=[
+            html.H2('Weather Outlook',
+                    style={
+                        'textAlign': 'center',
+                        'fontSize': '26px',
+                        'color': '#3498db'
+                    }),
+            dcc.Markdown([
+                forecast_summary,
+            ]),
+        ]
+    )
+
+
 def getAllComponents() -> list[html.Div]:
     return [
+        renderWeatherOutlook(),
         renderCurrentWeather(),
-        renderWeatherHistory(),
+        renderWindTrends(),
     ]
