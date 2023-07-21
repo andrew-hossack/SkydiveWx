@@ -35,6 +35,9 @@ body::after {
 
 .compass {
   font-weight: bold;
+  background-color: white; /* set the background color to white */
+  color: black; /* set the text color to black */
+  /* rest of your css properties for .compass */
   display: block;
   width: 140px;
   margin-top: 10px;
@@ -47,15 +50,42 @@ body::after {
   color: #555;
   text-shadow: 1px 1px 1px white;
   &:before {
-    font-weight: bold;
     position: absolute;
+    font-weight:300;
     text-align: center;
     width: 100%;
     content: "N";
     font-size: 14px;
-    top: -2px;
+    top: -1px;
+  }
+  &:after { /* 'S' label */
+    position: absolute;
+    font-weight:300;
+    text-align: center;
+    width: 100%;
+    content: 'S';
+    font-size: 14px;
+    bottom: -1px; /* Adjust this as needed */
+  }
+  .west::after { /* 'W' label */
+    position: absolute;
+    font-weight:300;
+    content: 'W';
+    font-size: 14px;
+    left: 5px; /* Adjust this as needed */
+    bottom: 45%; /* Adjust this as needed */
+  }
+  
+  .east::after { /* 'E' label */
+    position: absolute;
+    font-weight:300;
+    content: 'E';
+    font-size: 14px;
+    right: 5px; /* Adjust this as needed */
+    bottom: 45%;  /* Adjust this as needed */
   }
   .direction {
+    font-weight:900;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -77,6 +77,8 @@ def renderCurrentWeather() -> html.Div:
 def _generate_compass_component(direction, speed, rotation) -> html.Div:
     return html.Div(
         [
+            html.Div([], className="west"),
+            html.Div([], className="east"),
             html.Div(
                 [
                     html.P(
