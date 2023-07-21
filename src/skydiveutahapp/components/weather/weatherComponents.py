@@ -26,12 +26,14 @@ def renderCurrentWeather() -> html.Div:
                         }),
                 renderWind(),
                 html.Div(style={
-                    'backgroundColor': 'rgba(47, 62, 70, 0.5)',
+                    'backgroundColor': 'rgba(47, 62, 70, 0)',
                     'paddingLeft': '10px',
                     'paddingRight': '10px',
                     'paddingTop': '1px',
                     'paddingBottom': '1px',
                     'borderRadius': '5px',
+                    'maxWidth': '550px',
+                    'margin': 'auto'
                 }, children=[
                     html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
@@ -87,7 +89,7 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
                             html.Br(),
                             html.Span(f'{speed}')
                         ],
-                        style={'marginTop':'20px'}
+                        style={'marginTop': '20px'}
                     )
                 ],
                 className="direction"
@@ -138,7 +140,7 @@ def renderWind() -> html.Div:
     )
 
 
-def renderWeatherForecast() -> html.Div:
+def renderWeatherHistory() -> html.Div:
     # List of metar objects
     historical_weather = weatherUtils.get_metar(hours=4)
 
@@ -153,7 +155,8 @@ def renderWeatherForecast() -> html.Div:
             'fontSize': '20px',
             'color': 'white',
             'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)'
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
+            'maxHeight': '650px'
         },
         children=[
             html.H2('Wind Trends',
@@ -172,15 +175,21 @@ def renderWeatherForecast() -> html.Div:
                 figure={
                     'data': [
                         {'x': df_historical['time'], 'y': df_historical['windspeed_10m'],
-                         'type': 'line', 'name': 'Wind speed (mph)'},
+                         'type': 'line', 'name': 'Wind speed (mph)', 'line': {'width': 4}},
                         {'x': df_historical['time'], 'y': df_historical['windgusts_10m'],
-                         'type': 'line', 'name': 'Wind gusts (mph)'},
+                         'type': 'line', 'name': 'Wind gusts (mph)', 'line': {'width': 4}},
                     ],
                     'layout': {
-                        'plot_bgcolor': 'rgba(47, 62, 70, 0.5)',
-                        'paper_bgcolor': 'rgba(47, 62, 70, 1)',
+                        'plot_bgcolor': 'rgba(47, 62, 70, 0)',
+                        'paper_bgcolor': 'rgba(47, 62, 70, 0)',
                         'font': {
                             'color': 'white'
+                        },
+                        'xaxis': {
+                            'gridcolor': 'rgba(255,255,255,0.1)',
+                        },
+                        'yaxis': {
+                            'gridcolor': 'rgba(255,255,255,0.1)',
                         },
                         'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
                         'autosize': True,
@@ -194,5 +203,5 @@ def renderWeatherForecast() -> html.Div:
 def getAllComponents() -> list[html.Div]:
     return [
         renderCurrentWeather(),
-        renderWeatherForecast(),
+        renderWeatherHistory(),
     ]
