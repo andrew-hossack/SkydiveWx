@@ -1,7 +1,5 @@
-from datetime import datetime
 import pandas as pd
 from dash import dcc, html
-import plotly.graph_objs as go
 
 from utils import timeUtils, weatherUtils
 
@@ -12,11 +10,9 @@ def renderCurrentWeather() -> html.Div:
         style={
             'padding': '20px',
             'margin': '20px',
-            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'fontSize': '20px',
             'color': 'white',
-            'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
+            'margin': 'auto',
         },
         children=[
             html.Div([
@@ -24,7 +20,7 @@ def renderCurrentWeather() -> html.Div:
                         style={
                             'textAlign': 'center',
                             'fontSize': '26px',
-                            'color': '#3498db'
+                            'color': '#3498db',
                         }),
                 renderWind(),
                 html.Div(style={
@@ -37,43 +33,43 @@ def renderCurrentWeather() -> html.Div:
                     'maxWidth': '550px',
                     'margin': 'auto',
                 }, children=[
-                    html.Div(style={'marginBottom': '8px', 'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
+                    html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Updated: ', style={
                                     'marginRight': '10px'}),
                         html.Span(timeUtils.time_diff(metar.time),
                                   id='time-since-last-update')
                     ]),
-                    html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Sky: ', style={'marginRight': '10px'}),
                         html.Span(str.capitalize(metar.sky_conditions()))
                     ]),
-                    html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Visibility: ', style={
                             'marginRight': '10px'}),
                         html.Span(str(metar.vis))
                     ]),
-                    html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Wind: ', style={'marginRight': '10px'}),
                         html.Span(str.capitalize(metar.wind("MPH")))
                     ]),
-                    html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Gust: ', style={'marginRight': '10px'}),
                         html.Span(
                             metar.wind_gust.string("MPH") if metar.wind_gust else 'No gusts, winds are steady!')
                     ]),
-                    html.Div(style={'marginBottom': '8px', 'display': 'flex', 'justifyContent': 'space-between'},
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
                              children=[
                         html.Strong('Temperature: ', style={
                             'marginRight': '10px'}),
                         html.Span(metar.temp.string('F'))
                     ]),
                 ])
-            ], style={'minWidth': '80vw'})
+            ], style={'minWidth': '80vw',})
         ]
     )
 
@@ -151,13 +147,9 @@ def renderWindTrends() -> html.Div:
 
     return html.Div(
         style={
-            'padding': '20px',
             'margin': '20px',
-            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'fontSize': '20px',
             'color': 'white',
-            'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
             'maxHeight': '650px',
         },
         children=[
@@ -204,14 +196,15 @@ def renderWindTrends() -> html.Div:
 
 def renderWeatherOutlook() -> html.Div:
     # Fetch weather data
-    forecast_data = weatherUtils.get_forecast(hours=4)
+    forecast_num_hours = 4
+    forecast_data = weatherUtils.get_forecast(hours=forecast_num_hours)
 
     # Calculate the maximum probability of rain
     max_rain_chance = max(
         [data.get('probabilityOfPrecipitation').get('value') for data in forecast_data])
     rain_hours = [data for data in forecast_data if data.get(
         'probabilityOfPrecipitation').get('value') == max_rain_chance][0]['endTime']
-    
+
     rain_hours = timeUtils.convert_to_mst_from_ISO_8601(rain_hours)
 
     # Calculate wind speed changes
@@ -237,22 +230,21 @@ def renderWeatherOutlook() -> html.Div:
             next(iter(wind_directions)))
 
     # Generate weather forecast summary
-    forecast_summary = ("There is a **{}%** chance of rain till {}.{}{}".format(max_rain_chance,
-                                                                            rain_hours,
-                                                                            wind_speed_info,
-                                                                            wind_direction_info))
+    forecast_summary = ("In the next {} hours, there is a **{}%** chance of rain till {}.{}{}".format(forecast_num_hours,
+                                                                                                      max_rain_chance,
+                                                                                                      rain_hours,
+                                                                                                      wind_speed_info,
+                                                                                                      wind_direction_info))
     return html.Div(
         style={
             'padding': '20px',
-            'margin': '20px',
-            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
             'fontSize': '20px',
             'color': 'white',
-            'borderRadius': '15px',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
             'maxHeight': '650px',
+            'margin': 'auto'
         },
-        children=[
+        # additional div for children to control their actual width
+        children=html.Div([
             html.H2('Weather Outlook',
                     style={
                         'textAlign': 'center',
@@ -261,14 +253,28 @@ def renderWeatherOutlook() -> html.Div:
                     }),
             dcc.Markdown([
                 forecast_summary,
-            ]),
-        ]
+            ], style={
+                'flex-direction': 'column',
+                'align-items': 'center',
+                'justify-content': 'center',
+            }),
+        ], style={'maxWidth': '80vw',
+                  'flex-direction': 'column',
+                  'margin': '0 auto',
+                  'maxWidth': '550px',})
     )
 
 
 def getAllComponents() -> list[html.Div]:
     return [
-        renderWeatherOutlook(),
-        renderCurrentWeather(),
-        renderWindTrends(),
+        html.Div([
+            renderCurrentWeather(),
+            renderWeatherOutlook(),
+            renderWindTrends(),
+        ], style={
+            'borderRadius': '15px',
+            'backgroundColor': 'rgba(47, 62, 70, 0.5)',
+            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
+            'maxWidth':'90vw',
+        }),
     ]
