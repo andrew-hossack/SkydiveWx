@@ -3,8 +3,7 @@ import json
 import requests
 from dash import dash_table, dcc, html
 from plotly.graph_objs import Scatter
-
-from utils import timeUtils
+from utils import timeUtils, weatherUtils
 
 
 def _get_data():
@@ -79,7 +78,8 @@ def _resolve_wind_direction(data: dict, altitudes: list) -> list[list]:
 
 
 def renderWindsAloft() -> html.Div:
-    data = _get_data()
+    winds_aloft_data = _get_data()
+    metar = weatherUtils.get_metar()
 
     # # UNCOMMENT FOR "DISJOINTED" WIND DIRECTION TEST DATA
     # ##############
@@ -99,17 +99,18 @@ def renderWindsAloft() -> html.Div:
     # data['direction'].update(new_directions)
     # ##############
 
-    altitude_list = [altFt for altFt in data['altFt'] if altFt <= 20000]
+    altitude_list = [
+        altFt for altFt in winds_aloft_data['altFt'] if altFt <= 20000]
 
-    wind_speed_trace = Scatter(y=[altFt for altFt in data['altFt'] if altFt <= 20000],
-                               x=[data['speed'][str(altFt)]
-                                  for altFt in data['altFt'] if altFt <= 20000],
+    wind_speed_trace = Scatter(y=[altFt for altFt in winds_aloft_data['altFt'] if altFt <= 20000],
+                               x=[winds_aloft_data['speed'][str(altFt)]
+                                  for altFt in winds_aloft_data['altFt'] if altFt <= 20000],
                                mode='lines',
                                name='Wind Speed (Kts)',
                                line=dict(color='coral'))
 
     altitudes_by_trace, winds_by_trace = _resolve_wind_direction(
-        data, altitude_list)
+        winds_aloft_data, altitude_list)
     wind_dir_traces = [Scatter(y=altitudes_by_trace[i],
                                x=winds_by_trace[i],
                                mode='lines',
@@ -120,8 +121,8 @@ def renderWindsAloft() -> html.Div:
                                marker=dict(color='mintcream'))
                        for i in range(len(altitudes_by_trace))]
 
-    tickrange = [min(int(value) for value in data['direction'].values()), max(
-        int(value) for value in data['direction'].values())]
+    tickrange = [min(int(value) for value in winds_aloft_data['direction'].values()), max(
+        int(value) for value in winds_aloft_data['direction'].values())]
     tickvals = [i for i in range(min(tickrange), max(tickrange) + 1, 30)]
     ticktext = [f"{i%360}°" for i in tickvals]
 
@@ -133,18 +134,51 @@ def renderWindsAloft() -> html.Div:
             'color': 'black',
         },
         children=[
-            html.H2('Winds Aloft',
+            html.H2(f'Winds Aloft - Updated at {timeUtils.zulu_to_mst_string(winds_aloft_data["validtime"])}',
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',
                         'color': '#3498db'
                     }),
-            html.Div(children=f'Last reported at {timeUtils.zulu_to_mst_string(data["validtime"])}',
-                     style={
-                         'textAlign': 'center', 'color': 'white'}),
+            html.Div(style={
+                'backgroundColor': 'rgba(47, 62, 70, 0)',
+                'paddingLeft': '10px',
+                'paddingRight': '10px',
+                'paddingTop': '1px',
+                'borderRadius': '5px',
+                'maxWidth': '400px',
+                'margin': 'auto',
+                'color': 'white',
+                'font-size': '15px',
+                'marginBottom': '-20px',
+                'marginTop': '-10px',
+            },
+                className='right-align',
+                children=[
+                html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
+                         children=[
+                    html.Strong('Altimeter: ', style={'marginRight': '10px'}),
+                    html.Span(str.capitalize(metar.press.string("in")))
+                ]),
+                html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
+                         children=[
+                    html.Strong('Density Altitude: ', style={
+                                'marginRight': '10px'}),
+                    html.Span(
+                        f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft')
+                ]),
+                html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
+                         children=[
+                    html.Strong('Altitude Info Updated At: ', style={
+                                'marginRight': '10px'}),
+                    html.Span(timeUtils.time_diff(metar.time),
+                              id='time-since-last-update')
+                ]),
+            ]),
             dcc.Graph(
                 id='example-graph',
-                style={'width': '100%', 'display': 'inline-block'},
+                style={'width': '100%',
+                       'display': 'inline-block', 'height': '600px'},
                 figure=dict(
                     data=[wind_speed_trace, *wind_dir_traces],
                     layout=dict(
@@ -192,8 +226,8 @@ def renderWindsAloft() -> html.Div:
                 ),
                 config=dict(displayModeBar=False),
             ),
-
-            html.Div(_render_table(data), style={'paddingTop': '20px'}),
+            html.Div(_render_table(winds_aloft_data),
+                     style={'paddingTop': '20px', 'marginTop':'-20px'}),
             dcc.Markdown('''
             _*Credit to Mark Schulze ([markschulze.net/winds](http://markschulze.net/winds)) for providing API access to winds aloft data._
             ''', style={'color': 'white', 'font-size': '12px', 'margin-top': '10px'})
