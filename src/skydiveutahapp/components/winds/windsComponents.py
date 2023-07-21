@@ -197,11 +197,13 @@ def renderWindsAloft() -> html.Div:
                 config=dict(displayModeBar=False),
             ),
 
-            html.Div(_render_table(data), style={'paddingTop': '20px'})
+            html.Div(_render_table(data), style={'paddingTop': '20px'}),
+            dcc.Markdown('''
+            Credit to Mark Schulze ([markschulze.net/winds](http://markschulze.net/winds)) for providing API access to winds aloft data.
+            ''', style={'color': 'white', 'font-size': '12px','margin-top':'10px'})
         ]
     )
 
 
 def getAllComponents() -> list[html.Div]:
     return [renderWindsAloft()]
-
