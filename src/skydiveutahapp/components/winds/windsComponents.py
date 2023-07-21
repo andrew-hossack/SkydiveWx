@@ -153,7 +153,6 @@ def renderWindsAloft() -> html.Div:
                 'marginBottom': '-20px',
                 'marginTop': '-10px',
             },
-                className='right-align',
                 children=[
                 html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
                          children=[
@@ -170,9 +169,9 @@ def renderWindsAloft() -> html.Div:
                 html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
                          children=[
                     html.Strong('Altitude Info Updated At: ', style={
-                                'marginRight': '10px'}),
+                                'marginRight': '10px', 'text-align': 'left'}),
                     html.Span(timeUtils.time_diff(metar.time),
-                              id='time-since-last-update')
+                              id='time-since-last-update', style={'text-align': 'right',})
                 ]),
             ]),
             dcc.Graph(
