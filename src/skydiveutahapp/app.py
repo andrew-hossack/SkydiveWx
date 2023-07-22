@@ -8,7 +8,7 @@ from components.footer import footerComponent
 from components.header import headerComponent
 from components.weather import weatherComponents
 from components.winds import windsComponents
-from pages import calendarPage, weatherPage, windsAloftPage
+from pages import calendarPage, weatherPage, windsAloftPage, webcamPage
 
 app = Dash(
     title="Skydive Utah - Live Dashboard",
@@ -54,6 +54,8 @@ def router(pathname):
         return [windsAloftPage.render()]
     elif pathname == "/calendar":
         return [calendarPage.render()]
+    elif pathname == "/webcam":
+        return [webcamPage.render()]
     else:
         return [dcc.Location(pathname="/", id='redirect')]
 
@@ -93,9 +95,11 @@ def refresh_winds(refresh):
 
 
 if __name__ == "__main__":
-    print('TODO:')
-    print('\t- Calendar iFrame src')
-    print('\t- Loading spinner component that doesnt run on each callback update')
+    # print('TODO:')
+    # print('\t- Calendar iFrame src')
+    # print('\t- Loading spinner component that doesnt run on each callback update')
+    # y - axis is orange
+    # wrap around wind normalize around mean
     # Improvement: HTTP graceful error handling
     # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30

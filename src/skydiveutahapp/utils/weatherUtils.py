@@ -39,8 +39,4 @@ def get_forecast(hours: int):
 def _calculate_density_altitude(altimeter_in: float, outside_air_temp_c: float):
     pressure_altitude = ((altimeter_in - 29.92) * 1000) + 4321
     density_altitude = pressure_altitude + (120 * (outside_air_temp_c - 15))
-    # print(f'Altimeter inches: {altimeter_in}')
-    # print(f'Outside air temp °C: {outside_air_temp_c}')
-    # print(f'Pressure altitude: {pressure_altitude}')
-    # print(f'Density altitude: {density_altitude}')
     return round(density_altitude, 0)

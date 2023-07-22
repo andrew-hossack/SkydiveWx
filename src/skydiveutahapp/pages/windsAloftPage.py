@@ -13,6 +13,7 @@ def render() -> html.Div:
             'align-items': 'center',
             'flex-direction': 'column',
             'marginTop': '0',
+            'marginBottom': '20px',
             'backgroundColor': 'transparent',
         }
     )

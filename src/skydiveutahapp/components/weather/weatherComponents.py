@@ -123,7 +123,7 @@ def renderWind() -> html.Div:
         children=[
             html.Div(
                 f'Winds from {metar.wind_dir.compass()} ({wind_dir}°) at {wind_speed}',
-                className='wind-direction-text'
+                className='wind-direction-text',
             ),
             _generate_compass_component(
                 metar.wind_dir.compass(), wind_speed, css_degrees),
@@ -134,8 +134,7 @@ def renderWind() -> html.Div:
             'flex-direction': 'column',
             'align-items': 'center',
             'justify-content': 'center',
-            'height': '100%',  # this ensures the div takes up the full height of its container
-            'paddingBottom': '15px'
+            'height': '100%',
         }
     )
 

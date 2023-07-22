@@ -1,12 +1,12 @@
-from dash import Dash, html
+from dash import html
 
-from components.weather import weatherComponents
+from components.webcam import webcamComponents
 
 
 def render() -> html.Div:
     return html.Div(
-        id='weather-page-container',
-        children=weatherComponents.getAllComponents(),
+        id='webcam-page-container',
+        children=webcamComponents.getAllComponents(),
         style={
             'display': 'flex',
             'justify-content': 'center',

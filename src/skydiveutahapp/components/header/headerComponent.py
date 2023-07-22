@@ -33,6 +33,7 @@ def render() -> html.Div:
                                         href="/winds", active="exact"),
                             dbc.NavLink("Event Calendar",
                                         href="/calendar", active="exact"),
+                            dbc.NavLink("Webcams", href="/webcam", active="exact"),
                             dbc.NavLink((
                                 [
                                     html.Div("Live Manifest", style={
@@ -43,8 +44,6 @@ def render() -> html.Div:
                                 ]), 
                                 href="https://dzm.burblesoft.com/jmp?dz_id=385",
                                 target="_blank"),
-                            dbc.NavLink(
-                                "Webcam - Unavailable", href="/webcam", active="exact", disabled=True),
                         ],
                         horizontal="center",
                         pills=True,
