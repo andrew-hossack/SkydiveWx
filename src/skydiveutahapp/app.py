@@ -98,11 +98,9 @@ if __name__ == "__main__":
     # print('TODO:')
     # print('\t- Calendar iFrame src')
     # print('\t- Loading spinner component that doesnt run on each callback update')
-    # y - axis is orange
-    # wrap around wind normalize around mean
-    # Improvement: HTTP graceful error handling
-    # Improvement: if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
+
+    # Improvement: Winds direction graph - wrap around wind normalize around mean to be continuous
+    # Improvement: App - HTTP graceful error handling
+    # Improvement: Winds Forecast - if you pull the forecast at 2:50pm MDT, that's 20:50 UTC, so it used the forecast issued for 20Z. Ideally, you'd want to use 21Z at the point, which you can get by setting hourOffset=1
     # not sure if you want to bother with adding a condition on whether the current time is before or after :30
-    # Improvement: Fix the weather direction plot to be continuous
-    # Improvement: Webcam page
     app.run_server(debug=True, port=8050)

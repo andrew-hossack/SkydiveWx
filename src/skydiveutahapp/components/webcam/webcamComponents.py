@@ -9,7 +9,7 @@ def webcamComponent() -> html.Div():
             'color': 'white',
         },
         children=[
-            html.H2('Live Imagery - Updated Periodically',
+            html.H2('Live Cameras - Updated Periodically',
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',
@@ -19,21 +19,30 @@ def webcamComponent() -> html.Div():
             html.Div(children='Tooele North / Erda East Camera',
                      style={
                          'textAlign': 'center', 'color': 'white'}),
-            html.Img(
-                src="https://www.wrh.noaa.gov/images/slc/camera/latest/TooeleN.latest.jpg",
-                width="100%",
-                title="Tooele North	/ Erda East",
-                style={'paddingTop': '5px', 'paddingBottom': '20px'}
+            dcc.Link(
+                html.Img(
+                    src="https://www.wrh.noaa.gov/images/slc/camera/latest/TooeleN.latest.jpg",
+                    width="100%",
+                    title="Tooele North	/ Erda East",
+                    style={'paddingTop': '5px', 'paddingBottom': '20px'}
+                ),
+                href='https://www.wrh.noaa.gov/images/slc/camera/latest/TooeleN.latest.jpg',
+                target='_blank',
+                title='Open in New Tab'
             ),
             html.Div(children='Tooele Camera',
                      style={
                          'textAlign': 'center', 'color': 'white'}),
-            html.Img(
-                src="https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
-                width="100%",
-                title="Tooele",
-                style={'paddingTop': '5px', 'paddingBottom': '20px'}
-
+            dcc.Link(
+                html.Img(
+                    src="https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
+                    width="100%",
+                    title="Tooele",
+                    style={'paddingTop': '5px', 'paddingBottom': '20px'}
+                ),
+                href='https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg',
+                target='_blank',
+                title='Open in New Tab'
             ),
             dcc.Markdown('''
             _*To view additional camera feeds, please visit [https://www.weather.gov/slc/Cameras](https://www.weather.gov/slc/Cameras) and [https://www.wrh.noaa.gov/slc/webcam_map_CSV](https://www.wrh.noaa.gov/slc/webcam_map_CSV)_

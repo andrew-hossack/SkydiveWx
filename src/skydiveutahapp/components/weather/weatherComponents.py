@@ -25,8 +25,6 @@ def renderCurrentWeather() -> html.Div:
                 renderWind(),
                 html.Div(style={
                     'backgroundColor': 'rgba(47, 62, 70, 0)',
-                    'paddingLeft': '10px',
-                    'paddingRight': '10px',
                     'paddingTop': '1px',
                     'paddingBottom': '1px',
                     'borderRadius': '5px',
