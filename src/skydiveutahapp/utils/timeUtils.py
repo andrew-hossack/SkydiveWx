@@ -4,8 +4,18 @@ from pytz import timezone
 import pytz
 
 
+
+def get_current_date_yyyymmdd():
+    # Get the current date and time
+    current_datetime = datetime.now()
+    # Format the date as YYYYMMDD
+    formatted_date = current_datetime.strftime('%Y%m%d')
+    return formatted_date
+
+
+
 def zulu_to_mst_string(time):
-    
+
     zulu_tz = timezone('UTC')
     mst_tz = timezone('US/Mountain')
 
@@ -13,15 +23,16 @@ def zulu_to_mst_string(time):
     if isinstance(time, str):
         # Use today's date and the given Zulu hour
         time = datetime.now().replace(hour=int(time), minute=0, second=0, microsecond=0)
-    
+
     # Making the time timezone aware
     dt = zulu_tz.localize(time)
 
     # Converting to MST
     mst_time = dt.astimezone(mst_tz)
-            
+
     # Returning the converted time
     return mst_time.strftime('%-I:%M%p') + " MST"
+
 
 def convert_utc_to_mst(time):
     # Make dt timezone aware
@@ -43,6 +54,7 @@ def time_diff(time):
     minutes = (seconds % 3600) // 60
 
     return f'{minutes} minutes ago'
+
 
 def get_time_now_mst():
     utc_tz = timezone('UTC')

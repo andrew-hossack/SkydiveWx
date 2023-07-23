@@ -1,5 +1,6 @@
 import pandas as pd
 from dash import dcc, html
+from components.calendar import calenderComponents
 from utils import timeUtils, weatherUtils
 
 
@@ -201,6 +202,35 @@ def renderWindTrends() -> html.Div:
         ]
     )
 
+def renderCalendarCurrentDay() -> html.Div:
+    return html.Div(
+        style={
+            'padding': '20px',
+            'fontSize': '20px',
+            'color': 'white',
+            'maxHeight': '650px',
+            'margin': 'auto'
+        },
+        children=html.Div([
+            html.H2("Today's Calendar",
+                    style={
+                        'textAlign': 'center',
+                        'fontSize': '26px',
+                        'color': '#3498db'
+                    }),
+            html.Div([
+                calenderComponents.getTodaysEventsIFrame(),
+            ], style={
+                'flex-direction': 'column',
+                'align-items': 'center',
+                'justify-content': 'center',
+            }),
+        ], style={'maxWidth': '80vw',
+                  'flex-direction': 'column',
+                  'margin': '0 auto',
+                  'maxWidth': '550px', })
+    )
+
 
 def renderWeatherOutlook() -> html.Div:
     # Fetch weather data
@@ -279,6 +309,7 @@ def getAllComponents() -> list[html.Div]:
         html.Div([
             renderCurrentWeather(),
             renderWeatherOutlook(),
+            renderCalendarCurrentDay(),
             renderWindTrends(),
         ], style={
             'borderRadius': '15px',
