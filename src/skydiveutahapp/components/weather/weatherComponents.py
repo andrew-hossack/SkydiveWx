@@ -1,6 +1,5 @@
 import pandas as pd
 from dash import dcc, html
-
 from utils import timeUtils, weatherUtils
 
 
@@ -146,7 +145,6 @@ def renderWindTrends() -> html.Div:
 
     return html.Div(
         style={
-            'margin': '20px',
             'fontSize': '20px',
             'color': 'white',
             'maxHeight': '650px',
@@ -167,10 +165,20 @@ def renderWindTrends() -> html.Div:
                 style={'margin': 'auto', 'height': '60vh'},
                 figure={
                     'data': [
-                        {'x': df_historical['time'], 'y': df_historical['windspeed_10m'],
-                         'type': 'line', 'name': 'Wind speed (mph)', 'line': {'width': 4}},
-                        {'x': df_historical['time'], 'y': df_historical['windgusts_10m'],
-                         'type': 'line', 'name': 'Wind gusts (mph)', 'line': {'width': 4}},
+                        {
+                            'x': df_historical['time'],
+                            'y': df_historical['windspeed_10m'],
+                            'type': 'line',
+                            'name': 'Wind speed (mph)',
+                            'line': {'width': 4, 'shape': 'spline'}
+                        },
+                        {
+                            'x': df_historical['time'],
+                            'y': df_historical['windgusts_10m'],
+                            'type': 'line',
+                            'name': 'Wind gusts (mph)',
+                            'line': {'width': 4, 'shape': 'spline'}
+                        },
                     ],
                     'layout': {
                         'plot_bgcolor': 'rgba(47, 62, 70, 0)',
@@ -183,11 +191,12 @@ def renderWindTrends() -> html.Div:
                         },
                         'yaxis': {
                             'gridcolor': 'rgba(255,255,255,0.1)',
+
                         },
                         'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
                         'autosize': True,
                     }
-                }
+                },
             )
         ]
     )

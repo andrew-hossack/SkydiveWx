@@ -7,7 +7,7 @@ def render() -> html.Div:
         [
             html.Div(
                 [
-                    html.H2("Skydive Utah - Live Dashboard", className="display-7",
+                    html.H2("Skydive Utah Dashboard", className="display-7",
                             style={'color': 'white', 'textAlign': 'center'}),
                     html.Div(
                         [
@@ -29,11 +29,12 @@ def render() -> html.Div:
                     dbc.Nav(
                         [
                             dbc.NavLink("Home", href="/", active="exact"),
+                            dbc.NavLink("Calendar",
+                                        href="/calendar", active="exact"),
                             dbc.NavLink("Winds Aloft",
                                         href="/winds", active="exact"),
-                            dbc.NavLink("Event Calendar",
-                                        href="/calendar", active="exact"),
-                            dbc.NavLink("Webcams", href="/webcam", active="exact"),
+                            dbc.NavLink("Weather Radar", href="/forecast", active="exact"),
+                            dbc.NavLink("Live Cameras", href="/webcam", active="exact"),
                             dbc.NavLink((
                                 [
                                     html.Div("Live Manifest", style={

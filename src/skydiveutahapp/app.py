@@ -2,16 +2,17 @@ import datetime
 
 import dash_bootstrap_components as dbc
 import pytz
-from dash import Input, Output, dcc, html, Dash
-
 from components.footer import footerComponent
 from components.header import headerComponent
 from components.weather import weatherComponents
+from components.webcam import webcamComponents
 from components.winds import windsComponents
-from pages import calendarPage, weatherPage, windsAloftPage, webcamPage
+from dash import Dash, Input, Output, dcc, html
+from pages import calendarPage, weatherPage, webcamPage, windsAloftPage
+from pages import forecastPage
 
 app = Dash(
-    title="Skydive Utah - Live Dashboard",
+    title="Skydive Utah Dashboard",
     external_stylesheets=[
         dbc.themes.MATERIA, 
         "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600"],
@@ -56,6 +57,8 @@ def router(pathname):
         return [calendarPage.render()]
     elif pathname == "/webcam":
         return [webcamPage.render()]
+    elif pathname == "/forecast":
+        return [forecastPage.render()]
     else:
         return [dcc.Location(pathname="/", id='redirect')]
 
@@ -92,6 +95,14 @@ def refresh_weather(refresh):
 )
 def refresh_winds(refresh):
     return windsComponents.getAllComponents()
+
+
+@app.callback(
+    Output("webcam-page-container", "children"),
+    Input("refresh-interval", "n_intervals"),
+)
+def refresh_winds(refresh):
+    return webcamComponents.getAllComponents()
 
 
 if __name__ == "__main__":
