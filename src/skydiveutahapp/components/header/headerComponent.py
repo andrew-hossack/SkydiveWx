@@ -1,5 +1,97 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
+from dash_iconify import DashIconify
+
+
+def _get_icon(icon, color: str | None = None, height=16):
+    return DashIconify(icon=icon, height=height, color=color)
+
+
+def _renderNavDrawer() -> html.Div:
+    return [
+        dmc.Stack(
+            [
+                html.Div([
+                    _get_icon(icon="mdi:weather-hail", height=14),
+                    dmc.Divider(label="Weather Information",
+                                style={'width': '100%', 'marginLeft': '5px'}),
+                ], style={'display': 'flex', 'width': '100%', 'alignItems': 'center'}),
+
+                dmc.NavLink(
+                    label="Local Weather Radar",
+                    icon=_get_icon(
+                        icon="clarity:radar-line"),
+                    href='/forecast'
+                ),
+                dmc.NavLink(
+                    label="Plane Tracker - Coming Soon",
+                    icon=_get_icon(
+                        icon="clarity:airplane-line"),
+                    disabled=True,
+                ),
+
+                html.Div([
+                    _get_icon(icon="basil:chat-outline", height=14),
+                    dmc.Divider(label="Connect With Us",
+                                style={'width': '100%', 'marginLeft': '5px'}),
+                ], style={'display': 'flex', 'width': '100%', 'alignItems': 'center'}),
+
+                dmc.NavLink(
+                    label="Skydive Utah Website",
+                    icon=_get_icon(
+                        icon="mdi:web"),
+                    href='https://skydiveutah.com/'
+                ),
+                dmc.NavLink(
+                    label="Instagram",
+                    icon=_get_icon(
+                        icon="mdi:instagram"),
+                    href='https://www.instagram.com/skydiveutah/'
+                ),
+                dmc.NavLink(
+                    label="Facebook",
+                    icon=_get_icon(
+                        icon="ic:baseline-facebook"),
+                    href='http://www.facebook.com/skydiveutah'
+                ),
+                dmc.NavLink(
+                    label="TikTok",
+                    icon=_get_icon(
+                        icon="ic:baseline-tiktok"),
+                    href='https://www.tiktok.com/@skydiveutah'
+                ),
+                dmc.NavLink(
+                    label="Email",
+                    icon=_get_icon(
+                        icon="fontisto:email"),
+                    href='mailto:fly@skydiveutah.com'
+                ),
+
+                html.Div([
+                    _get_icon(icon="mdi:about-circle-outline", height=14),
+                    dmc.Divider(label="About",
+                                style={'width': '100%', 'marginLeft': '5px'}),
+                ], style={'display': 'flex', 'width': '100%', 'alignItems': 'center'}),
+
+                dmc.NavLink(
+                    label="Project GitHub",
+                    icon=_get_icon(
+                        icon="mdi:github"),
+                    href='https://github.com/andrew-hossack/Skydive-Utah-Community'
+                ),
+
+                dmc.NavLink(
+                    label="Sponsor Me",
+                    icon=_get_icon(
+                        icon="octicon:sponsor-tiers-24"),
+                    href='https://github.com/sponsors/andrew-hossack'
+                ),
+            ],
+            align='flex-start',
+            spacing='md',
+        )
+    ]
 
 
 def render() -> html.Div:
@@ -33,18 +125,49 @@ def render() -> html.Div:
                                         href="/calendar", active="exact"),
                             dbc.NavLink("Winds Aloft",
                                         href="/winds", active="exact"),
-                            dbc.NavLink("Weather Radar", href="/forecast", active="exact"),
-                            dbc.NavLink("Live Cameras", href="/webcam", active="exact"),
-                            dbc.NavLink((
+                            dbc.NavLink("Live Cameras",
+                                        href="/webcam", active="exact"),
+                            dbc.NavLink(
                                 [
-                                    html.Div("Live Manifest", style={
-                                             'display': 'inline-block'}),
-                                    html.Img(style={'display': 'inline-block'},
-                                             src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==',
-                                             className='external-link'),
-                                ]), 
+                                    html.Div([
+                                        html.Div("Live Manifest", style={
+                                            'display': 'block'
+                                        }),
+                                        html.Img(style={},
+                                                 src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==',
+                                                 className='external-link'),
+                                    ], style={'alignItems': 'center', 'display': 'flex'}),
+                                ],
                                 href="https://dzm.burblesoft.com/jmp?dz_id=385",
                                 target="_blank"),
+                            dbc.NavLink((
+                                [
+                                    html.Div("Other", style={
+                                             'display': 'inline-block', 'cursor': 'pointer'},
+                                             id="drawer-demo-label",
+                                             ),
+                                    html.Div(
+                                        [
+                                            dmc.ActionIcon(
+                                                DashIconify(
+                                                    icon="clarity:menu-line", width=15),
+                                                size="sm",
+                                                variant="transparent",
+                                                id="drawer-demo-button",
+                                                style={'marginLeft': '5px',
+                                                       'color': '#2196f3'}
+                                            ),
+                                            dmc.Drawer(
+                                                title="Additional Resources",
+                                                id="drawer-simple",
+                                                padding="md",
+                                                zIndex=10000,
+                                                children=_renderNavDrawer(),
+                                                overlayBlur=5,
+                                            ),
+                                        ],
+                                    )
+                                ]), style={'display': 'flex', 'alignItems': 'center'},),
                         ],
                         horizontal="center",
                         pills=True,

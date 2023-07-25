@@ -175,7 +175,6 @@ def renderWindsAloft() -> html.Div:
                 ]),
             ]),
             dcc.Graph(
-                id='example-graph',
                 style={'width': '100%',
                        'display': 'inline-block', 'height': '600px'},
                 figure=dict(
@@ -209,18 +208,17 @@ def renderWindsAloft() -> html.Div:
                                     showline=False,
                                     showticklabels=False,
                                     fixedrange=True),
-                        yaxis=dict(title='Altitude',
+                        yaxis=dict(title='Altitude (ft)',
                                    showgrid=True,
                                    gridcolor='rgba(255, 255, 255, 0.2)',
                                    fixedrange=True),
-                        hovermode="x",
+                        hovermode="y unified",
                         template='plotly_dark',
                         plot_bgcolor='rgba(47, 62, 70, 0)',
                         paper_bgcolor='rgba(47, 62, 70, 0)',
                         font={'color': 'white'},
-                        legend={'traceorder': 'reversed', 'y': 1,
-                                'x': 0, 'bgcolor': 'rgba(0,0,0,0)'},
                         autosize=True,
+                        showlegend=False
                     )
                 ),
                 config=dict(displayModeBar=False),

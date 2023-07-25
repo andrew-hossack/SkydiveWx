@@ -164,3 +164,7 @@ body::after {
 .right-align {
   text-align: right;
 }
+
+.darker-link-color a {
+  color: #5100ff !important; 
+}

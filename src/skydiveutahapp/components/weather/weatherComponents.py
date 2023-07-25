@@ -148,7 +148,6 @@ def renderWindTrends() -> html.Div:
         style={
             'fontSize': '20px',
             'color': 'white',
-            'maxHeight': '650px',
         },
         children=[
             html.H2('Wind Trends',
@@ -162,7 +161,6 @@ def renderWindTrends() -> html.Div:
                      style={
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
-                id='example-graph',
                 style={'margin': 'auto', 'height': '60vh'},
                 figure={
                     'data': [
@@ -192,15 +190,21 @@ def renderWindTrends() -> html.Div:
                         },
                         'yaxis': {
                             'gridcolor': 'rgba(255,255,255,0.1)',
-
+                            'tickformat': '~s',
+                            'ticksuffix': ' mph',
                         },
                         'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
                         'autosize': True,
+                        'hovermode': 'x unified',
+                        'hoverlabel': {
+                            'font': {'color': 'black'}
+                        }
                     }
                 },
             )
         ]
     )
+
 
 def renderCalendarCurrentDay() -> html.Div:
     return html.Div(
@@ -281,7 +285,8 @@ def renderWeatherOutlook() -> html.Div:
             'fontSize': '20px',
             'color': 'white',
             'maxHeight': '650px',
-            'margin': 'auto'
+            'margin': 'auto',
+            'marginBottom': '0',
         },
         children=html.Div([
             html.H2('Weather Outlook',
@@ -299,7 +304,7 @@ def renderWeatherOutlook() -> html.Div:
             }),
         ], style={'maxWidth': '80vw',
                   'flex-direction': 'column',
-                  'margin': '0 auto',
+                  'margin': 'auto',
                   'maxWidth': '550px', })
     )
 

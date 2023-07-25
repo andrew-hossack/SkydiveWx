@@ -9,7 +9,7 @@ def webcamComponent() -> html.Div():
             'color': 'white',
         },
         children=[
-            html.H2('Live Cameras - Updated Periodically',
+            html.H2('Live Cameras',
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',

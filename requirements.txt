@@ -7,3 +7,5 @@ setuptools==68.0.0
 gunicorn==21.0.1
 pandas==2.0.3
 dash-loading-spinners==1.0.0
+dash-mantine-components==0.12.0
+dash-iconify==0.1.2
