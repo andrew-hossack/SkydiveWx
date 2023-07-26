@@ -6,7 +6,7 @@ from plotly.graph_objs import Scatter
 from utils import timeUtils, weatherUtils
 
 
-def _get_data():
+def _get_data() -> dict:
     # Getting the data from the url
     url = 'https://markschulze.net/winds/winds.php?lat=40.61318686&lon=-112.3481226&hourOffset=0%3F&referrer=SkydiveUtah'
     response = requests.get(url)
@@ -16,10 +16,10 @@ def _get_data():
 def _render_table(data) -> dash_table.DataTable:
     # Prepare data for the table
     table_data = [dict(Altitude=f'{altFt} Ft',
-                       Direction=f"{data['direction'][str(altFt)]}°",
-                       Speed=f"{data['speed'][str(altFt)]} Kts",
-                       Temperature=f"{data['temp'][str(altFt)]}°C")
-                  for altFt in data['altFt'] if altFt <= 20000]
+                       Direction=f"{data['directionRaw'][str(altFt)]}°",
+                       Speed=f"{data['speedRaw'][str(altFt)]} Kts",
+                       Temperature=f"{data['tempRaw'][str(altFt)]}°C")
+                  for altFt in data['altFtRaw'] if altFt <= 20000]
 
     # Convert temperature to Fahrenheit
     for row in table_data:
@@ -58,7 +58,7 @@ def _resolve_wind_direction(data: dict, altitudes: list) -> list[list]:
     # This method probably sucks, I used chatgpt for help lol
     wrapped_altitudes = []
     wrapped_wind_dirs = []
-    dir_data = [data['direction'][str(alt)] for alt in altitudes]
+    dir_data = [data['directionRaw'][str(alt)] for alt in altitudes]
 
     temp_alts = [altitudes[0]]
     temp_dirs = [dir_data[0]]
@@ -77,8 +77,18 @@ def _resolve_wind_direction(data: dict, altitudes: list) -> list[list]:
     return wrapped_altitudes, wrapped_wind_dirs
 
 
+def _handleWindsData(data) -> dict:
+    """speedRaw and directionRaw are strings not ints - 
+    modify the data to reflect this"""
+    # Modify the original fields to store the converted values
+    data["speedRaw"] = {k: int(v) for k, v in data["speedRaw"].items()}
+    data["directionRaw"] = {k: int(v) for k, v in data["directionRaw"].items()}
+    return data
+
+
 def renderWindsAloft() -> html.Div:
     winds_aloft_data = _get_data()
+    winds_aloft_data = _handleWindsData(winds_aloft_data)
     metar = weatherUtils.get_metar()
 
     # # UNCOMMENT FOR "DISJOINTED" WIND DIRECTION TEST DATA
@@ -100,14 +110,14 @@ def renderWindsAloft() -> html.Div:
     # ##############
 
     altitude_list = [
-        altFt for altFt in winds_aloft_data['altFt'] if altFt <= 20000]
+        altFt for altFt in winds_aloft_data['altFtRaw'] if altFt <= 20000]
 
-    wind_speed_trace = Scatter(y=[altFt for altFt in winds_aloft_data['altFt'] if altFt <= 20000],
-                               x=[winds_aloft_data['speed'][str(altFt)]
-                                  for altFt in winds_aloft_data['altFt'] if altFt <= 20000],
+    wind_speed_trace = Scatter(y=[altFt for altFt in winds_aloft_data['altFtRaw'] if altFt <= 20000],
+                               x=[winds_aloft_data['speedRaw'][str(altFt)]
+                                  for altFt in winds_aloft_data['altFtRaw'] if altFt <= 20000],
                                mode='lines',
                                name='Wind Speed (Kts)',
-                               line=dict(color='coral'))
+                               line=dict(color='coral', shape='spline', width=3))
 
     altitudes_by_trace, winds_by_trace = _resolve_wind_direction(
         winds_aloft_data, altitude_list)
@@ -117,12 +127,12 @@ def renderWindsAloft() -> html.Div:
                                xaxis='x2' if i % 2 == 0 else 'x3',
                                name='Wind Direction (°)',
                                showlegend=True if i == 0 else False,
-                               line=dict(shape='linear'),
+                               line=dict(shape='spline', width=3),
                                marker=dict(color='mintcream'))
                        for i in range(len(altitudes_by_trace))]
 
-    tickrange = [min(int(value) for value in winds_aloft_data['direction'].values()), max(
-        int(value) for value in winds_aloft_data['direction'].values())]
+    tickrange = [min(int(value) for key, value in winds_aloft_data['directionRaw'].items() if int(key) <= 20000), max(
+        int(value) for key, value in winds_aloft_data['directionRaw'].items() if int(key) <= 20000)]
     tickvals = [i for i in range(min(tickrange), max(tickrange) + 1, 30)]
     ticktext = [f"{i%360}°" for i in tickvals]
 
@@ -171,7 +181,7 @@ def renderWindsAloft() -> html.Div:
                     html.Strong('Altitude Info Updated At: ', style={
                                 'marginRight': '10px', 'text-align': 'left'}),
                     html.Span(timeUtils.time_diff(metar.time),
-                              id='time-since-last-update', style={'text-align': 'right',})
+                              id='time-since-last-update', style={'text-align': 'right', })
                 ]),
             ]),
             dcc.Graph(
@@ -225,7 +235,7 @@ def renderWindsAloft() -> html.Div:
                 config=dict(displayModeBar=False),
             ),
             html.Div(_render_table(winds_aloft_data),
-                     style={'paddingTop': '20px', 'marginTop':'-20px'}),
+                     style={'paddingTop': '20px', 'marginTop': '-20px'}),
             dcc.Markdown('''
             _*Credit to Mark Schulze ([markschulze.net/winds](http://markschulze.net/winds)) for providing API access to winds aloft data._
             ''', style={'color': 'white', 'font-size': '12px', 'margin-top': '10px'})

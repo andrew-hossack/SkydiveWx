@@ -169,14 +169,14 @@ def renderWindTrends() -> html.Div:
                             'y': df_historical['windspeed_10m'],
                             'type': 'line',
                             'name': 'Wind speed (mph)',
-                            'line': {'width': 4, 'shape': 'spline'}
+                            'line': {'width': 3, 'shape': 'spline'}
                         },
                         {
                             'x': df_historical['time'],
                             'y': df_historical['windgusts_10m'],
                             'type': 'line',
                             'name': 'Wind gusts (mph)',
-                            'line': {'width': 4, 'shape': 'spline'}
+                            'line': {'width': 3, 'shape': 'spline'}
                         },
                     ],
                     'layout': {

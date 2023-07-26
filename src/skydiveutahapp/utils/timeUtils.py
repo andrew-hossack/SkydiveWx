@@ -4,14 +4,13 @@ from pytz import timezone
 import pytz
 
 
-
+# TODO: Might need to have this contact a time server API for current time
 def get_current_date_yyyymmdd():
     # Get the current date and time
     current_datetime = datetime.now()
     # Format the date as YYYYMMDD
     formatted_date = current_datetime.strftime('%Y%m%d')
     return formatted_date
-
 
 
 def zulu_to_mst_string(time):
