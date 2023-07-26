@@ -13,8 +13,8 @@ def _renderNavDrawer() -> html.Div:
         dmc.Stack(
             [
                 html.Div([
-                    _get_icon(icon="mdi:weather-hail", height=14),
-                    dmc.Divider(label="Weather Information",
+                    _get_icon(icon="uil:bolt", height=14),
+                    dmc.Divider(label="General Information",
                                 style={'width': '100%', 'marginLeft': '5px'}),
                 ], style={'display': 'flex', 'width': '100%', 'alignItems': 'center'}),
 
@@ -28,7 +28,8 @@ def _renderNavDrawer() -> html.Div:
                     label="Plane Tracker - Coming Soon",
                     icon=_get_icon(
                         icon="clarity:airplane-line"),
-                    disabled=True,
+                    href='/aircraft',
+                    disabled=True
                 ),
 
                 html.Div([
@@ -142,7 +143,7 @@ def render() -> html.Div:
                                 target="_blank"),
                             dbc.NavLink((
                                 [
-                                    html.Div("Other", style={
+                                    html.Div("More", style={
                                              'display': 'inline-block', 'cursor': 'pointer'},
                                              id="drawer-demo-label",
                                              ),

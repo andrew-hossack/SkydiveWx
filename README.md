@@ -20,3 +20,8 @@ _**Note:** If changes do not appear on refresh, please delete all `/build` and `
 python src/skydiveutahapp/app.py
 ```
 
+## Production Settings
+
+Make sure that the following environment variables are exported:
+
+- **`GOOGLE_ANALYTICS_ID`**: _ID of your Google Analytics property_

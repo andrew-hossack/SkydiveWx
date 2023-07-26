@@ -213,6 +213,7 @@ def renderWindsAloft() -> html.Div:
                                    gridcolor='rgba(255, 255, 255, 0.2)',
                                    fixedrange=True),
                         hovermode="y unified",
+                        dragmode=False,
                         template='plotly_dark',
                         plot_bgcolor='rgba(47, 62, 70, 0)',
                         paper_bgcolor='rgba(47, 62, 70, 0)',

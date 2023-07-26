@@ -161,7 +161,7 @@ def renderWindTrends() -> html.Div:
                      style={
                          'textAlign': 'center', 'color': 'white'}),
             dcc.Graph(
-                style={'margin': 'auto', 'height': '60vh'},
+                style={'margin': 'auto', 'height': '60vh', 'maxHeight': '650px'},
                 figure={
                     'data': [
                         {
@@ -195,6 +195,7 @@ def renderWindTrends() -> html.Div:
                         },
                         'legend': {'orientation': 'h', 'y': 1.1, 'x': 0.5, 'xanchor': 'center'},
                         'autosize': True,
+                        'dragmode': False,
                         'hovermode': 'x unified',
                         'hoverlabel': {
                             'font': {'color': 'black'}

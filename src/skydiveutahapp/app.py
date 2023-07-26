@@ -1,5 +1,5 @@
 import datetime
-
+import os
 import dash_bootstrap_components as dbc
 import pytz
 from components.footer import footerComponent
@@ -8,13 +8,12 @@ from components.weather import weatherComponents
 from components.webcam import webcamComponents
 from components.winds import windsComponents
 from dash import Dash, Input, Output, dcc, html
-from pages import calendarPage, weatherPage, webcamPage, windsAloftPage
-from pages import forecastPage
+from pages import calendarPage, weatherPage, webcamPage, windsAloftPage, forecastPage, aircraftPage
 
 app = Dash(
     title="Skydive Utah Dashboard",
     external_stylesheets=[
-        dbc.themes.MATERIA, 
+        dbc.themes.MATERIA,
         "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600"],
     name=__name__,
     update_title=None,
@@ -38,6 +37,41 @@ app.layout = html.Div(
     ]
 )
 
+# Google Analytics Configuration
+ga_measurement_id = os.environ.get(
+    'GOOGLE_ANALYTICS_ID', 'No GA Measurement ID Given')
+app.index_string = """<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Google tag (gtag.js) -->""" +\
+    """<script async src="https://www.googletagmanager.com/gtag/js?id={0}"></script>""".format(ga_measurement_id) +\
+    """<script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        """ +\
+    """gtag('config', '{0}');""".format(ga_measurement_id) +\
+    """</script>
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="Skydive Utah Dashboard"">
+        <meta property="og:site_name" content="https://skydive-utah-app.onrender.com">
+        <meta property="og:url" content="https://skydive-utah-app.onrender.com">
+        <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/5873e8be197aeae83a43b6fa/1524793837166-4WWI32TLDQIVQSPNF0WT/Newer+Logo.png?format=1500w">
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>"""
+
 server = app.server
 
 ########################
@@ -59,6 +93,8 @@ def router(pathname):
         return [webcamPage.render()]
     elif pathname == "/forecast":
         return [forecastPage.render()]
+    elif pathname == "/aircraft":
+        return [aircraftPage.render()]
     else:
         return [dcc.Location(pathname="/", id='redirect')]
 
@@ -103,6 +139,7 @@ def refresh_winds(refresh):
 )
 def refresh_winds(refresh):
     return webcamComponents.getAllComponents()
+
 
 @app.callback(
     Output("drawer-simple", "opened"),
