@@ -9,6 +9,7 @@ def renderCurrentWeather() -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
+            # 'paddingTop': '0px',
             'margin': '20px',
             'fontSize': '20px',
             'color': 'white',
@@ -148,6 +149,8 @@ def renderWindTrends() -> html.Div:
         style={
             'fontSize': '20px',
             'color': 'white',
+            'paddingTop': '20px',
+            'paddingBottom': '20px',
         },
         children=[
             html.H2('Wind Trends',
@@ -159,7 +162,7 @@ def renderWindTrends() -> html.Div:
 
             html.Div(children='Wind and gust trends from the past 4 hours',
                      style={
-                         'textAlign': 'center', 'color': 'white'}),
+                         'textAlign': 'center', 'color': 'white', 'maxWidth': '550px',}),
             dcc.Graph(
                 style={'margin': 'auto', 'height': '60vh', 'maxHeight': '650px'},
                 figure={
@@ -211,13 +214,13 @@ def renderCalendarCurrentDay() -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
+            # 'paddingTop': '0px',
             'fontSize': '20px',
             'color': 'white',
-            'maxHeight': '650px',
             'margin': 'auto'
         },
         children=html.Div([
-            html.H2("Today's Calendar",
+            html.H2("Today's Events",
                     style={
                         'textAlign': 'center',
                         'fontSize': '26px',
@@ -233,7 +236,8 @@ def renderCalendarCurrentDay() -> html.Div:
         ], style={'maxWidth': '80vw',
                   'flex-direction': 'column',
                   'margin': '0 auto',
-                  'maxWidth': '550px', })
+                  'maxWidth': '550px',
+                  })
     )
 
 
@@ -283,6 +287,7 @@ def renderWeatherOutlook() -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
+            # 'paddingTop': '0px',
             'fontSize': '20px',
             'color': 'white',
             'maxHeight': '650px',
@@ -302,11 +307,12 @@ def renderWeatherOutlook() -> html.Div:
                 'flex-direction': 'column',
                 'align-items': 'center',
                 'justify-content': 'center',
-            }),
+            }, className='nomargin-p'),
         ], style={'maxWidth': '80vw',
                   'flex-direction': 'column',
                   'margin': 'auto',
-                  'maxWidth': '550px', })
+                  'maxWidth': '550px',
+                  })
     )
 
 
@@ -314,8 +320,8 @@ def getAllComponents() -> list[html.Div]:
     return [
         html.Div([
             renderCurrentWeather(),
-            renderWeatherOutlook(),
             renderCalendarCurrentDay(),
+            renderWeatherOutlook(),
             renderWindTrends(),
         ], style={
             'borderRadius': '15px',
