@@ -9,7 +9,6 @@ def renderCurrentWeather() -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
-            # 'paddingTop': '0px',
             'margin': '20px',
             'fontSize': '20px',
             'color': 'white',
@@ -162,7 +161,7 @@ def renderWindTrends() -> html.Div:
 
             html.Div(children='Wind and gust trends from the past 4 hours',
                      style={
-                         'textAlign': 'center', 'color': 'white', 'maxWidth': '550px',}),
+                         'textAlign': 'center', 'color': 'white', 'maxWidth': '550px', }),
             dcc.Graph(
                 style={'margin': 'auto', 'height': '60vh', 'maxHeight': '650px'},
                 figure={
@@ -214,7 +213,6 @@ def renderCalendarCurrentDay() -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
-            # 'paddingTop': '0px',
             'fontSize': '20px',
             'color': 'white',
             'margin': 'auto'
@@ -287,7 +285,6 @@ def renderWeatherOutlook() -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
-            # 'paddingTop': '0px',
             'fontSize': '20px',
             'color': 'white',
             'maxHeight': '650px',

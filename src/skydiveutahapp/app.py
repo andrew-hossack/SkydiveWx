@@ -1,17 +1,19 @@
 import datetime
 import os
+
 import dash_bootstrap_components as dbc
 import pytz
 from components.footer import footerComponent
 from components.header import headerComponent
-from components.weather import weatherComponents
+from components.home import weatherComponents
 from components.webcam import webcamComponents
 from components.winds import windsComponents
-from dash import Dash, Input, Output, dcc, html
-from pages import calendarPage, weatherPage, webcamPage, windsAloftPage, forecastPage, aircraftPage
+from dash import Dash, Input, Output, clientside_callback, dcc, html
+from pages import (aircraftPage, calendarPage, forecastPage, homePage,
+                   webcamPage, windsAloftPage)
 
 app = Dash(
-    title="Skydive Utah Dashboard",
+    title="Dashboard | Skydive Utah App",
     external_stylesheets=[
         dbc.themes.MATERIA,
         "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600"],
@@ -57,7 +59,7 @@ app.index_string = """<!DOCTYPE html>
         {%favicon%}
         {%css%}
         <meta property="og:type" content="article">
-        <meta property="og:title" content="Skydive Utah Dashboard"">
+        <meta property="og:title" content="Skydive Utah App - Dashboard"">
         <meta property="og:site_name" content="https://skydive-utah-app.onrender.com">
         <meta property="og:url" content="https://skydive-utah-app.onrender.com">
         <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/5873e8be197aeae83a43b6fa/1524793837166-4WWI32TLDQIVQSPNF0WT/Newer+Logo.png?format=1500w">
@@ -84,12 +86,12 @@ server = app.server
     Input("url", "pathname"))
 def router(pathname):
     if pathname == "/":
-        return [weatherPage.render()]
+        return [homePage.render()]
     elif pathname == "/winds":
         return [windsAloftPage.render()]
     elif pathname == "/calendar":
         return [calendarPage.render()]
-    elif pathname == "/webcam":
+    elif pathname == "/cameras":
         return [webcamPage.render()]
     elif pathname == "/forecast":
         return [forecastPage.render()]
@@ -150,6 +152,28 @@ def refresh_winds(refresh):
 def drawer_demo(icn, lbl):
     return True
 
+
+clientside_callback(
+    """
+    function(url) {
+        if (url === '/') {
+            document.title = 'Home | Skydive Utah App'
+        } else if (url === '/calendar') {
+            document.title = 'Calendar | Skydive Utah App'
+        } else if (url === '/winds') {
+            document.title = 'Winds Aloft | Skydive Utah App'
+        } else if (url === '/cameras') {
+            document.title = 'Live Cameras | Skydive Utah App'
+        } else if (url === '/forecast') {
+            document.title = 'Weather Forecast | Skydive Utah App'
+        } else {
+            document.title = 'Home | Skydive Utah App'
+        }
+    }
+    """,
+    Output('hidden-div-callbacks', 'children'),
+    Input('url', 'pathname')
+)
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8050)

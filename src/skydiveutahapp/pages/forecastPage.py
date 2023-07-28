@@ -1,6 +1,6 @@
 from dash import html
 
-from components.weather import weatherRadarComponents
+from components.home import weatherRadarComponents
 
 
 def render() -> html.Div:

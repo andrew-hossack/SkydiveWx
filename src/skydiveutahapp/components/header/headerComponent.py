@@ -127,7 +127,7 @@ def render() -> html.Div:
                             dbc.NavLink("Winds Aloft",
                                         href="/winds", active="exact"),
                             dbc.NavLink("Live Cameras",
-                                        href="/webcam", active="exact"),
+                                        href="/cameras", active="exact"),
                             dbc.NavLink(
                                 [
                                     html.Div([
