@@ -161,7 +161,13 @@ def renderWindTrends() -> html.Div:
 
             html.Div(children='Wind and gust trends from the past 4 hours',
                      style={
-                         'textAlign': 'center', 'color': 'white', 'maxWidth': '550px', }),
+                         'textAlign': 'center',
+                         'color': 'white',
+                         'maxWidth': '550px',
+                         'margin':'auto',
+                         'paddingLeft':'20px',
+                         'paddingRight':'20px',
+                         }),
             dcc.Graph(
                 style={'margin': 'auto', 'height': '60vh', 'maxHeight': '650px'},
                 figure={
