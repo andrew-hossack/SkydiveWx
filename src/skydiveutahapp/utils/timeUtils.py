@@ -1,15 +1,21 @@
 from datetime import datetime
 
-from pytz import timezone
 import pytz
+import requests
+from pytz import timezone
 
 
-# TODO: Might need to have this contact a time server API for current time
 def get_current_date_yyyymmdd():
-    # Get the current date and time
-    current_datetime = datetime.now()
+    response = requests.get(
+        "https://timeapi.io/api/Time/current/zone?timeZone=America/Boise")
+    json_response = response.json()
+
+    y = json_response.get("year")
+    m = str(json_response.get("month")).zfill(2)
+    d = str(json_response.get("day")).zfill(2)
+
     # Format the date as YYYYMMDD
-    formatted_date = current_datetime.strftime('%Y%m%d')
+    formatted_date = f"{y}{m}{d}"
     return formatted_date
 
 
