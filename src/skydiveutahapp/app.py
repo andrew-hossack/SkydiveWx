@@ -227,17 +227,18 @@ def info_modal(nc1, opened):
     return not opened
 
 
-@app.callback(
-    Output('graph-output-none', 'children'),
-    Input('search-graph', 'clickData')
-)
-def map_click_data(clickData):
-    print(clickData)
-    return ''
+# @app.callback(
+#     Output('graph-output-none', 'children'),
+#     Input('search-graph', 'clickData')
+# )
+# def map_click_data(clickData):
+#     print(clickData)
+#     return ''
 
 
 if __name__ == "__main__":
     # print('TODO: changeable dz page background')
     # print('TODO: update tab titles')
-    print('TODO: More information menu')
+    # print('TODO: More information menu change per dz')
+    # print('TODO: Clickable map data')
     app.run_server(debug=True, port=8050)

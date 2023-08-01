@@ -37,7 +37,6 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     return html.Div([
         _renderSearchbar(),
-        html.Div(id='graph-output-none'),
         dcc.Graph(id='search-graph', figure=fig, style={'height': '100vh'})
     ])
 
@@ -46,7 +45,7 @@ def _info_modal() -> html.Div():
     return html.Div(
         [
             dmc.Modal(
-                title="Dropzone Information",
+                title="New Dropzone Request",
                 overlayBlur=5,
                 id="info-modal",
                 overflow="inside",
@@ -84,6 +83,7 @@ def _renderSearchbar() -> html.Div:
                     placeholder='Select your Dropzone',
                     icon=DashIconify(icon="radix-icons:magnifying-glass"),
                     id='dropzone-select',
+                    size='md'
                 )
             ], style={'margin': 'auto', 'paddingTop': '20px'}),
             html.Button(
@@ -94,7 +94,7 @@ def _renderSearchbar() -> html.Div:
                     'flex-direction': 'column',
                     'align-items': 'center',
                     'justify-content': 'center',
-                    'fontSize': '14px',
+                    'fontSize': '12px',
                     'color': 'rgba(255,255,255, 0.4)',
                     'paddingTop': '5px',
                     "border": "none",  # Remove the border
