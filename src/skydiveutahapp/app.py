@@ -119,7 +119,7 @@ def render_content(pathname, search):
         return [
             # TODO Header and footer for search page
             # html.Div(id='header-container', children=headerComponent.render(dropZone)),
-            searchPage.render(),
+            searchPage.render(dropzoneUtils.Dropzones),
             # html.Div(id='footer-container', children=footerComponent.render(dropZone))
         ]
 
@@ -221,5 +221,4 @@ clientside_callback(
 if __name__ == "__main__":
     print('TODO: Refresh callbacks require current dropzone data')
     print('TODO: /search background needs to be changeable; as well as all other dz pages')
-    print('TODO: mapbox with clickable links for home')
     app.run_server(debug=True, port=8050)
