@@ -39,6 +39,9 @@ body::after {
   filter: blur(10px);
 }
 
+#info-modal-title {
+  font-weight: bold;
+}
 
 .compass {
   font-weight: bold;

@@ -83,6 +83,11 @@ def _with_header_footer(content: html.Div, dropZone: DropzoneType) -> list[html.
                  children=footerComponent.render(dropZone))
     ]
 
+def _get_dropzone_from_search(search) -> (DropzoneType, None):
+    query_parameters = dict(p.split("=")
+                            for p in search[1:].split("&")) if search else {}
+    possibleDropzoneId = query_parameters.get("id", None)
+    return dropzoneUtils.Dropzones.get_dropzone_by_id(possibleDropzoneId)
 
 ########################
 ###### CALLBACKS #######
@@ -94,10 +99,7 @@ def _with_header_footer(content: html.Div, dropZone: DropzoneType) -> list[html.
     Input("url", "pathname"),
     State('url', 'search'))
 def render_content(pathname, search):
-    query_parameters = dict(p.split("=")
-                            for p in search[1:].split("&")) if search else {}
-    possibleDropzoneId = query_parameters.get("id", None)
-    dropZone = dropzoneUtils.Dropzones.get_dropzone_by_id(possibleDropzoneId)
+    dropZone = _get_dropzone_from_search(search)
     if dropZone:
         if pathname == "/home":
             return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
@@ -138,43 +140,40 @@ def update_time(n):
 @app.callback(
     Output("footer-container", "children"),
     Input("refresh-interval", "n_intervals"),
+    State('url', 'search')
 )
-def update_footer(n):
-    print('todo get metar')
-    return footerComponent.render()
+def update_footer(n, search):
+    return footerComponent.render(_get_dropzone_from_search(search))
 
 
 @app.callback(
     Output("weather-page-container", "children"),
-    Input("refresh-interval", "n_intervals"))
-def refresh_weather(refresh):
-    print('todo get metar')
-
-    return weatherComponents.getAllComponents()
+    Input("refresh-interval", "n_intervals"),
+    State('url', 'search'))
+def refresh_weather(refresh, search):
+    return weatherComponents.getAllComponents(_get_dropzone_from_search(search))
 
 
 @app.callback(
     Output("winds-page-container", "children"),
     Input("refresh-interval", "n_intervals"),
+    State('url', 'search')
 )
-def refresh_winds(refresh):
-    print('todo get metar')
-
-    return windsComponents.getAllComponents()
+def refresh_winds(refresh, search):
+    return windsComponents.getAllComponents(_get_dropzone_from_search(search))
 
 
 @app.callback(
     Output("webcam-page-container", "children"),
     Input("refresh-interval", "n_intervals"),
+    State('url', 'search')
 )
-def refresh_winds(refresh):
-    print('todo get metar')
-
-    return webcamComponents.getAllComponents()
+def refresh_winds(refresh, search):
+    return webcamComponents.getAllComponents(_get_dropzone_from_search(search))
 
 
 @app.callback(
-    Output("drawer-simple", "opened"),
+    Output("header-drawer", "opened"),
     Input("drawer-demo-button", "n_clicks"),
     Input("drawer-demo-label", "n_clicks"),
     prevent_initial_call=True,
@@ -218,7 +217,27 @@ clientside_callback(
     Input('url', 'pathname')
 )
 
+@app.callback(
+    Output("info-modal", "opened"),
+    Input("info-modal-button", "n_clicks"),
+    State("info-modal", "opened"),
+    prevent_initial_call=True,
+)
+def info_modal(nc1, opened):
+    return not opened
+
+
+@app.callback(
+    Output('graph-output-none', 'children'),
+    Input('search-graph', 'clickData')
+)
+def map_click_data(clickData):
+    print(clickData)
+    return ''
+
+
 if __name__ == "__main__":
-    print('TODO: Refresh callbacks require current dropzone data')
-    print('TODO: /search background needs to be changeable; as well as all other dz pages')
+    # print('TODO: changeable dz page background')
+    # print('TODO: update tab titles')
+    print('TODO: More information menu')
     app.run_server(debug=True, port=8050)

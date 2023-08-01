@@ -169,7 +169,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                                             ),
                                             dmc.Drawer(
                                                 title="Additional Resources",
-                                                id="drawer-simple",
+                                                id="header-drawer",
                                                 padding="md",
                                                 zIndex=10000,
                                                 children=_renderNavDrawer(

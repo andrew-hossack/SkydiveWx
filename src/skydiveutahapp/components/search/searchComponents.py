@@ -5,7 +5,6 @@ from dash import dcc, html
 from dash_iconify import DashIconify
 from utils.dropzones.dropzoneUtils import Dropzones
 from utils.dropzones import dropzoneUtils
-from utils.dropzones.dropzoneUtils import DropzoneType
 
 
 def mapBox(dropZones: Dropzones) -> dcc.Graph:
@@ -38,8 +37,27 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     return html.Div([
         _renderSearchbar(),
-        dcc.Graph(figure=fig, style={'height': '100vh'})
+        html.Div(id='graph-output-none'),
+        dcc.Graph(id='search-graph', figure=fig, style={'height': '100vh'})
     ])
+
+
+def _info_modal() -> html.Div():
+    return html.Div(
+        [
+            dmc.Modal(
+                title="Dropzone Information",
+                overlayBlur=5,
+                id="info-modal",
+                overflow="inside",
+                centered=True,
+                closeOnEscape=True,
+                zIndex=100000,
+                children=[dmc.Text(
+                    "To request a new dropzone be added, please reach out to andrew_hossack@outlook.com for more information.")],
+            ),
+        ]
+    )
 
 
 def _renderSearchbar() -> html.Div:
@@ -51,10 +69,10 @@ def _renderSearchbar() -> html.Div:
             'top': '30%',  # Center vertically
             'transform': 'translate(-50%, -50%)',
             'width': '80vw',
-            'maxWidth':'400px'
+            'maxWidth': '450px',
         },
         children=[
-            html.H2("SkydiveWx Home", className="display-7",
+            html.H2("SkydiveWx Home", className="display-6",
                     style={'color': 'white', 'textAlign': 'center'}),
             html.Div([
                 dmc.Select(
@@ -68,16 +86,22 @@ def _renderSearchbar() -> html.Div:
                     id='dropzone-select',
                 )
             ], style={'margin': 'auto', 'paddingTop': '20px'}),
-            dcc.Markdown([
-                "Not finding your location?"
-            ], style={
-                'flex-direction': 'column',
-                'align-items': 'center',
-                'justify-content': 'center',
-                'fontSize': '14px',
-                'color': 'rgba(255,255,255, 0.3)',
-                'paddingTop': '5px',
-            }, className='nomargin-p'),
+            html.Button(
+                id='info-modal-button',
+                children=[
+                    "Not finding your location?"
+                ], style={
+                    'flex-direction': 'column',
+                    'align-items': 'center',
+                    'justify-content': 'center',
+                    'fontSize': '14px',
+                    'color': 'rgba(255,255,255, 0.4)',
+                    'paddingTop': '5px',
+                    "border": "none",  # Remove the border
+                    "background": "none",  # Remove the background
+                    "padding": "0",  # Remove padding
+                    "fontSize": "16px",  # Set font size for better visibility
+                }, className='nomargin-p'),
         ]
     )
 
@@ -85,6 +109,7 @@ def _renderSearchbar() -> html.Div:
 def getAllComponents(dropZones: Dropzones) -> list[html.Div]:
     return [
         html.Div([
+            _info_modal(),
             mapBox(dropZones),
         ], style={
             'width': '100%',
