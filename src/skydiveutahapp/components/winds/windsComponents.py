@@ -250,7 +250,6 @@ def getAllComponents() -> list[html.Div]:
         ], style={
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',
-            'boxShadow': '0 0 1px 5px rgba(47,62,70,0.5)',
             'width': '80vw',
             'maxWidth': '750px',
         }),

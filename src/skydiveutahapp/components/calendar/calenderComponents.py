@@ -5,7 +5,7 @@ from utils.timeUtils import get_current_date_yyyymmdd
 def getTodaysEventsIFrame() -> html.Div():
     date = get_current_date_yyyymmdd()
     return html.Iframe(src=f"https://calendar.google.com/calendar/u/0/embed?height=110&wkst=1&bgcolor=%23ffffff&ctz=America/Boise&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=day&dates={date}/{date}",
-                       style={"border": "0", "width": "100%", "height": "110px"})
+                       style={"border": "0", "width": "100%", "height": "210px"})
 
 
 def calendarComponent() -> html.Div():
