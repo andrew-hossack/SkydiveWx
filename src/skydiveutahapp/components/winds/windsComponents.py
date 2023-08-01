@@ -3,12 +3,13 @@ import json
 import requests
 from dash import dash_table, dcc, html
 from plotly.graph_objs import Scatter
+from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 
 
-def _get_data() -> dict:
+def _get_data(lat: str, long: str) -> dict:
     # Getting the data from the url
-    url = 'https://markschulze.net/winds/winds.php?lat=40.61318686&lon=-112.3481226&hourOffset=0%3F&referrer=SkydiveUtah'
+    url = f'https://markschulze.net/winds/winds.php?lat={lat}&lon={long}&hourOffset=0%3F&referrer=SkydiveUtah'
     response = requests.get(url)
     return json.loads(response.text)
 
@@ -86,10 +87,10 @@ def _handleWindsData(data) -> dict:
     return data
 
 
-def renderWindsAloft() -> html.Div:
-    winds_aloft_data = _get_data()
+def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
+    winds_aloft_data = _get_data(dropZone.lat, dropZone.long)
     winds_aloft_data = _handleWindsData(winds_aloft_data)
-    metar = weatherUtils.get_metar()
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
 
     # # UNCOMMENT FOR "DISJOINTED" WIND DIRECTION TEST DATA
     # ##############
@@ -243,10 +244,10 @@ def renderWindsAloft() -> html.Div:
     )
 
 
-def getAllComponents() -> list[html.Div]:
+def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     return [
         html.Div([
-            renderWindsAloft()
+            renderWindsAloft(dropZone)
         ], style={
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',

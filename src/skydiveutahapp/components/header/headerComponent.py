@@ -1,14 +1,15 @@
-from dash import html, dcc
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
+from dash import dcc, html
 from dash_iconify import DashIconify
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 
 def _get_icon(icon, color: str | None = None, height=16):
     return DashIconify(icon=icon, height=height, color=color)
 
 
-def _renderNavDrawer() -> html.Div:
+def _renderNavDrawer(dropZone: DropzoneType) -> html.Div:
     return [
         dmc.Stack(
             [
@@ -22,7 +23,7 @@ def _renderNavDrawer() -> html.Div:
                     label="Local Weather Radar",
                     icon=_get_icon(
                         icon="clarity:radar-line"),
-                    href='/forecast'
+                    href=f'/forecast?id={dropZone.id}'
                 ),
                 dmc.NavLink(
                     label="Plane Tracker - Coming Soon",
@@ -83,7 +84,7 @@ def _renderNavDrawer() -> html.Div:
                 ),
 
                 dmc.NavLink(
-                    label="Sponsor Me",
+                    label="Support Us",
                     icon=_get_icon(
                         icon="octicon:sponsor-tiers-24"),
                     href='https://github.com/sponsors/andrew-hossack'
@@ -95,12 +96,19 @@ def _renderNavDrawer() -> html.Div:
     ]
 
 
-def render() -> html.Div:
+def render(dropZone: DropzoneType) -> html.Div:
     return html.Div(
         [
             html.Div(
                 [
-                    html.H2("Skydive Utah Dashboard", className="display-7",
+                    html.A(
+                        DashIconify(
+                            icon="mingcute:back-fill",
+                            width=20),
+                        style={'float': 'left', 'color': 'white',
+                               'opacity': '0.3', 'position': 'absolute'},
+                        href='/search'),
+                    html.H2(f"{dropZone.friendlyName} Dashboard", className="display-7",
                             style={'color': 'white', 'textAlign': 'center'}),
                     html.Div(
                         [
@@ -121,13 +129,14 @@ def render() -> html.Div:
                     ),
                     dbc.Nav(
                         [
-                            dbc.NavLink("Home", href="/", active="exact"),
+                            dbc.NavLink(
+                                "Home", href=f"/home?id={dropZone.id}", active="exact"),
                             dbc.NavLink("Calendar",
-                                        href="/calendar", active="exact"),
+                                        href=f"/calendar?id={dropZone.id}", active="exact"),
                             dbc.NavLink("Winds Aloft",
-                                        href="/winds", active="exact"),
+                                        href=f"/winds?id={dropZone.id}", active="exact"),
                             dbc.NavLink("Live Cameras",
-                                        href="/cameras", active="exact"),
+                                        href=f"/cameras?id={dropZone.id}", active="exact"),
                             dbc.NavLink(
                                 [
                                     html.Div([
@@ -139,7 +148,7 @@ def render() -> html.Div:
                                                  className='external-link'),
                                     ], style={'alignItems': 'center', 'display': 'flex'}),
                                 ],
-                                href="https://dzm.burblesoft.com/jmp?dz_id=385",
+                                href=dropZone.liveManifestUrl,
                                 target="_blank"),
                             dbc.NavLink((
                                 [
@@ -163,7 +172,8 @@ def render() -> html.Div:
                                                 id="drawer-simple",
                                                 padding="md",
                                                 zIndex=10000,
-                                                children=_renderNavDrawer(),
+                                                children=_renderNavDrawer(
+                                                    dropZone),
                                                 overlayBlur=5,
                                             ),
                                         ],

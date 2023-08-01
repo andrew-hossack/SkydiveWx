@@ -1,17 +1,18 @@
-from dash import html, dcc
+from dash import html
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 
-def iframeComponent() -> html.Div():
+def iframeComponent(dropZone: DropzoneType) -> html.Div():
     return html.Div(
-        html.Iframe(src="https://www.radarbox.com/?widget=1&z=10&lat=40.41716531358273&lng=-112.38408068409743&labels=true",
-                       style={"frameborder":"0" ,"scrolling":"no" ,"marginheight":"0" ,"marginwidth":"0" ,"width":"1200px" ,"height":"1000px"})
+        html.Iframe(src=dropZone.radarBoxUrl,
+                    style={"frameborder": "0", "scrolling": "no", "marginheight": "0", "marginwidth": "0", "width": "1200px", "height": "1000px"})
     )
 
 
-def getAllComponents() -> list[html.Div]:
+def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     return [
         html.Div([
-            iframeComponent(),
+            iframeComponent(dropZone),
         ], style={
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',

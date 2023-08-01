@@ -1,12 +1,12 @@
-from dash import html
-
 from components.winds import windsComponents
+from dash import html
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 
-def render() -> html.Div:
+def render(dropZone: DropzoneType) -> html.Div:
     return html.Div(
         id='winds-page-container',
-        children=windsComponents.getAllComponents(),
+        children=windsComponents.getAllComponents(dropZone),
         style={
             'display': 'flex',
             'justify-content': 'center',
@@ -15,5 +15,6 @@ def render() -> html.Div:
             'marginTop': '0',
             'marginBottom': '20px',
             'backgroundColor': 'transparent',
+            "padding": "2rem 1rem",
         }
     )

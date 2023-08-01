@@ -1,12 +1,12 @@
-from dash import html
-
 from components.aircraft import aircraftComponents
+from dash import html
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 
-def render() -> html.Div:
+def render(dropZone: DropzoneType) -> html.Div:
     return html.Div(
         id='aircraft-page-container',
-        children=aircraftComponents.getAllComponents(),
+        children=aircraftComponents.getAllComponents(dropZone),
         style={
             'display': 'flex',
             'justify-content': 'center',
@@ -15,5 +15,6 @@ def render() -> html.Div:
             'marginTop': '0',
             'backgroundColor': 'transparent',
             'marginBottom': '20px',
+            "padding": "2rem 1rem",
         }
     )

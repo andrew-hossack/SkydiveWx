@@ -1,14 +1,15 @@
 from dash import html, dcc
+from utils.dropzones.dropzoneUtils import DropzoneType
 from utils.timeUtils import get_current_date_yyyymmdd
 
 
-def getTodaysEventsIFrame() -> html.Div():
+def getTodaysEventsIFrame(dropZone: DropzoneType) -> html.Div():
     date = get_current_date_yyyymmdd()
-    return html.Iframe(src=f"https://calendar.google.com/calendar/u/0/embed?height=110&wkst=1&bgcolor=%23ffffff&ctz=America/Boise&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=day&dates={date}/{date}",
+    return html.Iframe(src=f"{dropZone.calendarSrcDayPreview}&dates={date}/{date}",
                        style={"border": "0", "width": "100%", "height": "210px"})
 
 
-def calendarComponent() -> html.Div():
+def calendarComponent(dropZone: DropzoneType) -> html.Div():
     content = dcc.Markdown('''
         This calendar contains:
         - Daily opening times
@@ -23,12 +24,12 @@ def calendarComponent() -> html.Div():
         _If you are looking to make a tandem skydive reservation, please go to our [booking system](https://bookings.burblesoft.com/index/385/18)._
         ''')
     return html.Div([
-        html.H2('Skydive Utah Events', style={'color': 'white'}),
+        html.H2(f'{dropZone.friendlyName} Events', style={'color': 'white'}),
         html.P(content, style={'color': 'white'}, className='darker-link-color'),
-        html.Iframe(src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FDenver&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0",
+        html.Iframe(src=dropZone.calendarSrc,
                         style={"border": "solid 1px #777", "width": "100%", "height": "600px"})
     ])
 
 
-def getAllComponents() -> list[html.Div]:
-    return calendarComponent()
+def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
+    return calendarComponent(dropZone)

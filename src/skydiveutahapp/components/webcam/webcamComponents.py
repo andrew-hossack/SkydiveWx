@@ -1,7 +1,33 @@
-from dash import html, dcc
+from dash import dcc, html
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 
-def webcamComponent() -> html.Div():
+def _generate_components(dropZone: DropzoneType) -> list[html.Div]:
+    components = []
+    for camera in dropZone.cameras.get():
+        title = camera['friendly_title']
+        url = camera['url']
+        div = html.Div(
+            children=title,
+            style={'textAlign': 'center', 'color': 'white'}
+        )
+        link = dcc.Link(
+            html.Img(
+                src=url,
+                width="100%",
+                title=title,
+                style={'paddingTop': '5px', 'paddingBottom': '20px'}
+            ),
+            href=url,
+            target='_blank',
+            title='Open in New Tab'
+        )
+        components.append(div)
+        components.append(link)
+    return components
+
+
+def webcamComponent(dropZone: DropzoneType) -> html.Div():
     return html.Div(
         style={
             'margin': '20px',
@@ -16,34 +42,7 @@ def webcamComponent() -> html.Div():
                         'color': '#3498db',
                         'paddingBottom': '15px',
                     }),
-            html.Div(children='Tooele North / Erda East Camera',
-                     style={
-                         'textAlign': 'center', 'color': 'white'}),
-            dcc.Link(
-                html.Img(
-                    src="https://www.wrh.noaa.gov/images/slc/camera/latest/TooeleN.latest.jpg",
-                    width="100%",
-                    title="Tooele North	/ Erda East",
-                    style={'paddingTop': '5px', 'paddingBottom': '20px'}
-                ),
-                href='https://www.wrh.noaa.gov/images/slc/camera/latest/TooeleN.latest.jpg',
-                target='_blank',
-                title='Open in New Tab'
-            ),
-            html.Div(children='Tooele Camera',
-                     style={
-                         'textAlign': 'center', 'color': 'white'}),
-            dcc.Link(
-                html.Img(
-                    src="https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
-                    width="100%",
-                    title="Tooele",
-                    style={'paddingTop': '5px', 'paddingBottom': '20px'}
-                ),
-                href='https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg',
-                target='_blank',
-                title='Open in New Tab'
-            ),
+            *_generate_components(dropZone),
             dcc.Markdown('''
             _*To view additional camera feeds, please visit [https://www.weather.gov/slc/Cameras](https://www.weather.gov/slc/Cameras) or [https://www.wrh.noaa.gov/slc/webcam_map_CSV](https://www.wrh.noaa.gov/slc/webcam_map_CSV)_
             ''', style={'color': 'white', 'font-size': '12px', 'margin-top': '10px', "overflow-wrap": "break-word"})
@@ -51,10 +50,10 @@ def webcamComponent() -> html.Div():
     )
 
 
-def getAllComponents() -> list[html.Div]:
+def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     return [
         html.Div([
-            webcamComponent(),
+            webcamComponent(dropZone),
         ], style={
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',

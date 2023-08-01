@@ -1,10 +1,10 @@
 from dash import html
-
 from utils import weatherUtils
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 
-def render() -> html.Div:
-    currentMetar = weatherUtils.get_metar()
+def render(dropZone: DropzoneType) -> html.Div:
+    currentMetar = weatherUtils.get_metar(dropZone.airportIdentifier)
     return html.Div([
         html.Div([
             html.Footer([

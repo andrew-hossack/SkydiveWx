@@ -8,18 +8,22 @@ from components.header import headerComponent
 from components.home import weatherComponents
 from components.webcam import webcamComponents
 from components.winds import windsComponents
-from dash import Dash, Input, Output, clientside_callback, dcc, html
-from pages import (aircraftPage, calendarPage, forecastPage, homePage,
-                   webcamPage, windsAloftPage)
+from dash import (Dash, Input, Output, State, clientside_callback, dcc, html,
+                  no_update)
+from pages import (aircraftPage, calendarPage, dropzoneMainPage, forecastPage,
+                   searchPage, webcamPage, windsAloftPage)
+from utils.dropzones import dropzoneUtils
+from utils.dropzones.dropzoneUtils import DropzoneType
 
 app = Dash(
-    title="Dashboard | Skydive Utah App",
+    title="Home | SkydiveWx",
     external_stylesheets=[
         dbc.themes.MATERIA,
         "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600"],
     name=__name__,
     update_title=None,
     suppress_callback_exceptions=True,
+    prevent_initial_callbacks=True
 )
 
 app.layout = html.Div(
@@ -28,14 +32,7 @@ app.layout = html.Div(
         html.Div(id='hidden-div-callbacks', style={'display': 'hidden'}),
         # Refresh interval component - refreshes components every 60 seconds
         dcc.Interval(id='refresh-interval', interval=1000*60, n_intervals=0),
-        html.Div(id='header-container', children=headerComponent.render()),
-        html.Div(
-            id='page-content',
-            style={
-                "padding": "2rem 1rem",
-            },
-        ),
-        html.Div(id='footer-container', children=footerComponent.render())
+        html.Div(id='page-content'),
     ]
 )
 
@@ -59,7 +56,7 @@ app.index_string = """<!DOCTYPE html>
         {%favicon%}
         {%css%}
         <meta property="og:type" content="article">
-        <meta property="og:title" content="Skydive Utah App - Dashboard"">
+        <meta property="og:title" content="SkydiveWx - Dashboard"">
         <meta property="og:site_name" content="https://skydive-utah-app.onrender.com">
         <meta property="og:url" content="https://skydive-utah-app.onrender.com">
         <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/5873e8be197aeae83a43b6fa/1524793837166-4WWI32TLDQIVQSPNF0WT/Newer+Logo.png?format=1500w">
@@ -76,6 +73,17 @@ app.index_string = """<!DOCTYPE html>
 
 server = app.server
 
+
+def _with_header_footer(content: html.Div, dropZone: DropzoneType) -> list[html.Div]:
+    return [
+        html.Div(id='header-container',
+                 children=headerComponent.render(dropZone)),
+        content,
+        html.Div(id='footer-container',
+                 children=footerComponent.render(dropZone))
+    ]
+
+
 ########################
 ###### CALLBACKS #######
 ########################
@@ -83,22 +91,37 @@ server = app.server
 
 @app.callback(
     Output("page-content", "children"),
-    Input("url", "pathname"))
-def router(pathname):
-    if pathname == "/":
-        return [homePage.render()]
-    elif pathname == "/winds":
-        return [windsAloftPage.render()]
-    elif pathname == "/calendar":
-        return [calendarPage.render()]
-    elif pathname == "/cameras":
-        return [webcamPage.render()]
-    elif pathname == "/forecast":
-        return [forecastPage.render()]
-    elif pathname == "/aircraft":
-        return [aircraftPage.render()]
+    Input("url", "pathname"),
+    State('url', 'search'))
+def render_content(pathname, search):
+    query_parameters = dict(p.split("=")
+                            for p in search[1:].split("&")) if search else {}
+    possibleDropzoneId = query_parameters.get("id", None)
+    dropZone = dropzoneUtils.Dropzones.get_dropzone_by_id(possibleDropzoneId)
+    if dropZone:
+        if pathname == "/home":
+            return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
+        elif pathname == "/winds":
+            return _with_header_footer(windsAloftPage.render(dropZone), dropZone)
+        elif pathname == "/calendar":
+            return _with_header_footer(calendarPage.render(dropZone), dropZone)
+        elif pathname == "/cameras":
+            return _with_header_footer(webcamPage.render(dropZone), dropZone)
+        elif pathname == "/forecast":
+            return _with_header_footer(forecastPage.render(dropZone), dropZone)
+        elif pathname == "/aircraft":
+            return _with_header_footer(aircraftPage.render(dropZone), dropZone)
+        else:
+            # Default to main page if url is invalid
+            return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
     else:
-        return [dcc.Location(pathname="/", id='redirect')]
+        # If not valid dropzone, return to '/search' page
+        return [
+            # TODO Header and footer for search page
+            # html.Div(id='header-container', children=headerComponent.render(dropZone)),
+            searchPage.render(),
+            # html.Div(id='footer-container', children=footerComponent.render(dropZone))
+        ]
 
 
 @app.callback(
@@ -117,6 +140,7 @@ def update_time(n):
     Input("refresh-interval", "n_intervals"),
 )
 def update_footer(n):
+    print('todo get metar')
     return footerComponent.render()
 
 
@@ -124,6 +148,8 @@ def update_footer(n):
     Output("weather-page-container", "children"),
     Input("refresh-interval", "n_intervals"))
 def refresh_weather(refresh):
+    print('todo get metar')
+
     return weatherComponents.getAllComponents()
 
 
@@ -132,6 +158,8 @@ def refresh_weather(refresh):
     Input("refresh-interval", "n_intervals"),
 )
 def refresh_winds(refresh):
+    print('todo get metar')
+
     return windsComponents.getAllComponents()
 
 
@@ -140,6 +168,8 @@ def refresh_winds(refresh):
     Input("refresh-interval", "n_intervals"),
 )
 def refresh_winds(refresh):
+    print('todo get metar')
+
     return webcamComponents.getAllComponents()
 
 
@@ -153,21 +183,34 @@ def drawer_demo(icn, lbl):
     return True
 
 
+@app.callback(
+    Output("url", "href"),
+    Input("dropzone-select", "value"),
+)
+def search_router(dropzoneId):
+    if dropzoneId != None:
+        # dropzoneId will always be valid from this callback
+        return f'/home?id={dropzoneId}'
+    return no_update
+
+
 clientside_callback(
     """
     function(url) {
         if (url === '/') {
-            document.title = 'Home | Skydive Utah App'
+            document.title = 'Home | SkydiveWx'
         } else if (url === '/calendar') {
-            document.title = 'Calendar | Skydive Utah App'
+            document.title = 'Calendar | SkydiveWx'
         } else if (url === '/winds') {
-            document.title = 'Winds Aloft | Skydive Utah App'
+            document.title = 'Winds Aloft | SkydiveWx'
         } else if (url === '/cameras') {
-            document.title = 'Live Cameras | Skydive Utah App'
+            document.title = 'Live Cameras | SkydiveWx'
         } else if (url === '/forecast') {
-            document.title = 'Weather Forecast | Skydive Utah App'
+            document.title = 'Weather Forecast | SkydiveWx'
+        } else if (url === '/search') {
+            document.title = 'Find a Dropzone | SkydiveWx'
         } else {
-            document.title = 'Home | Skydive Utah App'
+            document.title = 'Home | SkydiveWx'
         }
     }
     """,
@@ -176,4 +219,7 @@ clientside_callback(
 )
 
 if __name__ == "__main__":
+    print('TODO: Refresh callbacks require current dropzone data')
+    print('TODO: /search background needs to be changeable; as well as all other dz pages')
+    print('TODO: mapbox with clickable links for home')
     app.run_server(debug=True, port=8050)

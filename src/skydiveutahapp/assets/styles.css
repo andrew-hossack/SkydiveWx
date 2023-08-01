@@ -39,6 +39,7 @@ body::after {
   filter: blur(10px);
 }
 
+
 .compass {
   font-weight: bold;
   background-color: white; /* set the background color to white */

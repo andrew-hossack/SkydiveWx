@@ -1,11 +1,12 @@
 import pandas as pd
 from dash import dcc, html
 from components.calendar import calenderComponents
+from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 
 
-def renderCurrentWeather() -> html.Div:
-    metar = weatherUtils.get_metar()
+def renderCurrentWeather(dropZone: DropzoneType) -> html.Div:
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
     return html.Div(
         style={
             'padding': '20px',
@@ -22,7 +23,7 @@ def renderCurrentWeather() -> html.Div:
                             'fontSize': '26px',
                             'color': '#3498db',
                         }),
-                renderWind(),
+                renderWind(dropZone),
                 html.Div(style={
                     'backgroundColor': 'rgba(47, 62, 70, 0)',
                     'paddingTop': '1px',
@@ -108,8 +109,8 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
     )
 
 
-def renderWind() -> html.Div:
-    metar = weatherUtils.get_metar()
+def renderWind(dropZone: DropzoneType) -> html.Div:
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
     # Access the wind direction and speed
     wind_dir = metar.wind_dir.value() if metar.wind_dir.value() else 0
     wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
@@ -137,9 +138,9 @@ def renderWind() -> html.Div:
     )
 
 
-def renderWindTrends() -> html.Div:
+def renderWindTrends(dropZone: DropzoneType) -> html.Div:
     # List of metar objects
-    historical_weather = weatherUtils.get_metar(hours=4)
+    historical_weather = weatherUtils.get_metar(dropZone.airportIdentifier, hours=4)
 
     df_historical = pd.DataFrame([(timeUtils.convert_utc_to_mst(metar.time).strftime('%-I:%M%p'), int(metar.wind_speed.string("MPH").replace(" mph", "")) if metar.wind_speed else 0, int(metar.wind_gust.string("MPH").replace(" mph", "")) if metar.wind_gust else 0) for metar in historical_weather],
                                  columns=['time', 'windspeed_10m', 'windgusts_10m']).iloc[::-1]
@@ -215,7 +216,7 @@ def renderWindTrends() -> html.Div:
     )
 
 
-def renderCalendarCurrentDay() -> html.Div:
+def renderCalendarCurrentDay(dropZone: DropzoneType) -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
@@ -231,7 +232,7 @@ def renderCalendarCurrentDay() -> html.Div:
                         'color': '#3498db'
                     }),
             html.Div([
-                calenderComponents.getTodaysEventsIFrame(),
+                calenderComponents.getTodaysEventsIFrame(dropZone),
             ], style={
                 'flex-direction': 'column',
                 'align-items': 'center',
@@ -245,10 +246,10 @@ def renderCalendarCurrentDay() -> html.Div:
     )
 
 
-def renderWeatherOutlook() -> html.Div:
+def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
     # Fetch weather data
     forecast_num_hours = 4
-    forecast_data = weatherUtils.get_forecast(hours=forecast_num_hours)
+    forecast_data = weatherUtils.get_forecast(forecast_num_hours, dropZone.weatherGovGridpointLocation)
 
     # Calculate the maximum probability of rain
     max_rain_chance = max(
@@ -319,13 +320,13 @@ def renderWeatherOutlook() -> html.Div:
     )
 
 
-def getAllComponents() -> list[html.Div]:
+def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     return [
         html.Div([
-            renderCurrentWeather(),
-            renderCalendarCurrentDay(),
-            renderWeatherOutlook(),
-            renderWindTrends(),
+            renderCurrentWeather(dropZone),
+            renderCalendarCurrentDay(dropZone),
+            renderWeatherOutlook(dropZone),
+            renderWindTrends(dropZone),
         ], style={
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',
