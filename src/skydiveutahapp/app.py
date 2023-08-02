@@ -229,6 +229,16 @@ def info_modal(nc1, opened):
     return not opened
 
 
+@app.callback(
+    Output("help-modal", "opened"),
+    Input("help-modal-button", "n_clicks"),
+    State("help-modal", "opened"),
+    prevent_initial_call=True,
+)
+def help_modal(nc1, opened):
+    return not opened
+
+
 # @app.callback(
 #     Output('graph-output-none', 'children'),
 #     Input('search-graph', 'clickData')

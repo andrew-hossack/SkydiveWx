@@ -40,6 +40,24 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
     ])
 
 
+def help_modal() -> html.Div():
+    return html.Div(
+        [
+            dmc.Modal(
+                title="About Us",
+                overlayBlur=5,
+                id="help-modal",
+                overflow="inside",
+                centered=True,
+                closeOnEscape=True,
+                zIndex=100000,
+                children=[dcc.Markdown(
+                    "SkydiveWx is an application developed for skydivers to view current weather and jump conditions at their dropzone. Contact [hello@skydivewx.com](mailto:hello@skydivewx.com) for any inquiries. Consider [Sponsoring](https://github.com/sponsors/andrew-hossack) the project.")],
+            ),
+        ]
+    )
+
+
 def info_modal() -> html.Div():
     return html.Div(
         [
@@ -76,9 +94,10 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
         },
         children=[
             html.H2(f"{len(dropZones)} Dropzones Available",
-                    style={'color': 'black', 'textAlign': 'center', 'fontWeight': '330'}),
+                    style={'color': 'black', 'textAlign': 'center', 'fontWeight': '330', 'marginTop':'15px'}),
             html.Div(
-                style={'textAlign': 'justify', 'fontSize': '16px', 'padding':'20px'},
+                style={'textAlign': 'justify',
+                       'fontSize': '16px', 'padding': '20px'},
                 children=["Select your dropzone from the list below for real-time weather updates and more with SkydiveWx. Let the skies be your playground. Blue skies and happy landings await!"]),
             html.Div([
                 dmc.Select(
@@ -138,6 +157,7 @@ def getAllComponents(dropZones: Dropzones) -> list[html.Div]:
     return [
         html.Div([
             info_modal(),
+            help_modal(),
             renderInfo(),
             renderSearchbar(dropZones),
             mapBox(dropZones),

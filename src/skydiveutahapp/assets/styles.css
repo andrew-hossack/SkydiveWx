@@ -77,6 +77,10 @@ body::after {
   font-weight: bold;
 }
 
+#help-modal-title {
+  font-weight: bold;
+}
+
 .compass {
   font-weight: bold;
   background-color: white; /* set the background color to white */

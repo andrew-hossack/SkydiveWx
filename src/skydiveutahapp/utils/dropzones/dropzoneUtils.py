@@ -33,6 +33,7 @@ class DropzoneType:
         # https://api.weather.gov/points/{latitude},{longitude}
         self.weatherGovGridpointLocation = weatherGovGridpointLocation
         self.airportIdentifier = airportIdentifier
+        # See https://www.airnav.com/airport/<IDENTIFIER>
         self.lat = latitude
         self.long = longitude
         self.calendarSrc = calendarSrc
@@ -149,5 +150,3 @@ class Dropzones(DropzoneType, Enum):
             if dropzone.value[0] == dropzone_id:
                 return dropzone
         return None
-
-# <!-- <source src="https://wms-prod-1.wetmet.net/live/106-10-01/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9OC8yLzIwMjMgMTo0MDowNiBBTSZoYXNoX3ZhbHVlPUxjY2t4eDBpeTA3by9iZGhRT3JNeHc9PSZ2YWxpZG1pbnV0ZXM9MzA=" type='application/x-mpegURL'> -->
