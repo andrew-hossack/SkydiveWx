@@ -6,7 +6,7 @@ from utils.dropzones.dropzoneUtils import DropzoneType
 def render(dropZone: DropzoneType) -> html.Div:
     return html.Div(
         id='forecast-page-container',
-        children=weatherRadarComponents.getAllComponents(),
+        children=weatherRadarComponents.getAllComponents(dropZone),
         style={
             'display': 'flex',
             'justify-content': 'center',

@@ -2,10 +2,12 @@ from dash import html, dcc
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils.timeUtils import get_current_date_yyyymmdd
 
+def getExternalLinkCalendarDiv(calendarLink: str) -> html.Div:
+    return html.Div()
 
 def getTodaysEventsIFrame(dropZone: DropzoneType) -> html.Div():
     date = get_current_date_yyyymmdd()
-    return html.Iframe(src=f"{dropZone.calendarSrcDayPreview}&dates={date}/{date}",
+    return html.Iframe(src=f"{dropZone.calendars.dayFrameUrl}&dates={date}/{date}",
                        style={"border": "0", "width": "100%", "height": "210px"})
 
 
@@ -26,7 +28,7 @@ def calendarComponent(dropZone: DropzoneType) -> html.Div():
     return html.Div([
         html.H2(f'{dropZone.friendlyName} Events', style={'color': 'white'}),
         html.P(content, style={'color': 'white'}, className='darker-link-color'),
-        html.Iframe(src=dropZone.calendarSrc,
+        html.Iframe(src=dropZone.calendars.fullFrameUrl,
                         style={"border": "solid 1px #777", "width": "100%", "height": "600px"})
     ])
 

@@ -76,6 +76,10 @@ def renderCurrentWeather(dropZone: DropzoneType) -> html.Div:
 
 
 def _generate_compass_component(direction, speed, rotation) -> html.Div:
+    # If direction and rotation = -1 then don't show arrow
+    showDisplay = True
+    if (rotation <0):
+        showDisplay = False
     return html.Div(
         [
             html.Div([], className="west"),
@@ -101,7 +105,8 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
                     '-webkit-transform': f'rotate({rotation}deg)',
                     '-moz-transform': f'rotate({rotation}deg)',
                     '-ms-transform': f'rotate({rotation}deg)',
-                    '-o-transform': f'rotate({rotation}deg)'
+                    '-o-transform': f'rotate({rotation}deg)',
+                    'display':'hidden' if showDisplay else ''
                 }
             )
         ],
@@ -112,20 +117,26 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
 def renderWind(dropZone: DropzoneType) -> html.Div:
     metar = weatherUtils.get_metar(dropZone.airportIdentifier)
     # Access the wind direction and speed
-    wind_dir = metar.wind_dir.value() if metar.wind_dir.value() else 0
     wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
+    if 'variable' in metar.wind('MPH'):
+        wind_dir_str = 'variable'
+        css_degrees = -1
+        direction = -1
+    else:
+        wind_dir = metar.wind_dir.value() if metar.wind_dir.value() else 0
+        css_degrees = (wind_dir + 180) % 360 if wind_speed != '0 mph' else -1
+        wind_dir_str = f'{metar.wind_dir.compass()} ({wind_dir}°)'
+        direction = metar.wind_dir.compass()
 
-    # Convert the wind direction degrees to rotation in css
-    css_degrees = (wind_dir + 180) % 360 if wind_speed != '0 mph' else 0
-
+    # If css_degrees = -1 then handle below
     return html.Div(
         children=[
             html.Div(
-                f'Winds from {metar.wind_dir.compass()} ({wind_dir}°) at {wind_speed}',
+                f'Winds from {wind_dir_str} at {wind_speed}',
                 className='wind-direction-text',
             ),
             _generate_compass_component(
-                metar.wind_dir.compass(), wind_speed, css_degrees),
+                direction, wind_speed, css_degrees),
         ],
         className='outer-div',
         style={
@@ -217,33 +228,42 @@ def renderWindTrends(dropZone: DropzoneType) -> html.Div:
 
 
 def renderCalendarCurrentDay(dropZone: DropzoneType) -> html.Div:
-    return html.Div(
-        style={
-            'padding': '20px',
-            'fontSize': '20px',
-            'color': 'white',
-            'margin': 'auto'
-        },
-        children=html.Div([
-            html.H2("Today's Events",
-                    style={
-                        'textAlign': 'center',
-                        'fontSize': '26px',
-                        'color': '#3498db'
-                    }),
-            html.Div([
-                calenderComponents.getTodaysEventsIFrame(dropZone),
-            ], style={
-                'flex-direction': 'column',
-                'align-items': 'center',
-                'justify-content': 'center',
-            }),
-        ], style={'maxWidth': '80vw',
-                  'flex-direction': 'column',
-                  'margin': '0 auto',
-                  'maxWidth': '550px',
-                  })
-    )
+    possibleCalendars = dropZone.calendars
+    if (possibleCalendars.dayFrameUrl and possibleCalendars.fullFrameUrl):
+        calendarPreviewDiv = calenderComponents.getTodaysEventsIFrame(dropZone)
+        return html.Div(
+            style={
+                'padding': '20px',
+                'fontSize': '20px',
+                'color': 'white',
+                'margin': 'auto'
+            },
+            children=html.Div([
+                html.H2("Today's Events",
+                        style={
+                            'textAlign': 'center',
+                            'fontSize': '26px',
+                            'color': '#3498db'
+                        }),
+                
+                html.Div([
+                    calendarPreviewDiv,
+                ], style={
+                    'flex-direction': 'column',
+                    'align-items': 'center',
+                    'justify-content': 'center',
+                }),
+            ], style={'maxWidth': '80vw',
+                    'flex-direction': 'column',
+                    'margin': '0 auto',
+                    'maxWidth': '550px',
+                    })
+        )
+    else:
+        # Empty Div if external link, only link in tab
+        calendarPreviewDiv = html.Div()
+        return calendarPreviewDiv
+
 
 
 def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:

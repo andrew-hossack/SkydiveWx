@@ -256,4 +256,8 @@ if __name__ == "__main__":
     # print('TODO: Updte camera faster')
     # print('TODO: Replace compass with https://metar-taf.com/embed-info/KTVY')
     # TODO update local time in header
+    # TODO mobile formatting check
+    # TODO re style dashboard pages https://dribbble.com/shots/20454260--Responsive-Search-for-Camping-Platform
+    # Fonts? https://fonts.google.com/specimen/Mulish
+    # TODO variable wind direction handler
     app.run_server(debug=True, port=8050)
