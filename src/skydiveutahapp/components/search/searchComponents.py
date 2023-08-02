@@ -1,10 +1,8 @@
 import dash_mantine_components as dmc
-import pandas as pd
 import plotly.express as px
 from dash import dcc, html
 from dash_iconify import DashIconify
 from utils.dropzones.dropzoneUtils import Dropzones
-from utils.dropzones import dropzoneUtils
 
 
 def mapBox(dropZones: Dropzones) -> dcc.Graph:
@@ -13,103 +11,135 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
     dropzone_names = [dropzone.friendlyName for dropzone in dropZones]
 
     fig = px.scatter_mapbox(lat=latitudes, lon=longitudes, hover_name=dropzone_names,
-                            color_discrete_sequence=["coral"], zoom=3, height=300)
-    fig.update_traces(marker=dict(size=10))
+                            color_discrete_sequence=["darkorchid"], zoom=3, height=300)
+    fig.update_traces(marker=dict(size=14))
     fig.update_layout(
-        mapbox_style="white-bg",
+        mapbox_style="carto-positron",
         mapbox_layers=[
             {
                 "below": 'traces',
                 "sourcetype": "raster",
-                "sourceattribution": "United States Geological Survey",
+                "sourceattribution": "OpenStreetMap",
                 "source": [
-                    "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
+                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                 ]
             },
             {
                 "sourcetype": "raster",
-                "sourceattribution": "Government of Canada",
-                "source": ["https://geo.weather.gc.ca/geomet/?"
-                           "SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857"
-                           "&WIDTH=1000&HEIGHT=1000&LAYERS=RADAR_1KM_RDBR&TILED=true&FORMAT=image/png"],
-            }
+                "sourceattribution": "Stadia Maps",
+                "source": [
+                    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+                ]
+            },
         ])
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_layout(mapbox=dict(
+        center=dict(lat=40.0902, lon=-108.7129), zoom=4))
     return html.Div([
-        _renderSearchbar(),
         dcc.Graph(id='search-graph', figure=fig, style={'height': '100vh'})
     ])
 
 
-def _info_modal() -> html.Div():
+def info_modal() -> html.Div():
     return html.Div(
         [
             dmc.Modal(
-                title="New Dropzone Request",
+                title="New Dropzone Enrollment",
                 overlayBlur=5,
                 id="info-modal",
                 overflow="inside",
                 centered=True,
                 closeOnEscape=True,
                 zIndex=100000,
-                children=[dmc.Text(
-                    "To request a new dropzone be added, please reach out to andrew_hossack@outlook.com for more information.")],
+                children=[dcc.Markdown(
+                    "To request a new dropzone be added, please reach out to [hello@skydivewx.com](mailto:hello@skydivewx.com) for more information on enrolling a new location.")],
             ),
         ]
     )
 
 
-def _renderSearchbar() -> html.Div:
+def renderSearchbar(dropZones: Dropzones) -> html.Div:
     return html.Div(
         style={
-            'z-index': '99999',
+            'z-index': '9999',
             'position': 'absolute',
-            'left': '50%',  # Center horizontally
-            'top': '30%',  # Center vertically
-            'transform': 'translate(-50%, -50%)',
-            'width': '80vw',
-            'maxWidth': '450px',
+            'left': '0',
+            'top': '0',
+            # 'width': '30vw',
+            'height': '100%',
+            'maxWidth': '420px',
+            'backgroundColor': 'rgb(245, 245, 246)',
+            'color': 'black',
+            'paddingTop': '80px',
+            'paddingLeft': '30px',
+            'paddingRight': '30px',
         },
         children=[
-            html.H2("SkydiveWx Home", className="display-6",
-                    style={'color': 'white', 'textAlign': 'center'}),
+            html.H2(f"{len(dropZones)} Dropzones Available",
+                    style={'color': 'black', 'textAlign': 'center', 'fontWeight': '330'}),
+            html.Div(
+                style={'textAlign': 'justify', 'fontSize': '16px', 'padding':'20px'},
+                children=["Select your dropzone from the list below for real-time weather updates and more with SkydiveWx. Let the skies be your playground. Blue skies and happy landings await!"]),
             html.Div([
                 dmc.Select(
                     data=[{"value": dz.id, "label": dz.friendlyName}
-                          for dz in dropzoneUtils.Dropzones],
+                          for dz in dropZones],
                     searchable=True,
                     nothingFound="No match found",
                     style={"width": 'auto'},
-                    placeholder='Select your Dropzone',
+                    placeholder='Find a Dropzone',
                     icon=DashIconify(icon="radix-icons:magnifying-glass"),
                     id='dropzone-select',
-                    size='md'
+                    size='md',
+                    variant='default',
+                    initiallyOpened=True,
+                    clearable=True,
+                    radius=10,
+                    maxDropdownHeight=400
                 )
             ], style={'margin': 'auto', 'paddingTop': '20px'}),
             html.Button(
                 id='info-modal-button',
                 children=[
-                    "Not finding your location?"
+                    "Missing your location?"
                 ], style={
                     'flex-direction': 'column',
+                    'position': 'absolute',
+                    'bottom': '0',
                     'align-items': 'center',
                     'justify-content': 'center',
-                    'fontSize': '12px',
-                    'color': 'rgba(255,255,255, 0.4)',
-                    'paddingTop': '5px',
+                    'color': 'rgba(0,0,0, 0.2)',
                     "border": "none",  # Remove the border
                     "background": "none",  # Remove the background
-                    "padding": "0",  # Remove padding
-                    "fontSize": "16px",  # Set font size for better visibility
+                    "marginBottom": "20px",  # Remove padding
+                    "fontSize": "13px",  # Set font size for better visibility
                 }, className='nomargin-p'),
         ]
+    )
+
+
+def renderInfo() -> html.Div:
+    return dmc.Alert(
+        "Scroll and zoom to find a dropzone location near you.",
+        title="Info",
+        icon=DashIconify(icon="fe:info"),
+        color="violet",
+        className='alert-div',  # Add this line
+        style={'z-index': '99999',
+               'position': 'absolute',
+               'border-radius': '10px',
+               'right': '60px',
+               'top': '80px',
+               }
     )
 
 
 def getAllComponents(dropZones: Dropzones) -> list[html.Div]:
     return [
         html.Div([
-            _info_modal(),
+            info_modal(),
+            renderInfo(),
+            renderSearchbar(dropZones),
             mapBox(dropZones),
         ], style={
             'width': '100%',

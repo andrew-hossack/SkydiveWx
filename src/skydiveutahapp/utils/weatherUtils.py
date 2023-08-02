@@ -16,11 +16,15 @@ def _get_raw_metar(airport_code, hours=0):
 
 
 def get_metar(airportIdentifier:str, hours=0) -> Metar.Metar:
-    if hours == 0:
-        metar = _get_raw_metar(airportIdentifier, hours=hours)
-        return Metar.Metar(metar)
-    else:
-        return [Metar.Metar(metar.text) for metar in _get_raw_metar(airportIdentifier, hours=hours)]
+    try:
+        if hours == 0:
+            metar = _get_raw_metar(airportIdentifier, hours=hours)
+            return Metar.Metar(metar)
+        else:
+            return [Metar.Metar(metar.text) for metar in _get_raw_metar(airportIdentifier, hours=hours)]
+    except IndexError as e:
+        print('error: Airport identifier may not have a valid METAR, check surrounding areas for valid metar')
+        raise e
 
 
 def _fetch_hourly_forecast_data(gridpointLocation:str):

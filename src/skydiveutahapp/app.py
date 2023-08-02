@@ -56,10 +56,10 @@ app.index_string = """<!DOCTYPE html>
         {%favicon%}
         {%css%}
         <meta property="og:type" content="article">
-        <meta property="og:title" content="SkydiveWx - Dashboard"">
-        <meta property="og:site_name" content="https://skydive-utah-app.onrender.com">
-        <meta property="og:url" content="https://skydive-utah-app.onrender.com">
-        <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/5873e8be197aeae83a43b6fa/1524793837166-4WWI32TLDQIVQSPNF0WT/Newer+Logo.png?format=1500w">
+        <meta property="og:title" content="Home | SkydiveWx"">
+        <meta property="og:site_name" content="https://www.skydivewx.com/">
+        <meta property="og:url" content="https://www.skydivewx.com/">
+        <meta property="og:image" content="https://www.skydivewx.com/assets/raw_logo.png">
     </head>
     <body>
         {%app_entry%}
@@ -121,6 +121,8 @@ def render_content(pathname, search):
         return [
             # TODO Header and footer for search page
             # html.Div(id='header-container', children=headerComponent.render(dropZone)),
+            html.Div(id='header-container',
+                children=headerComponent.searchpageHeader()),
             searchPage.render(dropzoneUtils.Dropzones),
             # html.Div(id='footer-container', children=footerComponent.render(dropZone))
         ]
@@ -241,4 +243,7 @@ if __name__ == "__main__":
     # print('TODO: update tab titles')
     # print('TODO: More information menu change per dz')
     # print('TODO: Clickable map data')
+    # print('TODO: Updte camera faster')
+    # print('TODO: Replace compass with https://metar-taf.com/embed-info/KTVY')
+    # TODO update local time in header
     app.run_server(debug=True, port=8050)
