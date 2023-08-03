@@ -28,12 +28,19 @@ def get_metar(airportIdentifier:str, hours=0) -> Metar.Metar:
 
 
 def _fetch_hourly_forecast_data(gridpointLocation:str):
-    response = requests.get(
-        f"https://api.weather.gov/gridpoints/{gridpointLocation}/forecast/hourly")
-    json_response = response.json()
-
-    return json_response.get("properties").get("periods")
-
+    retries = 0
+    while retries < 5:
+        try:
+            response = requests.get(
+                f"https://api.weather.gov/gridpoints/{gridpointLocation}/forecast/hourly")
+            json_response = response.json()
+            return json_response.get("properties").get("periods")
+        except AttributeError as e:
+            # For some reason sometimes this errors out, so try again
+            retries += 1
+            pass
+    # If you're here its fucked
+    return None
 
 def get_forecast(hours: int, gridpointLocation:str):
     data = _fetch_hourly_forecast_data(gridpointLocation)

@@ -101,7 +101,7 @@ def render(dropZone: DropzoneType) -> html.Div:
         calendarComponent = dbc.NavLink(
             [
                 html.Div([
-                    html.Div("Live Manifest", style={
+                    html.Div("Calendar", style={
                         'display': 'block'
                     }),
                     html.Img(style={},
@@ -110,12 +110,18 @@ def render(dropZone: DropzoneType) -> html.Div:
                 ], style={'alignItems': 'center', 'display': 'flex'}),
             ],
             href=dropZone.calendars.externalLink,
-            target="_blank"),
+            target="_blank")
     elif (dropZone.calendars.dayFrameUrl and dropZone.calendars.fullFrameUrl):
         calendarComponent = dbc.NavLink(
             "Calendar", href=f"/calendar?id={dropZone.id}", active="exact")
     else:
         calendarComponent = html.Div()
+
+    if dropZone.cameras.get():
+        cameras = dbc.NavLink("Live Cameras",
+                              href=f"/cameras?id={dropZone.id}", active="exact")
+    else:
+        cameras = html.Div()
 
     return html.Div(
         [
@@ -154,8 +160,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                             calendarComponent,
                             dbc.NavLink("Winds Aloft",
                                         href=f"/winds?id={dropZone.id}", active="exact"),
-                            dbc.NavLink("Live Cameras",
-                                        href=f"/cameras?id={dropZone.id}", active="exact"),
+                            cameras,
                             dbc.NavLink(
                                 [
                                     html.Div([

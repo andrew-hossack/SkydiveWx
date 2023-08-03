@@ -249,14 +249,15 @@ def help_modal(nc1, opened):
 
 
 if __name__ == "__main__":
+    # 1 print('TODO: More information menu change per dz')
+    # 2 TODO mobile formatting check
+    # 3. TODO update local time in header
     # print('TODO: changeable dz page background')
     # print('TODO: update tab titles')
-    # print('TODO: More information menu change per dz')
+    # TODO handle http get errors gracefully
     # print('TODO: Clickable map data')
     # print('TODO: Updte camera faster')
     # print('TODO: Replace compass with https://metar-taf.com/embed-info/KTVY')
-    # TODO update local time in header
-    # TODO mobile formatting check
     # TODO re style dashboard pages https://dribbble.com/shots/20454260--Responsive-Search-for-Camping-Platform
     # Fonts? https://fonts.google.com/specimen/Mulish
     # TODO variable wind direction handler

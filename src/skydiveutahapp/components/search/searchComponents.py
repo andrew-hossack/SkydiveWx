@@ -94,7 +94,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
         },
         children=[
             html.H2(f"{len(dropZones)} Dropzones Available",
-                    style={'color': 'black', 'textAlign': 'center', 'fontWeight': '330', 'marginTop':'15px'}),
+                    style={'color': 'black', 'textAlign': 'center', 'fontWeight': '330', 'marginTop': '15px'}),
             html.Div(
                 style={'textAlign': 'justify',
                        'fontSize': '16px', 'padding': '20px'},
@@ -117,22 +117,32 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
                     maxDropdownHeight=400
                 )
             ], style={'margin': 'auto', 'paddingTop': '20px'}),
-            html.Button(
-                id='info-modal-button',
-                children=[
-                    "Missing your location?"
-                ], style={
+            html.Div(
+                [
+                    dmc.Divider(variant="dotted",
+                                style={'width': '100%', },
+                                color='rgba(0,0,0, 0.2)',
+                                size=1),
+                    html.Button(
+                        id='info-modal-button',
+                        children=[
+                            "Missing your location?"
+                        ], style={
+                            'color': 'rgba(0,0,0, 0.2)',
+                            "border": "none",
+                            "background": "none",
+                            "fontSize": "13px",
+                        }, className='nomargin-p'),
+                ],
+                style={
                     'flex-direction': 'column',
                     'position': 'absolute',
                     'bottom': '0',
                     'align-items': 'center',
                     'justify-content': 'center',
-                    'color': 'rgba(0,0,0, 0.2)',
-                    "border": "none",  # Remove the border
-                    "background": "none",  # Remove the background
                     "marginBottom": "20px",  # Remove padding
-                    "fontSize": "13px",  # Set font size for better visibility
-                }, className='nomargin-p'),
+                }
+            ),
         ]
     )
 

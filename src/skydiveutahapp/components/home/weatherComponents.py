@@ -23,7 +23,7 @@ def renderCurrentWeather(dropZone: DropzoneType) -> html.Div:
                             'fontSize': '26px',
                             'color': '#3498db',
                         }),
-                renderWind(dropZone),
+                _renderCompass(dropZone),
                 html.Div(style={
                     'backgroundColor': 'rgba(47, 62, 70, 0)',
                     'paddingTop': '1px',
@@ -114,7 +114,7 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
     )
 
 
-def renderWind(dropZone: DropzoneType) -> html.Div:
+def _renderCompass(dropZone: DropzoneType) -> html.Div:
     metar = weatherUtils.get_metar(dropZone.airportIdentifier)
     # Access the wind direction and speed
     wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
@@ -227,42 +227,42 @@ def renderWindTrends(dropZone: DropzoneType) -> html.Div:
     )
 
 
-def renderCalendarCurrentDay(dropZone: DropzoneType) -> html.Div:
-    possibleCalendars = dropZone.calendars
-    if (possibleCalendars.dayFrameUrl and possibleCalendars.fullFrameUrl):
-        calendarPreviewDiv = calenderComponents.getTodaysEventsIFrame(dropZone)
-        return html.Div(
-            style={
-                'padding': '20px',
-                'fontSize': '20px',
-                'color': 'white',
-                'margin': 'auto'
-            },
-            children=html.Div([
-                html.H2("Today's Events",
-                        style={
-                            'textAlign': 'center',
-                            'fontSize': '26px',
-                            'color': '#3498db'
-                        }),
+# def renderCalendarCurrentDay(dropZone: DropzoneType) -> html.Div:
+#     possibleCalendars = dropZone.calendars
+#     if (possibleCalendars.dayFrameUrl and possibleCalendars.fullFrameUrl):
+#         calendarPreviewDiv = calenderComponents.getTodaysEventsIFrame(dropZone)
+#         return html.Div(
+#             style={
+#                 'padding': '20px',
+#                 'fontSize': '20px',
+#                 'color': 'white',
+#                 'margin': 'auto'
+#             },
+#             children=html.Div([
+#                 html.H2("Today's Events",
+#                         style={
+#                             'textAlign': 'center',
+#                             'fontSize': '26px',
+#                             'color': '#3498db'
+#                         }),
                 
-                html.Div([
-                    calendarPreviewDiv,
-                ], style={
-                    'flex-direction': 'column',
-                    'align-items': 'center',
-                    'justify-content': 'center',
-                }),
-            ], style={'maxWidth': '80vw',
-                    'flex-direction': 'column',
-                    'margin': '0 auto',
-                    'maxWidth': '550px',
-                    })
-        )
-    else:
-        # Empty Div if external link, only link in tab
-        calendarPreviewDiv = html.Div()
-        return calendarPreviewDiv
+#                 html.Div([
+#                     calendarPreviewDiv,
+#                 ], style={
+#                     'flex-direction': 'column',
+#                     'align-items': 'center',
+#                     'justify-content': 'center',
+#                 }),
+#             ], style={'maxWidth': '80vw',
+#                     'flex-direction': 'column',
+#                     'margin': '0 auto',
+#                     'maxWidth': '550px',
+#                     })
+#         )
+#     else:
+#         # Empty Div if external link, only link in tab
+#         calendarPreviewDiv = html.Div()
+#         return calendarPreviewDiv
 
 
 
@@ -344,7 +344,7 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     return [
         html.Div([
             renderCurrentWeather(dropZone),
-            renderCalendarCurrentDay(dropZone),
+            calenderComponents.renderCalendarCurrentDay(dropZone),
             renderWeatherOutlook(dropZone),
             renderWindTrends(dropZone),
         ], style={

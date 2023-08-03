@@ -3,7 +3,7 @@ from enum import Enum
 
 class Calendars:
     def __init__(self, fullFrameUrl: str = None, dayFrameUrl: str = None, externalLink: str = None) -> None:
-    #   Needs either fullFrameUrl and dayFrameUrl or externalLink
+        #   Needs either fullFrameUrl and dayFrameUrl or externalLink
         self.fullFrameUrl = fullFrameUrl
         self.dayFrameUrl = dayFrameUrl
         self.externalLink = externalLink
@@ -22,6 +22,11 @@ class Cameras:
         return self
 
     def get(self) -> (dict, None):
+        try:
+            self.camera_data
+        except AttributeError:
+            # No cameras loaded
+            return None
         return self.camera_data
 
 
@@ -142,8 +147,8 @@ class Dropzones(DropzoneType, Enum):
                       'KZPH',
                       '28.2266694',
                       '-82.1556453',
-                      # TODO canendars not available, link https://www.skydivecity.com/events/
-                      Calendars(),
+                      Calendars(
+                          externalLink="https://www.skydivecity.com/events/"),
                       Cameras(),
                       "https://www.radarbox.com/?widget=1&z=10&lat=40.41716531358273&lng=-112.38408068409743&labels=true",
                       "https://dzm.burblesoft.com/jmp?dz_id=53",
