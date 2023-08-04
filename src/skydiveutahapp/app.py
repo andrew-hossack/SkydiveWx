@@ -12,7 +12,7 @@ from dash import (Dash, Input, Output, State, clientside_callback, dcc, html,
                   no_update)
 from pages import (aircraftPage, calendarPage, dropzoneMainPage, forecastPage,
                    searchPage, webcamPage, windsAloftPage)
-from utils.dropzones import dropzoneUtils
+from utils.dropzones import dropzones
 from utils.dropzones.dropzoneUtils import DropzoneType
 
 app = Dash(
@@ -83,11 +83,12 @@ def _with_header_footer(content: html.Div, dropZone: DropzoneType) -> list[html.
                  children=footerComponent.render(dropZone))
     ]
 
+
 def _get_dropzone_from_search(search) -> (DropzoneType, None):
     query_parameters = dict(p.split("=")
                             for p in search[1:].split("&")) if search else {}
     possibleDropzoneId = query_parameters.get("id", None)
-    return dropzoneUtils.Dropzones.get_dropzone_by_id(possibleDropzoneId)
+    return dropzones.Dropzones.get_dropzone_by_id(possibleDropzoneId)
 
 ########################
 ###### CALLBACKS #######
@@ -122,8 +123,8 @@ def render_content(pathname, search):
             # TODO Header and footer for search page
             # html.Div(id='header-container', children=headerComponent.render(dropZone)),
             html.Div(id='header-container',
-                children=headerComponent.searchpageHeader()),
-            searchPage.render(dropzoneUtils.Dropzones),
+                     children=headerComponent.searchpageHeader()),
+            searchPage.render(dropzones.Dropzones),
             # html.Div(id='footer-container', children=footerComponent.render(dropZone))
         ]
 
@@ -218,6 +219,7 @@ clientside_callback(
     Output('hidden-div-callbacks', 'children'),
     Input('url', 'pathname')
 )
+
 
 @app.callback(
     Output("info-modal", "opened"),

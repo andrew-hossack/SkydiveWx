@@ -2,7 +2,7 @@ import dash_mantine_components as dmc
 import plotly.express as px
 from dash import dcc, html
 from dash_iconify import DashIconify
-from utils.dropzones.dropzoneUtils import Dropzones
+from utils.dropzones.dropzones import Dropzones
 
 
 def mapBox(dropZones: Dropzones) -> dcc.Graph:

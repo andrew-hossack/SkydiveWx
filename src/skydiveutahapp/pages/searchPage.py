@@ -1,6 +1,6 @@
 from components.search import searchComponents
 from dash import html
-from utils.dropzones.dropzoneUtils import Dropzones
+from utils.dropzones.dropzones import Dropzones
 
 
 def render(dropZones: Dropzones) -> html.Div:

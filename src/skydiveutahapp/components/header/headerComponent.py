@@ -9,7 +9,28 @@ def _get_icon(icon, color: str | None = None, height=16):
     return DashIconify(icon=icon, height=height, color=color)
 
 
+def _socialLink(title: str, url: str, iconUrl: str) -> dmc.NavLink:
+    return dmc.NavLink(
+        label=title,
+        icon=_get_icon(
+            icon=iconUrl),
+        href=url
+    )
+
+
 def _renderNavDrawer(dropZone: DropzoneType) -> html.Div:
+    socials = dropZone.socials.get()
+
+    socialsDivs = [_socialLink(link.title, link.url, link.icon)
+                   for link in socials if link]
+
+    if len(socialsDivs) > 0:
+        socialsDivs.insert(0, html.Div([
+            _get_icon(icon="basil:chat-outline", height=14),
+            dmc.Divider(label="Connect With Us",
+                        style={'width': '100%', 'marginLeft': '5px'}),
+        ], style={'display': 'flex', 'width': '100%', 'alignItems': 'center'}))
+
     return [
         dmc.Stack(
             [
@@ -32,44 +53,7 @@ def _renderNavDrawer(dropZone: DropzoneType) -> html.Div:
                     href='/aircraft',
                     disabled=True
                 ),
-
-                html.Div([
-                    _get_icon(icon="basil:chat-outline", height=14),
-                    dmc.Divider(label="Connect With Us",
-                                style={'width': '100%', 'marginLeft': '5px'}),
-                ], style={'display': 'flex', 'width': '100%', 'alignItems': 'center'}),
-
-                dmc.NavLink(
-                    label="Skydive Utah Website",
-                    icon=_get_icon(
-                        icon="mdi:web"),
-                    href='https://skydiveutah.com/'
-                ),
-                dmc.NavLink(
-                    label="Instagram",
-                    icon=_get_icon(
-                        icon="mdi:instagram"),
-                    href='https://www.instagram.com/skydiveutah/'
-                ),
-                dmc.NavLink(
-                    label="Facebook",
-                    icon=_get_icon(
-                        icon="ic:baseline-facebook"),
-                    href='http://www.facebook.com/skydiveutah'
-                ),
-                dmc.NavLink(
-                    label="TikTok",
-                    icon=_get_icon(
-                        icon="ic:baseline-tiktok"),
-                    href='https://www.tiktok.com/@skydiveutah'
-                ),
-                dmc.NavLink(
-                    label="Email",
-                    icon=_get_icon(
-                        icon="fontisto:email"),
-                    href='mailto:fly@skydiveutah.com'
-                ),
-
+                *socialsDivs,
                 html.Div([
                     _get_icon(icon="mdi:about-circle-outline", height=14),
                     dmc.Divider(label="About",
