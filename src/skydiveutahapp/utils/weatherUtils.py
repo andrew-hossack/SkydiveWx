@@ -1,27 +1,25 @@
 from utils.metar import Metar
 import requests
-from bs4 import BeautifulSoup
-import requests
 
 
 def _get_raw_metar(airport_code, hours=0):
     # Returns parsed json or list of parsed json
-    url = f"https://www.aviationweather.gov/metar/data?ids={airport_code}&format=raw&date=&hours={hours}"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    if hours == 0:
-        return soup.find_all('code')[0].text
+    url = f"https://aviationweather.gov/cgi-bin/data/metar.php?ids={airport_code}&hours={hours}"
+    response = requests.get(url).text.split("\n")
+    if hours > 0:
+        response.pop()
     else:
-        return soup.find_all('code')
+        response = response[0]
+    return response
 
 
 def get_metar(airportIdentifier:str, hours=0) -> Metar.Metar:
     try:
+        metar = _get_raw_metar(airportIdentifier, hours=hours)
         if hours == 0:
-            metar = _get_raw_metar(airportIdentifier, hours=hours)
             return Metar.Metar(metar)
         else:
-            return [Metar.Metar(metar.text) for metar in _get_raw_metar(airportIdentifier, hours=hours)]
+            return [Metar.Metar(metar) for metar in _get_raw_metar(airportIdentifier, hours=hours)]
     except IndexError as e:
         print('error: Airport identifier may not have a valid METAR, check surrounding areas for valid metar')
         raise e
