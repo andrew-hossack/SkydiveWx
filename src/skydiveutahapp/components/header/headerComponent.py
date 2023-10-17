@@ -128,15 +128,30 @@ def render(dropZone: DropzoneType) -> html.Div:
                                            'padding': '0px',
                                            'position': 'sticky',
                                            "fontSize": '10px',
-                                           "zIndex": '999',
                                            }),
                             dcc.Interval(id="header-interval",
-                                         interval=1*1000, n_intervals=0)
+                                         interval=1*1000, n_intervals=0),
                         ],
                         style={
                             'zIndex': '999',
+                            'textAlign': 'center',
                         }
                     ),
+                    # html.Div(
+                    #     [
+                    #         html.H1(id="live-clock", children="Loading...",
+                    #                 style={'textAlign': 'center',
+                    #                        'color': '#fff',
+                    #                        'padding': '0px',
+                    #                        'position': 'sticky',
+                    #                        "fontSize": '10px',
+                    #                        "zIndex": '999',
+                    #                        }),
+                    #     ],
+                    #     style={
+                    #         'zIndex': '999',
+                    #     }
+                    # ),
                     dbc.Nav(
                         [
                             dbc.NavLink(
@@ -190,7 +205,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                         ],
                         horizontal="center",
                         pills=True,
-                    )
+                    ),
                 ],
                 style={
                     'backgroundColor': 'rgba(51, 51, 51, 0.5)',
@@ -198,7 +213,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                     'position': 'sticky',
                     'top': '32px',
                 }
-            )
+            ),
         ]
     )
 

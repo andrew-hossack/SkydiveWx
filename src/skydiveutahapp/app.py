@@ -11,7 +11,7 @@ from components.winds import windsComponents
 from dash import (Dash, Input, Output, State, clientside_callback, dcc, html,
                   no_update)
 from pages import (aircraftPage, calendarPage, dropzoneMainPage, forecastPage,
-                   searchPage, webcamPage, windsAloftPage)
+                   searchPage, webcamPage, windsAloftPage, errorPage)
 from utils.dropzones import dropzones
 from utils.dropzones.dropzoneUtils import DropzoneType
 
@@ -100,33 +100,36 @@ def _get_dropzone_from_search(search) -> (DropzoneType, None):
     Input("url", "pathname"),
     State('url', 'search'))
 def render_content(pathname, search):
-    dropZone = _get_dropzone_from_search(search)
-    if dropZone:
-        if pathname == "/home":
-            return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
-        elif pathname == "/winds":
-            return _with_header_footer(windsAloftPage.render(dropZone), dropZone)
-        elif pathname == "/calendar":
-            return _with_header_footer(calendarPage.render(dropZone), dropZone)
-        elif pathname == "/cameras":
-            return _with_header_footer(webcamPage.render(dropZone), dropZone)
-        elif pathname == "/forecast":
-            return _with_header_footer(forecastPage.render(dropZone), dropZone)
-        elif pathname == "/aircraft":
-            return _with_header_footer(aircraftPage.render(dropZone), dropZone)
+    try:
+        dropZone = _get_dropzone_from_search(search)
+        if dropZone:
+            if pathname == "/home":
+                return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
+            elif pathname == "/winds":
+                return _with_header_footer(windsAloftPage.render(dropZone), dropZone)
+            elif pathname == "/calendar":
+                return _with_header_footer(calendarPage.render(dropZone), dropZone)
+            elif pathname == "/cameras":
+                return _with_header_footer(webcamPage.render(dropZone), dropZone)
+            elif pathname == "/forecast":
+                return _with_header_footer(forecastPage.render(dropZone), dropZone)
+            elif pathname == "/aircraft":
+                return _with_header_footer(aircraftPage.render(dropZone), dropZone)
+            else:
+                # Default to main page if url is invalid
+                return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
         else:
-            # Default to main page if url is invalid
-            return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
-    else:
-        # If not valid dropzone, return to '/search' page
-        return [
-            # TODO Header and footer for search page
-            # html.Div(id='header-container', children=headerComponent.render(dropZone)),
-            html.Div(id='header-container',
-                     children=headerComponent.searchpageHeader()),
-            searchPage.render(dropzones.Dropzones),
-            # html.Div(id='footer-container', children=footerComponent.render(dropZone))
-        ]
+            # If not valid dropzone, return to '/search' page
+            return [
+                # TODO Header and footer for search page
+                # html.Div(id='header-container', children=headerComponent.render(dropZone)),
+                html.Div(id='header-container',
+                        children=headerComponent.searchpageHeader()),
+                searchPage.render(dropzones.Dropzones),
+                # html.Div(id='footer-container', children=footerComponent.render(dropZone))
+            ]
+    except Exception:
+        return errorPage.render()
 
 
 @app.callback(

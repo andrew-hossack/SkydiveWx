@@ -3,6 +3,7 @@ from dash import dcc, html
 from components.calendar import calenderComponents
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
+import dash_mantine_components as dmc
 
 
 def renderCurrentWeather(dropZone: DropzoneType) -> html.Div:

@@ -8,23 +8,35 @@ def render(dropZone: DropzoneType) -> html.Div:
     return html.Div([
         html.Div([
             html.Footer([
+                html.A(children="Support this Project - Consider Donating 🙏",
+                   href='https://github.com/sponsors/andrew-hossack',
+                   target='_blank',
+                   style={'textAlign': 'center',
+                          'color': '#fff',
+                          'padding': '0px',
+                          'position': 'sticky',
+                          "fontSize": '10px',
+                          "display": 'block',
+                          }),
                 html.A(f'{currentMetar.code} ', id='footer-metar-data'),
-                html.A('View Raw METAR', href='https://www.aviationweather.gov/metar/data?ids=ktvy&format=decoded&hours=1&taf=off&layout=on', target='_blank')
             ])
         ], style={
             'textAlign': 'center',
-            'paddingTop': '10px',
+            'paddingTop': '5px',
             'paddingLeft': '10px',
             'paddingRight': '10px',
             'backgroundColor': 'rgba(51, 51, 51, 0.5)',
             'position': 'fixed',
             'bottom': '0',
-            'height': '10px',
+            'height': 'auto',
+            'margin-bottom': '-15px',
             'paddingBottom': '20px',
             'width': '100%',
             'fontSize': '10px',
             'color': 'white',
             'zIndex': '998',
-            'whiteSpace': 'nowrap'
+            # 'whiteSpace': 'nowrap',
+            'text-wrap':'wrap'
         })
-    ])
+    ],
+    style={})
