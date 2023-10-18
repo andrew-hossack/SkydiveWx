@@ -4,10 +4,9 @@ from components.calendar import calenderComponents
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 import dash_mantine_components as dmc
+from utils.metar import Metar
 
-
-def renderCurrentWeather(dropZone: DropzoneType) -> html.Div:
-    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
+def renderCurrentWeather(dropZone: DropzoneType, metar: Metar) -> html.Div:
     return html.Div(
         style={
             'padding': '20px',
@@ -36,36 +35,36 @@ def renderCurrentWeather(dropZone: DropzoneType) -> html.Div:
                     className='right-align',
                     children=[
                     html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
-                             children=[
+                            children=[
                         html.Strong('Updated: ', style={
                                     'marginRight': '10px'}),
                         html.Span(timeUtils.time_diff(metar.time),
-                                  id='time-since-last-update')
+                                id='time-since-last-update')
                     ]),
                     html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                             children=[
+                            children=[
                         html.Strong('Sky: ', style={'marginRight': '10px'}),
                         html.Span(str.capitalize(metar.sky_conditions()))
                     ]),
                     html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                             children=[
+                            children=[
                         html.Strong('Visibility: ', style={
                             'marginRight': '10px'}),
                         html.Span(str(metar.vis))
                     ]),
                     html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                             children=[
+                            children=[
                         html.Strong('Wind: ', style={'marginRight': '10px'}),
                         html.Span(str.capitalize(metar.wind("MPH")))
                     ]),
                     html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                             children=[
+                            children=[
                         html.Strong('Gust: ', style={'marginRight': '10px'}),
                         html.Span(
                             metar.wind_gust.string("MPH") if metar.wind_gust else 'No gusts, winds are steady!')
                     ]),
                     html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                             children=[
+                            children=[
                         html.Strong('Temperature: ', style={
                             'marginRight': '10px'}),
                         html.Span(metar.temp.string('F'))
@@ -150,11 +149,9 @@ def _renderCompass(dropZone: DropzoneType) -> html.Div:
     )
 
 
-def renderWindTrends(dropZone: DropzoneType) -> html.Div:
+def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
     # List of metar objects
-    historical_weather = weatherUtils.get_metar(dropZone.airportIdentifier, hours=4)
-
-    df_historical = pd.DataFrame([(timeUtils.convert_utc_to_mst(metar.time).strftime('%-I:%M%p'), int(metar.wind_speed.string("MPH").replace(" mph", "")) if metar.wind_speed else 0, int(metar.wind_gust.string("MPH").replace(" mph", "")) if metar.wind_gust else 0) for metar in historical_weather],
+    df_historical = pd.DataFrame([(timeUtils.convert_utc_to_mst(metar.time).strftime('%-I:%M%p'), int(metar.wind_speed.string("MPH").replace(" mph", "")) if metar.wind_speed else 0, int(metar.wind_gust.string("MPH").replace(" mph", "")) if metar.wind_gust else 0) for metar in historicalMetar],
                                  columns=['time', 'windspeed_10m', 'windgusts_10m']).iloc[::-1]
 
     return html.Div(
@@ -226,46 +223,6 @@ def renderWindTrends(dropZone: DropzoneType) -> html.Div:
             )
         ]
     )
-
-
-# def renderCalendarCurrentDay(dropZone: DropzoneType) -> html.Div:
-#     possibleCalendars = dropZone.calendars
-#     if (possibleCalendars.dayFrameUrl and possibleCalendars.fullFrameUrl):
-#         calendarPreviewDiv = calenderComponents.getTodaysEventsIFrame(dropZone)
-#         return html.Div(
-#             style={
-#                 'padding': '20px',
-#                 'fontSize': '20px',
-#                 'color': 'white',
-#                 'margin': 'auto'
-#             },
-#             children=html.Div([
-#                 html.H2("Today's Events",
-#                         style={
-#                             'textAlign': 'center',
-#                             'fontSize': '26px',
-#                             'color': '#3498db'
-#                         }),
-                
-#                 html.Div([
-#                     calendarPreviewDiv,
-#                 ], style={
-#                     'flex-direction': 'column',
-#                     'align-items': 'center',
-#                     'justify-content': 'center',
-#                 }),
-#             ], style={'maxWidth': '80vw',
-#                     'flex-direction': 'column',
-#                     'margin': '0 auto',
-#                     'maxWidth': '550px',
-#                     })
-#         )
-#     else:
-#         # Empty Div if external link, only link in tab
-#         calendarPreviewDiv = html.Div()
-#         return calendarPreviewDiv
-
-
 
 def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
     # Fetch weather data
@@ -340,14 +297,42 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
                   })
     )
 
+def renderMetarError(airportIdentifier: str, friendlyName: str, id: str) -> html.Div:
+    return html.Div(
+        [
+            dmc.Modal(
+                title="Weather Error",
+                opened=True,
+                overlayBlur=5,
+                overflow="inside",
+                centered=True,
+                closeOnEscape=True,
+                children=[
+                    html.A(
+                        f"There seems to have been an error fetching the latest METAR weather report for {friendlyName} ({airportIdentifier})."
+                    ),
+                    html.Br(),
+                    html.Br(),
+                    html.A("Please be patient as this is not an issue with our site and may take time to be resolved. In the meantime, please check on the "),
+                    html.A("local weather radar", href=f'/forecast?id={id}'),
+                    html.A(" or "),
+                    html.A("go back.", href=f'/search'),
+                ]
+            )
+        ]
+    )
+
 
 def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
+    historicalMetar = weatherUtils.get_metar(dropZone.airportIdentifier, hours=4)
     return [
         html.Div([
-            renderCurrentWeather(dropZone),
+            renderMetarError(dropZone.airportIdentifier, dropZone.friendlyName, dropZone.id) if not metar.code else None,
+            renderCurrentWeather(dropZone, metar) if metar.code else None,
             calenderComponents.renderCalendarCurrentDay(dropZone),
             renderWeatherOutlook(dropZone),
-            renderWindTrends(dropZone),
+            renderWindTrends(dropZone, historicalMetar) if historicalMetar else None,
         ], style={
             'borderRadius': '15px',
             'backgroundColor': 'rgba(47, 62, 70, 0.5)',

@@ -165,26 +165,26 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
                 'marginTop': '-10px',
             },
                 children=[
-                html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
-                         children=[
-                    html.Strong('Altimeter: ', style={'marginRight': '10px'}),
-                    html.Span(str.capitalize(metar.press.string("in")))
-                ]),
-                html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                         children=[
-                    html.Strong('Density Altitude: ', style={
-                                'marginRight': '10px'}),
-                    html.Span(
-                        f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft')
-                ]),
-                html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
-                         children=[
-                    html.Strong('Altitude Info Updated At: ', style={
-                                'marginRight': '10px', 'text-align': 'left'}),
-                    html.Span(timeUtils.time_diff(metar.time),
-                              id='time-since-last-update', style={'text-align': 'right', })
-                ]),
-            ]),
+                    html.Div(style={'marginTop': '15px', 'display': 'flex', 'justifyContent': 'space-between'},
+                            children=[
+                        html.Strong('Altimeter: ', style={'marginRight': '10px'}),
+                        html.Span(str.capitalize(metar.press.string("in")))
+                    ]),
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
+                            children=[
+                        html.Strong('Density Altitude: ', style={
+                                    'marginRight': '10px'}),
+                        html.Span(
+                            f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft')
+                    ]),
+                    html.Div(style={'display': 'flex', 'justifyContent': 'space-between'},
+                            children=[
+                        html.Strong('Altitude Info Updated At: ', style={
+                                    'marginRight': '10px', 'text-align': 'left'}),
+                        html.Span(timeUtils.time_diff(metar.time),
+                                id='time-since-last-update', style={'text-align': 'right', })
+                    ]),
+            ]) if metar.code else None,
             dcc.Graph(
                 style={'width': '100%',
                        'display': 'inline-block', 'height': '600px'},

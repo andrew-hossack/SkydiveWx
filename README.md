@@ -1,6 +1,6 @@
-# Skydive Utah App
+# SkydiveWx
 
-Skydive Utah app developed in Python with the [Plotly Dash](https://dash.plotly.com/) framework.
+SkydiveWx app developed in Python with the [Plotly Dash](https://dash.plotly.com/) framework.
 
 ![](docs/docs_img.png)
 
