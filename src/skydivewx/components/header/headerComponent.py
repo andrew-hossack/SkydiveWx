@@ -54,10 +54,10 @@ def _renderNavDrawer(dropZone: DropzoneType) -> html.Div:
                     href=f"/forecast?id={dropZone.id}",
                 ),
                 dmc.NavLink(
-                    label="Plane Tracker - Coming Soon",
+                    label="Plane Tracker",
                     icon=_get_icon(icon="clarity:airplane-line"),
-                    href="/aircraft",
-                    disabled=True,
+                    href="https://planefinder.net/flight/N13SU",
+                    target="_blank",
                 ),
                 *socialsDivs,
                 html.Div(

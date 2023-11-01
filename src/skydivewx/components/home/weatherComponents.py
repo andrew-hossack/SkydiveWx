@@ -217,8 +217,7 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
         style={
             "fontSize": "20px",
             "color": "white",
-            "paddingTop": "20px",
-            "paddingBottom": "20px",
+            "padding": "20px",
         },
         children=[
             html.H2(
@@ -237,7 +236,14 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
                 },
             ),
             dcc.Graph(
-                style={"margin": "auto", "height": "60vh", "maxHeight": "650px"},
+                style={
+                    # "margin-top": "-50px",
+                    "height": "60vh",
+                    "maxHeight": "650px",
+                },
+                config={
+                    "displayModeBar": False,
+                },
                 figure={
                     "data": [
                         {
@@ -256,6 +262,7 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
                         },
                     ],
                     "layout": {
+                        "margin": {"l": 55, "r": 25, "t": 30, "b": 65},
                         "plot_bgcolor": "rgba(47, 62, 70, 0)",
                         "paper_bgcolor": "rgba(47, 62, 70, 0)",
                         "font": {"color": "white"},

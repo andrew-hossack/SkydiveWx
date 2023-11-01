@@ -5,6 +5,7 @@ from dash import dash_table, dcc, html
 from plotly.graph_objs import Scatter
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
+import dash_mantine_components as dmc
 
 
 def _get_data(lat: str, long: str) -> dict:
@@ -14,57 +15,44 @@ def _get_data(lat: str, long: str) -> dict:
     return json.loads(response.text)
 
 
-def _render_table(data) -> dash_table.DataTable:
+def _render_table(data) -> dmc.Table:
     # Prepare data for the table
     table_data = [
-        dict(
-            Altitude=f"{altFt} Ft",
-            Direction=f"{data['directionRaw'][str(altFt)]}°",
-            Speed=f"{data['speedRaw'][str(altFt)]} Kts",
-            Temperature=f"{data['tempRaw'][str(altFt)]}°C",
+        html.Tr(
+            [
+                html.Td(f"{altFt} Ft"),
+                html.Td(f"{data['directionRaw'][str(altFt)]}°"),
+                html.Td(f"{data['speedRaw'][str(altFt)]} Kts"),
+                html.Td(f"{int(float(data['tempRaw'][str(altFt)]) * (9 / 5) + 32)}°F"),
+            ]
         )
         for altFt in data["altFtRaw"]
         if altFt <= 20000
     ]
 
-    # Convert temperature to Fahrenheit
-    for row in table_data:
-        tempC = float(row["Temperature"][:-2])
-        tempF = tempC * (9 / 5) + 32
-        row["Temperature"] = f"{int(tempF)}°F"
-
     # Create the table
-    return dash_table.DataTable(
-        id="table",
-        columns=[{"name": i, "id": i} for i in table_data[0]],
-        data=table_data,
-        style_table={
-            "maxWidth": "80vw",
-            "border": "thin lightgrey solid",
-            "overflow": "scroll",
-        },
-        style_header={
-            "backgroundColor": "rgba(47, 62, 70, 1)",
-            "fontWeight": "bold",
-            "color": "white",
-        },
-        style_cell={
-            "textAlign": "left",
-            "whiteSpace": "normal",
-            "height": "auto",
-            "minWidth": "0px",
-            "maxWidth": "180px",
-            "whiteSpace": "normal",
-            "backgroundColor": "rgba(47, 62, 70, 0)",
-            "color": "white",
-        },
-        style_data={"whiteSpace": "normal"},
-        css=[
-            {
-                "selector": ".dash-cell div.dash-cell-value",
-                "rule": "display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;",
-            }
+    return dmc.Table(
+        [
+            html.Thead(
+                html.Tr(
+                    [
+                        html.Th("Altitude", style={"color": "white"}),
+                        html.Th("Direction", style={"color": "white"}),
+                        html.Th("Speed", style={"color": "white"}),
+                        html.Th("Temperature", style={"color": "white"}),
+                    ],
+                )
+            ),
+            html.Tbody(table_data),
         ],
+        style={
+            "color": "white",
+            "width": "100%",
+            "table-layout": "fixed",
+            "white-space": "nowrap",
+            "font-size": "1vw",
+            "min-width": "1vw",
+        },
     )
 
 
@@ -172,7 +160,10 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
     return html.Div(
         style={
             "padding": "20px",
-            "margin": "20px",
+            "margin-top": "20px",
+            "margin-left": "20px",
+            "margin-right": "20px",
+            "margin-bottom": "0px",
             "fontSize": "20px",
             "color": "black",
         },
@@ -184,55 +175,45 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
             html.Div(
                 style={
                     "backgroundColor": "rgba(47, 62, 70, 0)",
-                    "paddingLeft": "10px",
-                    "paddingRight": "10px",
-                    "paddingTop": "1px",
-                    "borderRadius": "5px",
+                    "padding": "10px",
                     "maxWidth": "400px",
                     "margin": "auto",
                     "color": "white",
-                    "font-size": "15px",
-                    "marginBottom": "-20px",
-                    "marginTop": "-10px",
+                    "fontSize": "12px",
+                    "display": "grid",
+                    "gridTemplateColumns": "1fr 2fr",
+                    "alignItems": "center",
+                    "justifyContent": "space-between",
+                    "gridGap": "5px",
                 },
                 children=[
-                    html.Div(
+                    html.Strong("Altimeter: "),
+                    html.Span(
+                        str.capitalize(metar.press.string("in")),
                         style={
-                            "marginTop": "15px",
-                            "display": "flex",
-                            "justifyContent": "space-between",
+                            "text-align": "right",
+                            "white-space": "normal",
                         },
-                        children=[
-                            html.Strong("Altimeter: ", style={"marginRight": "10px"}),
-                            html.Span(str.capitalize(metar.press.string("in"))),
-                        ],
                     ),
-                    html.Div(
-                        style={"display": "flex", "justifyContent": "space-between"},
-                        children=[
-                            html.Strong(
-                                "Density Altitude: ", style={"marginRight": "10px"}
-                            ),
-                            html.Span(
-                                f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft'
-                            ),
-                        ],
+                    html.Strong("Density Altitude: "),
+                    html.Span(
+                        f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft',
+                        style={
+                            "text-align": "right",
+                            "white-space": "normal",
+                        },
                     ),
-                    html.Div(
-                        style={"display": "flex", "justifyContent": "space-between"},
-                        children=[
-                            html.Strong(
-                                "Altitude Info Updated At: ",
-                                style={"marginRight": "10px", "text-align": "left"},
-                            ),
-                            html.Span(
-                                timeUtils.time_diff(metar.time),
-                                id="time-since-last-update",
-                                style={
-                                    "text-align": "right",
-                                },
-                            ),
-                        ],
+                    html.Strong(
+                        "Updated At: ",
+                        style={"text-align": "left"},
+                    ),
+                    html.Span(
+                        timeUtils.time_diff(metar.time),
+                        id="time-since-last-update",
+                        style={
+                            "text-align": "right",
+                            "white-space": "normal",
+                        },
                     ),
                 ],
             )
@@ -243,6 +224,7 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
                 figure=dict(
                     data=[wind_speed_trace, *wind_dir_traces],
                     layout=dict(
+                        margin=dict(l=40, r=10, t=80, b=80),
                         xaxis=dict(
                             title="Wind Speed (Kts)",
                             showgrid=True,
@@ -298,11 +280,14 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
             ),
             html.Div(
                 _render_table(winds_aloft_data),
-                style={"paddingTop": "20px", "marginTop": "-20px"},
+                style={
+                    "paddingTop": "20px",
+                    "marginTop": "-20px",
+                },
             ),
             dcc.Markdown(
                 """
-            _*Credit to Mark Schulze ([markschulze.net/winds](http://markschulze.net/winds)) for providing API access to winds aloft data._
+            _Credit to [Mark Schulze](http://markschulze.net/winds) for providing API access to winds aloft data._
             """,
                 style={"color": "white", "font-size": "12px", "margin-top": "10px"},
             ),

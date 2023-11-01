@@ -12,24 +12,39 @@ def render(dropZone: DropzoneType) -> html.Div:
                     html.Footer(
                         [
                             html.A(f"{currentMetar.code} ", id="footer-metar-data"),
-                            html.A(
-                                children="Support this Project",
-                                href="https://github.com/sponsors/andrew-hossack",
-                                target="_blank",
-                                style={
-                                    "textAlign": "center",
-                                    "padding": "0px",
-                                    "position": "sticky",
-                                    "color": "#fff",
-                                    "display": "inline-block",
-                                    "margin-right": "5px",
-                                },
-                            ),
-                            html.A(
-                                "admin@skydivewx.com",
-                                href=f"mailto:admin@skydivewx.com?subject=SkydiveWx - Application Error Report",
-                                target="_blank",
-                                style={"display": "inline-block", "color": "#fff"},
+                            html.Div(
+                                [
+                                    html.A(
+                                        children="Support this Project",
+                                        href="https://github.com/sponsors/andrew-hossack",
+                                        target="_blank",
+                                        style={
+                                            "textAlign": "center",
+                                            "padding": "0px",
+                                            "position": "sticky",
+                                            "color": "#fff",
+                                            "display": "inline-block",
+                                        },
+                                    ),
+                                    html.P(
+                                        "•",
+                                        style={
+                                            "display": "inline-block",
+                                            "color": "#fff",
+                                            "margin-right": "5px",
+                                            "margin-left": "5px",
+                                        },
+                                    ),
+                                    html.A(
+                                        "Contact Us",
+                                        href=f"mailto:hello@skydivewx.com",
+                                        target="_top",
+                                        style={
+                                            "display": "inline-block",
+                                            "color": "#fff",
+                                        },
+                                    ),
+                                ]
                             ),
                         ]
                     )
@@ -45,7 +60,6 @@ def render(dropZone: DropzoneType) -> html.Div:
                     "bottom": "0",
                     # 'height': '20px',
                     # 'margin-bottom': '-15px',
-                    "paddingBottom": "5px",
                     "width": "100%",
                     "fontSize": "10px",
                     "color": "white",
