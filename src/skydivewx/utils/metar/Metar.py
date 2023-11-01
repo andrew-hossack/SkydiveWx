@@ -442,7 +442,7 @@ class Metar(object):
                     if debug:
                         _report_match(handler, m.group())
                     handler(self, m.groupdict())
-                    code = code[m.end():]
+                    code = code[m.end() :]
                     if self._trend:
                         code = self._do_trend_handlers(code)
                     if not repeatable:
@@ -462,7 +462,7 @@ class Metar(object):
                     if debug:
                         _report_match(handler, m.group())
                     handler(self, m.groupdict())
-                    code = code[m.end():]
+                    code = code[m.end() :]
                     igroup = ifailed
                     ifailed = -2  # if it's still -2 when we run out of main-body
                     #  groups, we'll try parsing this group as a remark
@@ -518,7 +518,7 @@ class Metar(object):
                     _report_match(handler, m.group())
                 self._trend_groups.append(m.group().strip())
                 handler(self, m.groupdict())
-                code = code[m.end():]
+                code = code[m.end() :]
                 if not repeatable:
                     break
                 m = pattern.match(code)

@@ -13,24 +13,30 @@ def _get_raw_metar(airport_code, hours=0):
     return response
 
 
-def get_metar(airportIdentifier:str, hours=0) -> Metar.Metar:
+def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar:
     try:
         metar = _get_raw_metar(airportIdentifier, hours=hours)
         if hours == 0:
             return Metar.Metar(metar)
         else:
-            return [Metar.Metar(metar) for metar in _get_raw_metar(airportIdentifier, hours=hours)]
+            return [
+                Metar.Metar(metar)
+                for metar in _get_raw_metar(airportIdentifier, hours=hours)
+            ]
     except IndexError as e:
-        print('error: Airport identifier may not have a valid METAR, check surrounding areas for valid metar')
+        print(
+            "error: Airport identifier may not have a valid METAR, check surrounding areas for valid metar"
+        )
         raise e
 
 
-def _fetch_hourly_forecast_data(gridpointLocation:str):
+def _fetch_hourly_forecast_data(gridpointLocation: str):
     retries = 0
     while retries < 5:
         try:
             response = requests.get(
-                f"https://api.weather.gov/gridpoints/{gridpointLocation}/forecast/hourly")
+                f"https://api.weather.gov/gridpoints/{gridpointLocation}/forecast/hourly"
+            )
             json_response = response.json()
             return json_response.get("properties").get("periods")
         except AttributeError as e:
@@ -40,7 +46,8 @@ def _fetch_hourly_forecast_data(gridpointLocation:str):
     # If you're here its fucked
     return None
 
-def get_forecast(hours: int, gridpointLocation:str):
+
+def get_forecast(hours: int, gridpointLocation: str):
     data = _fetch_hourly_forecast_data(gridpointLocation)
     return data[:hours]
 

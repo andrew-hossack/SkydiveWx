@@ -8,10 +8,17 @@ from components.header import headerComponent
 from components.home import weatherComponents
 from components.webcam import webcamComponents
 from components.winds import windsComponents
-from dash import (Dash, Input, Output, State, clientside_callback, dcc, html,
-                  no_update)
-from pages import (aircraftPage, calendarPage, dropzoneMainPage, forecastPage,
-                   searchPage, webcamPage, windsAloftPage, errorPage)
+from dash import Dash, Input, Output, State, clientside_callback, dcc, html, no_update
+from pages import (
+    aircraftPage,
+    calendarPage,
+    dropzoneMainPage,
+    forecastPage,
+    searchPage,
+    webcamPage,
+    windsAloftPage,
+    errorPage,
+)
 from utils.dropzones import dropzones
 from utils.dropzones.dropzoneUtils import DropzoneType
 
@@ -19,38 +26,41 @@ app = Dash(
     title="Home | SkydiveWx",
     external_stylesheets=[
         dbc.themes.MATERIA,
-        "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600"],
+        "https://fonts.googleapis.com/css?family=Dosis:200,400,500,600",
+    ],
     name=__name__,
     update_title=None,
     suppress_callback_exceptions=True,
-    prevent_initial_callbacks=True
+    prevent_initial_callbacks=True,
 )
 
 app.layout = html.Div(
     [
         dcc.Location(id="url"),
-        html.Div(id='hidden-div-callbacks', style={'display': 'hidden'}),
+        html.Div(id="hidden-div-callbacks", style={"display": "hidden"}),
         # Refresh interval component - refreshes components every 60 seconds
-        dcc.Interval(id='refresh-interval', interval=1000*60, n_intervals=0),
-        html.Div(id='page-content'),
+        dcc.Interval(id="refresh-interval", interval=1000 * 60, n_intervals=0),
+        html.Div(id="page-content"),
     ]
 )
 
 # Google Analytics Configuration
-ga_measurement_id = os.environ.get(
-    'GOOGLE_ANALYTICS_ID', 'No GA Measurement ID Given')
-app.index_string = """<!DOCTYPE html>
+ga_measurement_id = os.environ.get("GOOGLE_ANALYTICS_ID", "No GA Measurement ID Given")
+app.index_string = (
+    """<!DOCTYPE html>
 <html>
     <head>
-        <!-- Google tag (gtag.js) -->""" +\
-    """<script async src="https://www.googletagmanager.com/gtag/js?id={0}"></script>""".format(ga_measurement_id) +\
-    """<script>
+        <!-- Google tag (gtag.js) -->"""
+    + """<script async src="https://www.googletagmanager.com/gtag/js?id={0}"></script>""".format(
+        ga_measurement_id
+    )
+    + """<script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        """ +\
-    """gtag('config', '{0}');""".format(ga_measurement_id) +\
-    """</script>
+        """
+    + """gtag('config', '{0}');""".format(ga_measurement_id)
+    + """</script>
         {%metas%}
         <title>{%title%}</title>
         {%favicon%}
@@ -70,25 +80,26 @@ app.index_string = """<!DOCTYPE html>
         </footer>
     </body>
 </html>"""
+)
 
 server = app.server
 
 
 def _with_header_footer(content: html.Div, dropZone: DropzoneType) -> list[html.Div]:
     return [
-        html.Div(id='header-container',
-                 children=headerComponent.render(dropZone)),
+        html.Div(id="header-container", children=headerComponent.render(dropZone)),
         content,
-        html.Div(id='footer-container',
-                 children=footerComponent.render(dropZone))
+        html.Div(id="footer-container", children=footerComponent.render(dropZone)),
     ]
 
 
 def _get_dropzone_from_search(search) -> (DropzoneType, None):
-    query_parameters = dict(p.split("=")
-                            for p in search[1:].split("&")) if search else {}
+    query_parameters = (
+        dict(p.split("=") for p in search[1:].split("&")) if search else {}
+    )
     possibleDropzoneId = query_parameters.get("id", None)
     return dropzones.Dropzones.get_dropzone_by_id(possibleDropzoneId)
+
 
 ########################
 ###### CALLBACKS #######
@@ -96,9 +107,8 @@ def _get_dropzone_from_search(search) -> (DropzoneType, None):
 
 
 @app.callback(
-    Output("page-content", "children"),
-    Input("url", "pathname"),
-    State('url', 'search'))
+    Output("page-content", "children"), Input("url", "pathname"), State("url", "search")
+)
 def render_content(pathname, search):
     try:
         dropZone = _get_dropzone_from_search(search)
@@ -123,8 +133,9 @@ def render_content(pathname, search):
             return [
                 # TODO Header and footer for search page
                 # html.Div(id='header-container', children=headerComponent.render(dropZone)),
-                html.Div(id='header-container',
-                        children=headerComponent.searchpageHeader()),
+                html.Div(
+                    id="header-container", children=headerComponent.searchpageHeader()
+                ),
                 searchPage.render(dropzones.Dropzones),
                 # html.Div(id='footer-container', children=footerComponent.render(dropZone))
             ]
@@ -146,7 +157,7 @@ def update_time(n):
 @app.callback(
     Output("footer-container", "children"),
     Input("refresh-interval", "n_intervals"),
-    State('url', 'search')
+    State("url", "search"),
 )
 def update_footer(n, search):
     return footerComponent.render(_get_dropzone_from_search(search))
@@ -155,7 +166,8 @@ def update_footer(n, search):
 @app.callback(
     Output("weather-page-container", "children"),
     Input("refresh-interval", "n_intervals"),
-    State('url', 'search'))
+    State("url", "search"),
+)
 def refresh_weather(refresh, search):
     return weatherComponents.getAllComponents(_get_dropzone_from_search(search))
 
@@ -163,7 +175,7 @@ def refresh_weather(refresh, search):
 @app.callback(
     Output("winds-page-container", "children"),
     Input("refresh-interval", "n_intervals"),
-    State('url', 'search')
+    State("url", "search"),
 )
 def refresh_winds(refresh, search):
     return windsComponents.getAllComponents(_get_dropzone_from_search(search))
@@ -172,7 +184,7 @@ def refresh_winds(refresh, search):
 @app.callback(
     Output("webcam-page-container", "children"),
     Input("refresh-interval", "n_intervals"),
-    State('url', 'search')
+    State("url", "search"),
 )
 def refresh_winds(refresh, search):
     return webcamComponents.getAllComponents(_get_dropzone_from_search(search))
@@ -195,7 +207,7 @@ def drawer_demo(icn, lbl):
 def search_router(dropzoneId):
     if dropzoneId != None:
         # dropzoneId will always be valid from this callback
-        return f'/home?id={dropzoneId}'
+        return f"/home?id={dropzoneId}"
     return no_update
 
 
@@ -219,8 +231,8 @@ clientside_callback(
         }
     }
     """,
-    Output('hidden-div-callbacks', 'children'),
-    Input('url', 'pathname')
+    Output("hidden-div-callbacks", "children"),
+    Input("url", "pathname"),
 )
 
 
