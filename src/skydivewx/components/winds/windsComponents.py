@@ -45,13 +45,13 @@ def _render_table(data) -> dmc.Table:
             ),
             html.Tbody(table_data),
         ],
+        horizontalSpacing=2,
         style={
             "color": "white",
             "width": "100%",
             "table-layout": "fixed",
-            "white-space": "nowrap",
             "font-size": "1vw",
-            "min-width": "1vw",
+            "word-wrap": "break-word",
         },
     )
 
