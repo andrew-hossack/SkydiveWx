@@ -17,7 +17,7 @@ For development and to view any live changes, run the app locally with the follo
 _**Note:** If changes do not appear on refresh, please delete all `/build` and `*.egg-info` files, then rebuild the package._
 
 ```bash
-python src/skydiveutahapp/app.py
+python src/skydivewx/app.py
 ```
 
 ## Production Settings

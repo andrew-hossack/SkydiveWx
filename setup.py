@@ -8,14 +8,14 @@ with open('requirements.txt') as f:
     requirements = f.readlines()
 
 setuptools.setup(
-    name="skydiveutahapp",
+    name="skydivewx",
     version="0.0.1",
     author="Andrew Hossack",
     author_email="andrew_hossack@outlook.com",
-    description="Skydive Utah App",
+    description="SkydiveWx",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/andrew-hossack/Skydive-Utah-Community",
+    url="https://github.com/andrew-hossack/SkydiveWx",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
