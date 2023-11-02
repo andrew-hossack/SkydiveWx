@@ -10,7 +10,6 @@ from components.webcam import webcamComponents
 from components.winds import windsComponents
 from dash import Dash, Input, Output, State, clientside_callback, dcc, html, no_update
 from pages import (
-    aircraftPage,
     calendarPage,
     dropzoneMainPage,
     forecastPage,
@@ -123,8 +122,6 @@ def render_content(pathname, search):
                 return _with_header_footer(webcamPage.render(dropZone), dropZone)
             elif pathname == "/forecast":
                 return _with_header_footer(forecastPage.render(dropZone), dropZone)
-            elif pathname == "/aircraft":
-                return _with_header_footer(aircraftPage.render(dropZone), dropZone)
             else:
                 # Default to main page if url is invalid
                 return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)

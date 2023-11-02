@@ -293,10 +293,13 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
 
 def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
     # Fetch weather data
-    forecast_num_hours = 4
-    forecast_data = weatherUtils.get_forecast(
-        forecast_num_hours, dropZone.weatherGovGridpointLocation
-    )
+    forecast_num_hours = 6
+    try:
+        forecast_data = weatherUtils.get_forecast(
+            forecast_num_hours, dropZone.weatherGovGridpointLocation
+        )
+    except Exception:
+        return None
 
     # Calculate the maximum probability of rain
     max_rain_chance = max(
@@ -406,6 +409,55 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
     )
 
 
+def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
+    return html.Div(
+        style={
+            "padding": "20px",
+            "fontSize": "20px",
+            "color": "white",
+            "maxHeight": "650px",
+            "margin": "auto",
+            "marginBottom": "0",
+        },
+        children=html.Div(
+            [
+                html.H2(
+                    "Airspace Tracker",
+                    style={
+                        "textAlign": "center",
+                        "fontSize": "26px",
+                        "color": "#3498db",
+                    },
+                ),
+                # dcc.Markdown(
+                #     [
+                #         forecast_summary,
+                #     ],
+                #     style={
+                #         "flex-direction": "column",
+                #         "align-items": "center",
+                #         "justify-content": "center",
+                #     },
+                #     className="nomargin-p",
+                # ),
+                    html.Iframe(
+                        # https://www.adsbexchange.com/map-help/
+                        # &icao=a07a7b
+                        id='plane-tracker',
+                        src=f"https://globe.adsbexchange.com/?kiosk&scale=1&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&tempTrails=5",
+                        style={"width": "100%", "height":"500px", "frameBorder": "0"},
+                    ),
+            ],
+            style={
+                "maxWidth": "80vw",
+                "flex-direction": "column",
+                "margin": "auto",
+                "maxWidth": "550px",
+            },
+        ),
+    )
+
+
 def renderMetarError(airportIdentifier: str, friendlyName: str, id: str) -> html.Div:
     return html.Div(
         [
@@ -448,6 +500,7 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 renderCurrentWeather(dropZone, metar) if metar.code else None,
                 calenderComponents.renderCalendarCurrentDay(dropZone),
                 renderWeatherOutlook(dropZone),
+                # renderAdsbInfo(dropZone),
                 renderWindTrends(dropZone, historicalMetar)
                 if historicalMetar
                 else None,
