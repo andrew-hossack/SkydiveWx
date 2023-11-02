@@ -440,13 +440,13 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
                 #     },
                 #     className="nomargin-p",
                 # ),
-                    html.Iframe(
-                        # https://www.adsbexchange.com/map-help/
-                        # &icao=a07a7b
-                        id='plane-tracker',
-                        src=f"https://globe.adsbexchange.com/?kiosk&scale=1&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&tempTrails=5",
-                        style={"width": "100%", "height":"500px", "frameBorder": "0"},
-                    ),
+                html.Iframe(
+                    # https://www.adsbexchange.com/map-help/
+                    # &icao=a07a7b
+                    id="plane-tracker",
+                    src=f"https://globe.adsbexchange.com/?kiosk&scale=1&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&tempTrails=5",
+                    style={"width": "100%", "height": "500px", "frameBorder": "0"},
+                ),
             ],
             style={
                 "maxWidth": "80vw",

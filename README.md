@@ -25,3 +25,5 @@ python src/skydivewx/app.py
 Make sure that the following environment variables are exported:
 
 - **`GOOGLE_ANALYTICS_ID`**: _ID of your Google Analytics property_
+- **`EMAIL_SENDER_USERNAME`**: _Email username to send error reports_
+- **`EMAIL_SENDER_PASSWORD`**: _Email password to send error reports_
