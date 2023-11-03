@@ -34,8 +34,6 @@ def getBurbleScreenshot(burbleUrl: str):
         time.sleep(5)
         screenshot = driver.get_screenshot_as_png()
         img_data.append(base64.b64encode(screenshot).decode())
-    except Exception as e:
-        raise e
     finally:
         driver.quit()
 
