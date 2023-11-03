@@ -38,27 +38,27 @@ def _renderNavDrawer(dropZone: DropzoneType) -> html.Div:
     return [
         dmc.Stack(
             [
-                html.Div(
-                    [
-                        _get_icon(icon="uil:bolt", height=14),
-                        dmc.Divider(
-                            label="General Information",
-                            style={"width": "100%", "marginLeft": "5px"},
-                        ),
-                    ],
-                    style={"display": "flex", "width": "100%", "alignItems": "center"},
-                ),
-                dmc.NavLink(
-                    label="Local Weather Radar",
-                    icon=_get_icon(icon="clarity:radar-line"),
-                    href=f"/forecast?id={dropZone.id}",
-                ),
-                dmc.NavLink(
-                    label="Plane Tracker",
-                    icon=_get_icon(icon="clarity:airplane-line"),
-                    href="https://planefinder.net/flight/N13SU",
-                    target="_blank",
-                ),
+                # html.Div(
+                #     [
+                #         _get_icon(icon="uil:bolt", height=14),
+                #         dmc.Divider(
+                #             label="General Information",
+                #             style={"width": "100%", "marginLeft": "5px"},
+                #         ),
+                #     ],
+                #     style={"display": "flex", "width": "100%", "alignItems": "center"},
+                # ),
+                # dmc.NavLink(
+                #     label="Local Weather Radar",
+                #     icon=_get_icon(icon="clarity:radar-line"),
+                #     href=f"/forecast?id={dropZone.id}",
+                # ),
+                # dmc.NavLink(
+                #     label="Plane Tracker",
+                #     icon=_get_icon(icon="clarity:airplane-line"),
+                #     href="https://planefinder.net/flight/N13SU",
+                #     target="_blank",
+                # ),
                 *socialsDivs,
                 html.Div(
                     [

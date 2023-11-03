@@ -2,6 +2,7 @@ import pandas as pd
 from dash import dcc, html
 from components.calendar import calenderComponents
 from components.home.weatherRadarComponents import radarComponent
+from components.plane.trackerComponents import planeTrackIframe
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 import dash_mantine_components as dmc
@@ -20,12 +21,18 @@ def renderCurrentWeather(dropZone: DropzoneType, metar: Metar) -> html.Div:
         children=[
             html.Div(
                 [
-                    html.H2(
+                    html.A(
                         "Current Conditions",
+                        href=f"/winds?id={dropZone.id}",
                         style={
                             "textAlign": "center",
                             "fontSize": "26px",
                             "color": "#3498db",
+                            "display": "block",
+                            "margin-top": "0",
+                            "margin-bottom": "0.5rem",
+                            "font-weight": "500",
+                            "line-height": "1.2",
                         },
                     ),
                     _renderCompass(dropZone),
@@ -221,9 +228,19 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
             "padding": "20px",
         },
         children=[
-            html.H2(
+            html.A(
                 "Wind Trends",
-                style={"textAlign": "center", "fontSize": "26px", "color": "#3498db"},
+                href=f"/winds?id={dropZone.id}",
+                style={
+                    "textAlign": "center",
+                    "fontSize": "26px",
+                    "color": "#3498db",
+                    "display": "block",
+                    "margin-top": "0",
+                    "margin-bottom": "0.5rem",
+                    "font-weight": "500",
+                    "line-height": "1.2",
+                },
             ),
             html.Div(
                 children="Wind and gust trends from the past 4 hours",
@@ -377,12 +394,18 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
         },
         children=html.Div(
             [
-                html.H2(
+                html.A(
                     "Weather Outlook",
+                    href=f"/forecast?id={dropZone.id}",
                     style={
                         "textAlign": "center",
                         "fontSize": "26px",
                         "color": "#3498db",
+                        "display": "block",
+                        "margin-top": "0",
+                        "margin-bottom": "0.5rem",
+                        "font-weight": "500",
+                        "line-height": "1.2",
                     },
                 ),
                 dcc.Markdown(
@@ -434,12 +457,18 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
         },
         children=html.Div(
             [
-                html.H2(
+                html.A(
                     "Airspace Tracker",
+                    href=f"/track?id={dropZone.id}",
                     style={
                         "textAlign": "center",
                         "fontSize": "26px",
                         "color": "#3498db",
+                        "display": "block",
+                        "margin-top": "0",
+                        "margin-bottom": "0.5rem",
+                        "font-weight": "500",
+                        "line-height": "1.2",
                     },
                 ),
                 html.Div(
@@ -452,17 +481,7 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
                         "padding-bottom": "20px",
                     },
                 ),
-                html.Iframe(
-                    # https://www.adsbexchange.com/map-help/
-                    id="plane-tracker",
-                    src=f"https://globe.adsbexchange.com?scale=1&airport={dropZone.airportIdentifier}&zoom=11&hideSideBar&hideButtons&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
-                    style={
-                        "width": "100%",
-                        "height": "500px",
-                        "frameBorder": "0",
-                        "margin-bottom": "-10px",
-                    },
-                ),
+                planeTrackIframe(dropZone),
             ],
             style={
                 "maxWidth": "80vw",

@@ -52,12 +52,18 @@ def renderCalendarCurrentDay(dropZone: DropzoneType) -> html.Div:
             },
             children=html.Div(
                 [
-                    html.H2(
+                    html.A(
                         "Today's Events",
+                        href=f"/calendar?id={dropZone.id}",
                         style={
                             "textAlign": "center",
                             "fontSize": "26px",
                             "color": "#3498db",
+                            "display": "block",
+                            "margin-top": "0",
+                            "margin-bottom": "0.5rem",
+                            "font-weight": "500",
+                            "line-height": "1.2",
                         },
                     ),
                     html.Div(

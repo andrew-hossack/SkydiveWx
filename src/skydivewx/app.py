@@ -14,6 +14,7 @@ from pages import (
     calendarPage,
     dropzoneMainPage,
     forecastPage,
+    planeTrackPage,
     searchPage,
     webcamPage,
     windsAloftPage,
@@ -123,6 +124,8 @@ def render_content(pathname, search):
                 return _with_header_footer(webcamPage.render(dropZone), dropZone)
             elif pathname == "/forecast":
                 return _with_header_footer(forecastPage.render(dropZone), dropZone)
+            elif pathname == "/track":
+                return _with_header_footer(planeTrackPage.render(dropZone), dropZone)
             else:
                 # Default to main page if url is invalid
                 return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
@@ -226,6 +229,8 @@ clientside_callback(
             document.title = 'Weather Forecast | SkydiveWx'
         } else if (url === '/search') {
             document.title = 'Find a Dropzone | SkydiveWx'
+        } else if (url === '/track') {
+            document.title = 'Track Aircraft | SkydiveWx'
         } else {
             document.title = 'Home | SkydiveWx'
         }
