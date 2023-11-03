@@ -51,6 +51,16 @@ class Link:
     def get(self) -> dict:
         return {"title": self.title, "url": self.url, "icon": self.icon}
 
+class AircraftInfo:
+    def __init__(self, aircraftIcao: str = None, aircraftRegistraionNumber: str = None):
+        self.aircraftIcao = aircraftIcao
+        self.aircraftRegistraionNumber = aircraftRegistraionNumber
+        if (aircraftIcao or aircraftRegistraionNumber) and not (aircraftIcao and aircraftRegistraionNumber):
+            raise ValueError('aircraftRegistraionNumber and aircraftIcao are both required if used')
+
+    def get(self) -> dict:
+        return {"aircraftIcao": self.aircraftIcao, "aircraftRegistraionNumber": self.aircraftRegistraionNumber}
+
 
 class Socials:
     def __init__(
@@ -117,17 +127,18 @@ class DropzoneType:
     def __init__(
         self,
         id: str,
-        friendlyName: str,
-        weatherGovGridpointLocation: str,
-        airportIdentifier: str,
-        latitude: str,
-        longitude: str,
-        calendars: Calendars,
-        cameras: Cameras,
-        radarBoxUrl: str,
-        liveManifestUrl: str,
-        weatherRadariFrameUrl: str,
-        socials: Socials,
+        friendlyName: str = None,
+        weatherGovGridpointLocation: str = None,
+        airportIdentifier: str = None,
+        latitude: str = None,
+        longitude: str = None,
+        calendars: Calendars = None,
+        cameras: Cameras = None,
+        radarBoxUrl: str = None,
+        liveManifestUrl: str = None,
+        weatherRadariFrameUrl: str = None,
+        socials: Socials  = None,
+        aircraftInfo: AircraftInfo = None,
     ) -> None:
         self.id = id
         self.friendlyName = friendlyName
@@ -148,6 +159,8 @@ class DropzoneType:
         self.weatherRadariFrameUrl = weatherRadariFrameUrl
         # Todo drawer menue and weather pages
         self.socials = socials
+        # https://globe.adsbexchange.com/ ADSB ICAO identifier for flight tracker
+        self.aircraftInfo = aircraftInfo
 
     @classmethod
     def get_dropzone_by_id(self, dropzone_id: str) -> ("DropzoneType", None):

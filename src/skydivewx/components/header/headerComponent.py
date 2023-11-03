@@ -114,7 +114,7 @@ def render(dropZone: DropzoneType) -> html.Div:
 
     if dropZone.cameras.get():
         cameras = dbc.NavLink(
-            "Live Cameras", href=f"/cameras?id={dropZone.id}", active="exact"
+            "Cameras", href=f"/cameras?id={dropZone.id}", active="exact"
         )
     else:
         cameras = html.Div()
@@ -134,7 +134,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                         href="/search",
                     ),
                     html.H2(
-                        f"{dropZone.friendlyName} Dashboard",
+                        dropZone.friendlyName,
                         className="display-7",
                         style={"color": "white", "textAlign": "center"},
                     ),
@@ -182,7 +182,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                             ),
                             calendarComponent,
                             dbc.NavLink(
-                                "Winds Aloft",
+                                "Winds",
                                 href=f"/winds?id={dropZone.id}",
                                 active="exact",
                             ),
@@ -192,7 +192,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                                     html.Div(
                                         [
                                             html.Div(
-                                                "Live Manifest",
+                                                "Manifest",
                                                 style={"display": "block"},
                                             ),
                                             html.Img(

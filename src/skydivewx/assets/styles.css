@@ -220,7 +220,16 @@ body::after {
       display: none;
   }
 }
-
+/* 
 #adsbexchange_mobile_pushdown-pushdown-cls {
-  display: none !important;
+    display: none !important;
 }
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 768px) {
+    [data-freestar-ad*="__300x50"], [data-freestar-ad*="__320x50"] {
+      display: none !important;
+        /* --height: 50px;
+        height: 50px;
+        height: calc(var(--height) + var(--fsAncillary)) !important; */
+    }
+} */

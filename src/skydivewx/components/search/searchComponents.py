@@ -1,4 +1,5 @@
 import dash_mantine_components as dmc
+from pandas import DataFrame
 import plotly.express as px
 from dash import dcc, html
 from dash_iconify import DashIconify
@@ -10,15 +11,31 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
     longitudes = [float(dropzone.long) for dropzone in dropZones]
     dropzone_names = [dropzone.friendlyName for dropzone in dropZones]
 
+    data = {
+        "lat": latitudes,
+        "lon": longitudes,
+        "name": dropzone_names,
+    }  # Create dictionary
+    df = DataFrame.from_dict(data)  # Convert the dictionary to pandas DataFrame
+
     fig = px.scatter_mapbox(
-        lat=latitudes,
-        lon=longitudes,
-        hover_name=dropzone_names,
+        df,  # Use DataFrame as a source
+        lat="lat",
+        lon="lon",
+        hover_name="name",
+        hover_data={"lat": False, "lon": False},  # Display only dropzone names
         color_discrete_sequence=["darkorchid"],
         zoom=3,
         height=300,
     )
     fig.update_traces(marker=dict(size=14))
+    fig.update_layout(
+        hoverlabel=dict(
+            font_size=16,
+            font_family="Rockwell",
+        )
+    )
+
     fig.update_layout(
         mapbox_style="carto-positron",
         mapbox_layers=[
@@ -38,7 +55,8 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
         ],
     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    fig.update_layout(mapbox=dict(center=dict(lat=40.0902, lon=-108.7129), zoom=4))
+    fig.update_layout(mapbox=dict(center=dict(lat=40.6117, lon=-120.3475), zoom=3))
+
     return html.Div(
         [dcc.Graph(id="search-graph", figure=fig, style={"height": "100vh"})]
     )
@@ -57,7 +75,7 @@ def help_modal() -> html.Div():
                 zIndex=100000,
                 children=[
                     dcc.Markdown(
-                        "SkydiveWx is an application developed for skydivers to view current weather and jump conditions at their dropzone. Contact [hello@skydivewx.com](mailto:hello@skydivewx.com) for any inquiries. Consider [Sponsoring](https://github.com/sponsors/andrew-hossack) the project."
+                        "SkydiveWx is an application developed for skydivers to view current weather and jump conditions at their dropzone. Contact [hello@skydivewx.com](mailto:hello@skydivewx.com) for any inquiries"
                     )
                 ],
             ),
@@ -93,7 +111,6 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
             "position": "absolute",
             "left": "0",
             "top": "0",
-            # 'width': '30vw',
             "height": "100%",
             "maxWidth": "420px",
             "backgroundColor": "rgb(245, 245, 246)",

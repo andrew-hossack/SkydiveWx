@@ -410,6 +410,19 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
 
 
 def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
+    description = f"Live airspace for the {dropZone.airportIdentifier} airport."
+
+    # validate if aircraftInfo is not None
+    if dropZone.aircraftInfo is not None:
+        aircraft_reg = dropZone.aircraftInfo.aircraftRegistraionNumber
+        aircraft_icao = dropZone.aircraftInfo.aircraftIcao
+
+        if aircraft_reg: # if the aircraft registration number is not None
+            description += f" Your aircraft is {aircraft_reg}"
+        
+        # adds "." at the end only if aircraft_icao is not None
+        if aircraft_icao:
+            description += "."
     return html.Div(
         style={
             "padding": "20px",
@@ -429,22 +442,21 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
                         "color": "#3498db",
                     },
                 ),
-                # dcc.Markdown(
-                #     [
-                #         forecast_summary,
-                #     ],
-                #     style={
-                #         "flex-direction": "column",
-                #         "align-items": "center",
-                #         "justify-content": "center",
-                #     },
-                #     className="nomargin-p",
-                # ),
+                html.Div(
+                children=description,
+                style={
+                    "textAlign": "center",
+                    "color": "white",
+                    "maxWidth": "550px",
+                    "margin": "auto",
+                    "padding-bottom": "20px",
+                },
+            ),
                 html.Iframe(
                     # https://www.adsbexchange.com/map-help/
                     # &icao=a07a7b
                     id="plane-tracker",
-                    src=f"https://globe.adsbexchange.com/?kiosk&scale=1&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&tempTrails=5",
+                    src=f"https://globe.adsbexchange.com/?kiosk&scale=1&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
                     style={"width": "100%", "height": "500px", "frameBorder": "0"},
                 ),
             ],
@@ -500,7 +512,7 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 renderCurrentWeather(dropZone, metar) if metar.code else None,
                 calenderComponents.renderCalendarCurrentDay(dropZone),
                 renderWeatherOutlook(dropZone),
-                # renderAdsbInfo(dropZone),
+                renderAdsbInfo(dropZone),
                 renderWindTrends(dropZone, historicalMetar)
                 if historicalMetar
                 else None,

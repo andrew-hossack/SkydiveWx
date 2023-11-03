@@ -1,6 +1,6 @@
 from enum import Enum
 
-from .dropzoneUtils import Calendars, Cameras, DropzoneType, Link, Socials
+from .dropzoneUtils import Calendars, Cameras, DropzoneType, Link, Socials, AircraftInfo
 
 
 class Dropzones(DropzoneType, Enum):
@@ -23,6 +23,7 @@ class Dropzones(DropzoneType, Enum):
         # TODO radarbox
         # TODO menu drawer
         Socials(),
+        AircraftInfo()
     )
     SKYDIVE_UTAH = (
         "sdu",
@@ -52,6 +53,7 @@ class Dropzones(DropzoneType, Enum):
             email=Link(url="mailto:fly@skydiveutah.com"),
             instagram=Link(url="https://www.instagram.com/skydiveutah/"),
         ),
+        AircraftInfo(aircraftRegistraionNumber='N13SU',aircraftIcao='a07a7b')
     )
     SKYDIVE_WASATCH = (
         "sdw",
@@ -71,8 +73,8 @@ class Dropzones(DropzoneType, Enum):
         "https://www.radarbox.com/?widget=1&z=10&lat=40.41716531358273&lng=-112.38408068409743&labels=true",
         "https://dzm.burblesoft.com/jmp?dz_id=48",
         "https://embed.windy.com/embed2.html?lat=39.74&lon=-111.87&detailLat=39.74&detailLon=-111.87&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-        Socials()
-        # TODO rararbox
+        Socials(),
+        AircraftInfo()
         # TODO menu drawer
     )
     SKYDIVE_ELSINORE = (
@@ -90,8 +92,8 @@ class Dropzones(DropzoneType, Enum):
         "https://www.radarbox.com/?widget=1&z=10&lat=40.41716531358273&lng=-112.38408068409743&labels=true",
         "https://dzm.burblesoft.com/jmp?dz_id=189",
         "https://embed.windy.com/embed2.html?lat=33.6329778&lon=-117.3015722&detailLat=33.6329778&detailLon=-117.3015722&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-        Socials()
-        # TODO rararbox
+        Socials(),
+        AircraftInfo()
         # TODO menu drawer
     )
     SKYDIVE_ZHILLS = (
@@ -106,7 +108,8 @@ class Dropzones(DropzoneType, Enum):
         "https://www.radarbox.com/?widget=1&z=10&lat=40.41716531358273&lng=-112.38408068409743&labels=true",
         "https://dzm.burblesoft.com/jmp?dz_id=53",
         "https://embed.windy.com/embed2.html?lat=28.2266694&lon=-82.1556453&detailLat=28.2266694&detailLon=-82.1556453&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-        Socials()
+        Socials(),
+        AircraftInfo()
         # TODO rararbox
         # TODO menu drawer
     )
