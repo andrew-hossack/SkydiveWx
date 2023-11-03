@@ -9,3 +9,5 @@ pandas==2.0.3
 dash-loading-spinners==1.0.0
 dash-mantine-components==0.12.0
 dash-iconify==0.1.2
+selenium==3.3.0
+webdriver_manager==4.0.1

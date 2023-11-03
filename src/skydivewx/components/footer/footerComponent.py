@@ -58,13 +58,10 @@ def render(dropZone: DropzoneType) -> html.Div:
                     "backgroundColor": "rgba(51, 51, 51, 0.5)",
                     "position": "relative",
                     "bottom": "0",
-                    # 'height': '20px',
-                    # 'margin-bottom': '-15px',
                     "width": "100%",
                     "fontSize": "10px",
                     "color": "white",
                     "zIndex": "998",
-                    # 'whiteSpace': 'nowrap',
                     "text-wrap": "wrap",
                 },
             )

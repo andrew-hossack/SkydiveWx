@@ -24,7 +24,15 @@ def planeTrackIframe(
 def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     return [
         html.Div(
-            [planeTrackIframe(dropZone, width="100%", height="100%", hideButtons=False, hideSidebar=False)],
+            [
+                planeTrackIframe(
+                    dropZone,
+                    width="100%",
+                    height="100%",
+                    hideButtons=False,
+                    hideSidebar=False,
+                )
+            ],
             style={
                 "width": "100%",
                 "height": "80vh",

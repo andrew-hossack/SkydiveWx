@@ -188,27 +188,9 @@ def render(dropZone: DropzoneType) -> html.Div:
                             ),
                             cameras,
                             dbc.NavLink(
-                                [
-                                    html.Div(
-                                        [
-                                            html.Div(
-                                                "Manifest",
-                                                style={"display": "block"},
-                                            ),
-                                            html.Img(
-                                                style={},
-                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==",
-                                                className="external-link",
-                                            ),
-                                        ],
-                                        style={
-                                            "alignItems": "center",
-                                            "display": "flex",
-                                        },
-                                    ),
-                                ],
-                                href=dropZone.liveManifestUrl,
-                                target="_blank",
+                                "Manifest",
+                                href=f"/manifest?id={dropZone.id}",
+                                active="exact",
                             ),
                             dbc.NavLink(
                                 (

@@ -3,6 +3,7 @@ from dash import dcc, html
 from components.calendar import calenderComponents
 from components.home.weatherRadarComponents import radarComponent
 from components.plane.trackerComponents import planeTrackIframe
+from components.manifest.manifestComponents import getScreenshotImageContainer
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 import dash_mantine_components as dmc
@@ -434,6 +435,52 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
     )
 
 
+def renderManifest(dropZone: DropzoneType) -> html.Div:
+    return html.Div(
+        style={
+            "padding": "20px",
+            "fontSize": "20px",
+            "color": "white",
+            "margin": "auto",
+            "marginBottom": "0",
+        },
+        # TOODO to save loading time only return a div and have
+        # the renderer be called in a callback
+        children=html.Div(
+            [
+                html.A(
+                    "Live Manifest",
+                    href=dropZone.liveManifestUrl,
+                    style={
+                        "textAlign": "center",
+                        "fontSize": "26px",
+                        "color": "#3498db",
+                        "display": "block",
+                        "margin-top": "0",
+                        "margin-bottom": "0.5rem",
+                        "font-weight": "500",
+                        "line-height": "1.2",
+                    },
+                    target="_blank",
+                ),
+                html.Div(
+                    getScreenshotImageContainer(),
+                    style={
+                        "maxWidth": "80vw",
+                        "maxWidth": "550px",
+                    },
+                ),
+            ],
+            style={
+                "maxWidth": "80vw",
+                "flex-direction": "column",
+                "margin": "auto",
+                "maxWidth": "550px",
+            },
+        ),
+    )
+
+
 def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
     description = f"Live airspace for the {dropZone.airportIdentifier} airport."
 
@@ -533,6 +580,9 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 if not metar.code
                 else None,
                 renderCurrentWeather(dropZone, metar) if metar.code else None,
+                renderManifest(
+                    dropZone,
+                ),
                 calenderComponents.renderCalendarCurrentDay(dropZone),
                 renderWeatherOutlook(dropZone),
                 renderAdsbInfo(dropZone),

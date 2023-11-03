@@ -1,5 +1,4 @@
 import datetime
-import json
 import os
 
 import dash_bootstrap_components as dbc
@@ -9,7 +8,17 @@ from components.header import headerComponent
 from components.home import weatherComponents
 from components.webcam import webcamComponents
 from components.winds import windsComponents
-from dash import Dash, Input, Output, State, clientside_callback, dcc, html, no_update
+from dash import (
+    Dash,
+    Input,
+    Output,
+    State,
+    clientside_callback,
+    dcc,
+    html,
+    no_update,
+    ALL,
+)
 from pages import (
     calendarPage,
     dropzoneMainPage,
@@ -19,7 +28,9 @@ from pages import (
     webcamPage,
     windsAloftPage,
     errorPage,
+    manifestPage,
 )
+from components.manifest.manifestComponents import screenshotImage
 from utils.dropzones import dropzones
 from utils.dropzones.dropzoneUtils import DropzoneType
 
@@ -41,6 +52,7 @@ app.layout = html.Div(
         html.Div(id="hidden-div-callbacks", style={"display": "hidden"}),
         # Refresh interval component - refreshes components every 60 seconds
         dcc.Interval(id="refresh-interval", interval=1000 * 60, n_intervals=0),
+        dcc.Interval(id="quick-refresh-interval", interval=1000 * 10, n_intervals=0),
         html.Div(id="page-content"),
     ]
 )
@@ -126,6 +138,8 @@ def render_content(pathname, search):
                 return _with_header_footer(forecastPage.render(dropZone), dropZone)
             elif pathname == "/track":
                 return _with_header_footer(planeTrackPage.render(dropZone), dropZone)
+            elif pathname == "/manifest":
+                return _with_header_footer(manifestPage.render(dropZone), dropZone)
             else:
                 # Default to main page if url is invalid
                 return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
@@ -259,6 +273,17 @@ def info_modal(nc1, opened):
 )
 def help_modal(nc1, opened):
     return not opened
+
+
+@app.callback(
+    Output({"type": "live-manifest-image-container", "index": ALL}, "children"),
+    Input("quick-refresh-interval", "n_intervals"),
+    State("url", "search"),
+    prevent_initial_call=False,
+)
+def updateManifest(_, search):
+    dropZone = _get_dropzone_from_search(search)
+    return [screenshotImage(dropZone, width="100%")]
 
 
 # @app.callback(
