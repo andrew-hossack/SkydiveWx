@@ -417,9 +417,9 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
         aircraft_reg = dropZone.aircraftInfo.aircraftRegistraionNumber
         aircraft_icao = dropZone.aircraftInfo.aircraftIcao
 
-        if aircraft_reg: # if the aircraft registration number is not None
+        if aircraft_reg:  # if the aircraft registration number is not None
             description += f" Your aircraft is {aircraft_reg}"
-        
+
         # adds "." at the end only if aircraft_icao is not None
         if aircraft_icao:
             description += "."
@@ -430,7 +430,6 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
             "color": "white",
             "maxHeight": "650px",
             "margin": "auto",
-            "marginBottom": "0",
         },
         children=html.Div(
             [
@@ -443,21 +442,26 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
                     },
                 ),
                 html.Div(
-                children=description,
-                style={
-                    "textAlign": "center",
-                    "color": "white",
-                    "maxWidth": "550px",
-                    "margin": "auto",
-                    "padding-bottom": "20px",
-                },
-            ),
+                    children=description,
+                    style={
+                        "textAlign": "center",
+                        "color": "white",
+                        "maxWidth": "550px",
+                        "margin": "auto",
+                        "padding-bottom": "20px",
+                    },
+                ),
                 html.Iframe(
                     # https://www.adsbexchange.com/map-help/
                     # &icao=a07a7b
                     id="plane-tracker",
-                    src=f"https://globe.adsbexchange.com/?kiosk&scale=1&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
-                    style={"width": "100%", "height": "500px", "frameBorder": "0"},
+                    src=f"https://globe.adsbexchange.com?scale=1&airport={dropZone.airportIdentifier}&zoom=11&hideSideBar&hideButtons&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
+                    style={
+                        "width": "100%",
+                        "height": "500px",
+                        "frameBorder": "0",
+                        "padding-bottom": "40px",
+                    },
                 ),
             ],
             style={

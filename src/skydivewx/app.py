@@ -128,15 +128,20 @@ def render_content(pathname, search):
                 return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
         else:
             # If not valid dropzone, return to '/search' page
-            return [
-                # TODO Header and footer for search page
-                # html.Div(id='header-container', children=headerComponent.render(dropZone)),
-                html.Div(
-                    id="header-container", children=headerComponent.searchpageHeader()
-                ),
-                searchPage.render(dropzones.Dropzones),
-                # html.Div(id='footer-container', children=footerComponent.render(dropZone))
-            ]
+            return html.Div(
+                [
+                    # TODO Header and footer for search page
+                    # html.Div(id='header-container', children=headerComponent.render(dropZone)),
+                    html.Div(
+                        id="header-container",
+                        children=headerComponent.searchpageHeader(),
+                    ),
+                    searchPage.render(dropzones.Dropzones),
+                    # html.Div(id='footer-container', children=footerComponent.render(dropZone))
+                ],
+                style={"overflow": "hidden", 'position': 'fixed'},
+            )
+
     except Exception:
         return errorPage.render()
 

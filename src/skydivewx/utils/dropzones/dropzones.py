@@ -23,7 +23,7 @@ class Dropzones(DropzoneType, Enum):
         # TODO radarbox
         # TODO menu drawer
         Socials(),
-        AircraftInfo()
+        AircraftInfo(),
     )
     SKYDIVE_UTAH = (
         "sdu",
@@ -53,7 +53,7 @@ class Dropzones(DropzoneType, Enum):
             email=Link(url="mailto:fly@skydiveutah.com"),
             instagram=Link(url="https://www.instagram.com/skydiveutah/"),
         ),
-        AircraftInfo(aircraftRegistraionNumber='N13SU',aircraftIcao='a07a7b')
+        AircraftInfo(aircraftRegistraionNumber="N13SU", aircraftIcao="a07a7b"),
     )
     SKYDIVE_WASATCH = (
         "sdw",

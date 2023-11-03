@@ -51,15 +51,23 @@ class Link:
     def get(self) -> dict:
         return {"title": self.title, "url": self.url, "icon": self.icon}
 
+
 class AircraftInfo:
     def __init__(self, aircraftIcao: str = None, aircraftRegistraionNumber: str = None):
         self.aircraftIcao = aircraftIcao
         self.aircraftRegistraionNumber = aircraftRegistraionNumber
-        if (aircraftIcao or aircraftRegistraionNumber) and not (aircraftIcao and aircraftRegistraionNumber):
-            raise ValueError('aircraftRegistraionNumber and aircraftIcao are both required if used')
+        if (aircraftIcao or aircraftRegistraionNumber) and not (
+            aircraftIcao and aircraftRegistraionNumber
+        ):
+            raise ValueError(
+                "aircraftRegistraionNumber and aircraftIcao are both required if used"
+            )
 
     def get(self) -> dict:
-        return {"aircraftIcao": self.aircraftIcao, "aircraftRegistraionNumber": self.aircraftRegistraionNumber}
+        return {
+            "aircraftIcao": self.aircraftIcao,
+            "aircraftRegistraionNumber": self.aircraftRegistraionNumber,
+        }
 
 
 class Socials:
@@ -137,7 +145,7 @@ class DropzoneType:
         radarBoxUrl: str = None,
         liveManifestUrl: str = None,
         weatherRadariFrameUrl: str = None,
-        socials: Socials  = None,
+        socials: Socials = None,
         aircraftInfo: AircraftInfo = None,
     ) -> None:
         self.id = id
