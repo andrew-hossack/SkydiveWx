@@ -10,6 +10,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 def getBurbleScreenshot(burbleUrl: str):
+    # TODO "Callback error updating {"index":["ALL"],"type":"live-manifest-image-container"}.children"
+    # "<!doctype html>
+    # <html lang=en>
+    # <title>500 Internal Server Error</title>
+    # <h1>Internal Server Error</h1>
+    # <p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+    # "
     # setting selenium options
     options = Options()
     options.add_argument("--headless")
@@ -27,6 +34,8 @@ def getBurbleScreenshot(burbleUrl: str):
         time.sleep(5)
         screenshot = driver.get_screenshot_as_png()
         img_data.append(base64.b64encode(screenshot).decode())
+    except Exception as e:
+        raise e
     finally:
         driver.quit()
 
