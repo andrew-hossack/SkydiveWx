@@ -1,6 +1,7 @@
 import pandas as pd
 from dash import dcc, html
 from components.calendar import calenderComponents
+from components.home.weatherRadarComponents import radarComponent
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 import dash_mantine_components as dmc
@@ -237,9 +238,7 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
             ),
             dcc.Graph(
                 style={
-                    # "margin-top": "-50px",
                     "height": "60vh",
-                    "maxHeight": "650px",
                 },
                 config={
                     "displayModeBar": False,
@@ -373,7 +372,6 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
             "padding": "20px",
             "fontSize": "20px",
             "color": "white",
-            "maxHeight": "650px",
             "margin": "auto",
             "marginBottom": "0",
         },
@@ -395,8 +393,12 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
                         "flex-direction": "column",
                         "align-items": "center",
                         "justify-content": "center",
+                        "padding-bottom": "20px",
                     },
                     className="nomargin-p",
+                ),
+                html.Div(
+                    radarComponent(dropZone, height="500px"), style={"height": "500px"}
                 ),
             ],
             style={
@@ -428,7 +430,6 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
             "padding": "20px",
             "fontSize": "20px",
             "color": "white",
-            "maxHeight": "650px",
             "margin": "auto",
         },
         children=html.Div(
@@ -453,14 +454,13 @@ def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
                 ),
                 html.Iframe(
                     # https://www.adsbexchange.com/map-help/
-                    # &icao=a07a7b
                     id="plane-tracker",
                     src=f"https://globe.adsbexchange.com?scale=1&airport={dropZone.airportIdentifier}&zoom=11&hideSideBar&hideButtons&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
                     style={
                         "width": "100%",
                         "height": "500px",
                         "frameBorder": "0",
-                        "padding-bottom": "40px",
+                        "margin-bottom": "-10px",
                     },
                 ),
             ],
