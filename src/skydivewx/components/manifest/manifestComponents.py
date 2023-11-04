@@ -1,18 +1,17 @@
-from dash import html, dcc
+from dash import html
 import dash_bootstrap_components as dbc
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils.screenshotUtils import getBurbleScreenshot
 from uuid import uuid1
 
-# import dash_core_components as dcc
-
 
 def screenshotImage(
-    dropZone: DropzoneType, width: any = 500, includeLink: bool = False
+    dropZone: DropzoneType, width: any = '100%', height: any = '100%', includeLink: bool = False
 ) -> html.Div:
     image = html.Img(
         src="data:image/png;base64, " + getBurbleScreenshot(dropZone.liveManifestUrl),
         width=width,
+        height=height
     )
     if includeLink:
         return html.A(

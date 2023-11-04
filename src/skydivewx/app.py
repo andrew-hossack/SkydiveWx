@@ -1,6 +1,7 @@
 import datetime
 import os
 
+import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc
 import pytz
 from components.footer import footerComponent
@@ -277,13 +278,32 @@ def help_modal(nc1, opened):
 
 @app.callback(
     Output({"type": "live-manifest-image-container", "index": ALL}, "children"),
-    Input("quick-refresh-interval", "n_intervals"),
+    Input("refresh-interval", "n_intervals"),
     State("url", "search"),
     prevent_initial_call=False,
 )
 def updateManifest(_, search):
     dropZone = _get_dropzone_from_search(search)
-    return [screenshotImage(dropZone, width="100%")]
+    image = screenshotImage(dropZone)
+    fullScreenModal = dmc.Modal(
+            id="live-manifest-fullscreen-modal",
+            fullScreen=True,
+            zIndex=10000,
+            opened=False,
+            children=[
+                image
+            ],
+        )
+    return [html.Div([html.Button(image, style={'border':'none'}),fullScreenModal])]
+
+
+@app.callback(
+    Output('live-manifest-fullscreen-modal', "opened"),
+    Input({"type": "live-manifest-image-container", "index": ALL}, "n_clicks"),
+)
+def expandManifest(_):
+    return True
+
 
 
 # @app.callback(
