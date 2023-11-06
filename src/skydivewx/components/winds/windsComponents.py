@@ -122,6 +122,7 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
         ],
         mode="lines",
         name="Wind Speed (Kts)",
+        # hovertemplate='Wind speed: %{y} kts<extra></extra>',
         line=dict(color="coral", shape="spline", width=3),
     )
 
@@ -135,6 +136,7 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
             mode="lines",
             xaxis="x2" if i % 2 == 0 else "x3",
             name="Wind Direction (°)",
+            # hovertemplate='Wind direction: %{y}°<extra></extra>',
             showlegend=True if i == 0 else False,
             line=dict(shape="spline", width=3),
             marker=dict(color="mintcream"),

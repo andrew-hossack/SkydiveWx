@@ -267,15 +267,18 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
                             "x": df_historical["time"],
                             "y": df_historical["windspeed_10m"],
                             "type": "line",
-                            "name": "Wind speed (mph)",
+                            "hovertemplate": 'Wind speed: %{y} mph<extra></extra>',
                             "line": {"width": 3, "shape": "spline"},
+                            "name":"Wind Speed"
                         },
                         {
                             "x": df_historical["time"],
                             "y": df_historical["windgusts_10m"],
                             "type": "line",
-                            "name": "Wind gusts (mph)",
+                            "hovertemplate": 'Wind gusts: %{y} mph<extra></extra>',
                             "line": {"width": 3, "shape": "spline"},
+                            "name":"Wind Gusts"
+
                         },
                     ],
                     "layout": {
@@ -289,7 +292,6 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
                         "yaxis": {
                             "gridcolor": "rgba(255,255,255,0.1)",
                             "tickformat": "~s",
-                            "ticksuffix": " mph",
                         },
                         "legend": {
                             "orientation": "h",
