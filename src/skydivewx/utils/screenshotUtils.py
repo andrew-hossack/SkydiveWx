@@ -32,7 +32,7 @@ def getBurbleScreenshot(burbleUrl: str):
         img_data.append(base64.b64encode(screenshot).decode())
     except TimeoutException as e:
         # Could not load in manifest
-        return ''
+        return ""
     finally:
         driver.quit()
 

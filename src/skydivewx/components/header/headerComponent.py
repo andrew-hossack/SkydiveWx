@@ -187,11 +187,11 @@ def render(dropZone: DropzoneType) -> html.Div:
                                 active="exact",
                             ),
                             cameras,
-                            dbc.NavLink(
-                                "Manifest",
-                                href=f"/manifest?id={dropZone.id}",
-                                active="exact",
-                            ),
+                            # dbc.NavLink(
+                            #     "Manifest",
+                            #     href=f"/manifest?id={dropZone.id}",
+                            #     active="exact",
+                            # ),
                             dbc.NavLink(
                                 (
                                     [

@@ -285,25 +285,36 @@ def help_modal(nc1, opened):
 def updateManifest(_, search):
     dropZone = _get_dropzone_from_search(search)
     image = screenshotImage(dropZone)
-    fullScreenModal = dmc.Modal(
+    return [
+        html.Div(
             id="live-manifest-fullscreen-modal",
-            fullScreen=True,
-            zIndex=10000,
-            opened=False,
-            children=[
-                image
-            ],
+            children=[html.Button(image, style={"border": "none"})],
         )
-    return [html.Div([html.Button(image, style={'border':'none'}),fullScreenModal])]
+    ]
 
 
 @app.callback(
-    Output('live-manifest-fullscreen-modal', "opened"),
+    Output("live-manifest-fullscreen-modal", "style"),
     Input({"type": "live-manifest-image-container", "index": ALL}, "n_clicks"),
 )
-def expandManifest(_):
-    return True
-
+def expandManifest(n):
+    if n[0] % 2 == 0:
+        return {"width": "100%"}
+    else:
+        return {
+            "display": "flex",
+            "justifyContent": "center",
+            "alignItems": "center",
+            "position": "fixed",
+            "zIndex": "1000",
+            "paddingTop": "100",
+            "left": "0",
+            "top": "0",
+            "width": "100vw",
+            "height": "100vh",
+            "overflow": "auto",
+            "backdropFilter": "blur(10px)",
+        }
 
 
 # @app.callback(

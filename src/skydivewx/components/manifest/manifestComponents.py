@@ -6,12 +6,15 @@ from uuid import uuid1
 
 
 def screenshotImage(
-    dropZone: DropzoneType, width: any = '100%', height: any = '100%', includeLink: bool = False
+    dropZone: DropzoneType,
+    width: any = "100%",
+    height: any = "100%",
+    includeLink: bool = False,
 ) -> html.Div:
     image = html.Img(
         src="data:image/png;base64, " + getBurbleScreenshot(dropZone.liveManifestUrl),
         width=width,
-        height=height
+        height=height,
     )
     if includeLink:
         return html.A(
