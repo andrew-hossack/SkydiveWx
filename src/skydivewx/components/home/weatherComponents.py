@@ -172,6 +172,8 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
 
 def _renderCompass(dropZone: DropzoneType) -> html.Div:
     metar = weatherUtils.get_metar(dropZone.airportIdentifier)
+    if not metar:
+        return None
     # Access the wind direction and speed
     wind_speed = metar.wind_speed.string("MPH") if metar.wind_speed else 0
     if "variable" in metar.wind("MPH"):
@@ -579,9 +581,9 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 renderMetarError(
                     dropZone.airportIdentifier, dropZone.friendlyName, dropZone.id
                 )
-                if not metar.code
+                if not metar or not metar.code
                 else None,
-                renderCurrentWeather(dropZone, metar) if metar.code else None,
+                renderCurrentWeather(dropZone, metar) if metar else None,
                 renderManifest(
                     dropZone,
                 ),

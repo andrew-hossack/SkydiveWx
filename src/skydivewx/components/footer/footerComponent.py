@@ -11,7 +11,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                 [
                     html.Footer(
                         [
-                            html.A(f"{currentMetar.code} ", id="footer-metar-data"),
+                            html.A(f"{currentMetar.code if currentMetar else ''} ", id="footer-metar-data"),
                             html.Div(
                                 [
                                     html.A(

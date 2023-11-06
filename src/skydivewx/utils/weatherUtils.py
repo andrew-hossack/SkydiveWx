@@ -5,17 +5,24 @@ import requests
 def _get_raw_metar(airport_code, hours=0):
     # Returns parsed json or list of parsed json
     url = f"https://aviationweather.gov/cgi-bin/data/metar.php?ids={airport_code}&hours={hours}"
-    response = requests.get(url).text.split("\n")
-    if hours > 0:
-        response.pop()
-    else:
-        response = response[0]
-    return response
+    try:
+        response = requests.get(url).text.split("\n")
+        if hours > 0:
+            response.pop()
+        else:
+            response = response[0]
+        return response
+    except Exception as e:
+        print(e)
+        return None
 
 
-def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar:
+def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar | None:
     try:
         metar = _get_raw_metar(airportIdentifier, hours=hours)
+        if not metar:
+            print('No metar found, returning None')
+            return None
         if hours == 0:
             return Metar.Metar(metar)
         else:

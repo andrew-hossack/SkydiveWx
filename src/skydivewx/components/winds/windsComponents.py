@@ -219,7 +219,7 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
                     ),
                 ],
             )
-            if metar.code
+            if metar
             else None,
             dcc.Graph(
                 style={"width": "100%", "display": "inline-block", "height": "600px"},
