@@ -5,16 +5,19 @@ import requests
 def _get_raw_metar(airport_code, hours=0):
     # Returns parsed json or list of parsed json
     url = f"https://aviationweather.gov/cgi-bin/data/metar.php?ids={airport_code}&hours={hours}"
-    try:
-        response = requests.get(url).text.split("\n")
-        if hours > 0:
-            response.pop()
-        else:
-            response = response[0]
-        return response
-    except Exception as e:
-        print(e)
-        return None
+    retries = 0
+    while retries < 5:
+        try:
+            response = requests.get(url).text.split("\n")
+            if hours > 0:
+                response.pop()
+            else:
+                response = response[0]
+            return response
+        except Exception as e:
+            print(f'{e}... retrying {retries}')
+            retries += 1
+    return None
 
 
 def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar | None:
