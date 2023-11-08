@@ -24,15 +24,15 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
         lon="lon",
         hover_name="name",
         hover_data={"lat": False, "lon": False},
-        color_discrete_sequence=["SkyBlue"],
+        color_discrete_sequence=["darkgoldenrod"],
         zoom=3,
         height=300,
     )
     fig.update_traces(marker=dict(size=14))
     fig.update_layout(
         hoverlabel=dict(
-            font_size=16,
-            font_family="Rockwell",
+            font_size=15,
+            # font_family="Helvetica Neue",
         )
     )
 
@@ -183,7 +183,7 @@ def renderInfo() -> html.Div:
         "Scroll and zoom to find a dropzone location near you.",
         title="Info",
         icon=DashIconify(icon="fe:info"),
-        color="blue",
+        color="yellow",
         className="alert-div",
         style={
             "z-index": "99999",
@@ -191,6 +191,7 @@ def renderInfo() -> html.Div:
             "border-radius": "10px",
             "right": "60px",
             "top": "80px",
+            "font-weight": "500",
         },
     )
 

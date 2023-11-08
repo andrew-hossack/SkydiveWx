@@ -205,18 +205,18 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
                             "white-space": "normal",
                         },
                     ),
-                    html.Strong(
-                        "Updated At: ",
-                        style={"text-align": "left"},
-                    ),
-                    html.Span(
-                        timeUtils.time_diff(metar.time),
-                        id="time-since-last-update",
-                        style={
-                            "text-align": "right",
-                            "white-space": "normal",
-                        },
-                    ),
+                    # html.Strong(
+                    #     "Updated At: ",
+                    #     style={"text-align": "left"},
+                    # ),
+                    # html.Span(
+                    #     timeUtils.time_diff(metar.time),
+                    #     id="time-since-last-update",
+                    #     style={
+                    #         "text-align": "right",
+                    #         "white-space": "normal",
+                    #     },
+                    # ),
                 ],
             )
             if metar
