@@ -15,16 +15,16 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
         "lat": latitudes,
         "lon": longitudes,
         "name": dropzone_names,
-    }  # Create dictionary
-    df = DataFrame.from_dict(data)  # Convert the dictionary to pandas DataFrame
+    }
+    df = DataFrame.from_dict(data)
 
     fig = px.scatter_mapbox(
-        df,  # Use DataFrame as a source
+        df,
         lat="lat",
         lon="lon",
         hover_name="name",
-        hover_data={"lat": False, "lon": False},  # Display only dropzone names
-        color_discrete_sequence=["darkorchid"],
+        hover_data={"lat": False, "lon": False},
+        color_discrete_sequence=["SkyBlue"],
         zoom=3,
         height=300,
     )
@@ -38,21 +38,6 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
 
     fig.update_layout(
         mapbox_style="carto-positron",
-        mapbox_layers=[
-            {
-                "below": "traces",
-                "sourcetype": "raster",
-                "sourceattribution": "OpenStreetMap",
-                "source": ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-            },
-            {
-                "sourcetype": "raster",
-                "sourceattribution": "Stadia Maps",
-                "source": [
-                    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-                ],
-            },
-        ],
     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig.update_layout(mapbox=dict(center=dict(lat=40.6117, lon=-120.3475), zoom=3))
@@ -113,8 +98,8 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
             "top": "0",
             "height": "100%",
             "maxWidth": "420px",
-            "backgroundColor": "rgb(245, 245, 246)",
-            "color": "black",
+            "backgroundColor": "rgb(22,25,28)",
+            "color": "rgb(182, 194, 207)",
             "paddingTop": "80px",
             "paddingLeft": "30px",
             "paddingRight": "30px",
@@ -123,7 +108,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
             html.H2(
                 f"{len(dropZones)} Dropzones Available",
                 style={
-                    "color": "black",
+                    "color": "rgb(182, 194, 207)",
                     "textAlign": "center",
                     "fontWeight": "330",
                     "marginTop": "15px",
@@ -165,14 +150,14 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
                         style={
                             "width": "100%",
                         },
-                        color="rgba(0,0,0, 0.2)",
+                        color="rgba(182, 194, 207, 0.4)",
                         size=1,
                     ),
                     html.Button(
                         id="info-modal-button",
                         children=["Missing your location?"],
                         style={
-                            "color": "rgba(0,0,0, 0.2)",
+                            "color": "rgb(182, 194, 207)",
                             "border": "none",
                             "background": "none",
                             "fontSize": "13px",
@@ -186,7 +171,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
                     "bottom": "0",
                     "align-items": "center",
                     "justify-content": "center",
-                    "marginBottom": "20px",  # Remove padding
+                    "marginBottom": "20px",
                 },
             ),
         ],
@@ -198,8 +183,8 @@ def renderInfo() -> html.Div:
         "Scroll and zoom to find a dropzone location near you.",
         title="Info",
         icon=DashIconify(icon="fe:info"),
-        color="violet",
-        className="alert-div",  # Add this line
+        color="blue",
+        className="alert-div",
         style={
             "z-index": "99999",
             "position": "absolute",

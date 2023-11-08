@@ -15,7 +15,7 @@ def _get_raw_metar(airport_code, hours=0):
                 response = response[0]
             return response
         except Exception as e:
-            print(f'{e}... retrying {retries}')
+            print(f"{e}... retrying {retries}")
             retries += 1
     return None
 
@@ -24,7 +24,7 @@ def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar | None:
     try:
         metar = _get_raw_metar(airportIdentifier, hours=hours)
         if not metar:
-            print('No metar found, returning None')
+            print("No metar found, returning None")
             return None
         if hours == 0:
             return Metar.Metar(metar)

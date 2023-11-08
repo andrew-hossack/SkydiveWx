@@ -42,17 +42,6 @@ def webcamComponent(dropZone: DropzoneType) -> html.Div():
                 },
             ),
             *_generate_components(dropZone),
-            dcc.Markdown(
-                """
-            _*To view additional camera feeds, please visit [https://www.weather.gov/slc/Cameras](https://www.weather.gov/slc/Cameras) or [https://www.wrh.noaa.gov/slc/webcam_map_CSV](https://www.wrh.noaa.gov/slc/webcam_map_CSV)_
-            """,
-                style={
-                    "color": "white",
-                    "font-size": "12px",
-                    "margin-top": "10px",
-                    "overflow-wrap": "break-word",
-                },
-            ),
         ],
     )
 

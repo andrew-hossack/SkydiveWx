@@ -11,40 +11,48 @@ def render(dropZone: DropzoneType) -> html.Div:
                 [
                     html.Footer(
                         [
-                            html.A(f"{currentMetar.code if currentMetar else ''} ", id="footer-metar-data"),
                             html.Div(
                                 [
-                                    html.A(
-                                        children="Support this Project",
-                                        href="https://github.com/sponsors/andrew-hossack",
-                                        target="_blank",
-                                        style={
-                                            "textAlign": "center",
-                                            "padding": "0px",
-                                            "position": "sticky",
-                                            "color": "#fff",
-                                            "display": "inline-block",
-                                        },
-                                    ),
-                                    html.P(
-                                        "•",
-                                        style={
-                                            "display": "inline-block",
-                                            "color": "#fff",
-                                            "margin-right": "5px",
-                                            "margin-left": "5px",
-                                        },
-                                    ),
-                                    html.A(
-                                        "Contact Us",
-                                        href=f"mailto:hello@skydivewx.com",
-                                        target="_top",
-                                        style={
-                                            "display": "inline-block",
-                                            "color": "#fff",
-                                        },
+                                    html.Div(
+                                        [
+                                            html.A(
+                                                children="Support this Project",
+                                                href="https://github.com/sponsors/andrew-hossack",
+                                                target="_blank",
+                                                style={
+                                                    "textAlign": "center",
+                                                    "padding": "0px",
+                                                    "position": "sticky",
+                                                    "color": "#fff",
+                                                    "display": "inline-block",
+                                                },
+                                            ),
+                                            html.P(
+                                                "•",
+                                                style={
+                                                    "display": "inline-block",
+                                                    "color": "#fff",
+                                                    "margin-right": "5px",
+                                                    "margin-left": "5px",
+                                                },
+                                            ),
+                                            html.A(
+                                                "Contact Us",
+                                                href=f"mailto:hello@skydivewx.com",
+                                                target="_blank",
+                                                style={
+                                                    "display": "inline-block",
+                                                    "color": "#fff",
+                                                },
+                                            ),
+                                        ],
+                                        style={"margin-bottom": "-5px"},
                                     ),
                                 ]
+                            ),
+                            html.A(
+                                f"{currentMetar.code if currentMetar else ''} ",
+                                id="footer-metar-data",
                             ),
                         ]
                     )

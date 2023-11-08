@@ -8,6 +8,7 @@ from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 import dash_mantine_components as dmc
 from utils.metar import Metar
+import dash_bootstrap_components as dbc
 
 
 def renderCurrentWeather(dropZone: DropzoneType, metar: Metar) -> html.Div:
@@ -207,6 +208,8 @@ def _renderCompass(dropZone: DropzoneType) -> html.Div:
 
 
 def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
+    if not historicalMetar:
+        return None
     # List of metar objects
     df_historical = pd.DataFrame(
         [
@@ -269,18 +272,17 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
                             "x": df_historical["time"],
                             "y": df_historical["windspeed_10m"],
                             "type": "line",
-                            "hovertemplate": 'Wind speed: %{y} mph<extra></extra>',
+                            "hovertemplate": "Wind speed: %{y} mph<extra></extra>",
                             "line": {"width": 3, "shape": "spline"},
-                            "name":"Wind Speed"
+                            "name": "Wind Speed",
                         },
                         {
                             "x": df_historical["time"],
                             "y": df_historical["windgusts_10m"],
                             "type": "line",
-                            "hovertemplate": 'Wind gusts: %{y} mph<extra></extra>',
+                            "hovertemplate": "Wind gusts: %{y} mph<extra></extra>",
                             "line": {"width": 3, "shape": "spline"},
-                            "name":"Wind Gusts"
-
+                            "name": "Wind Gusts",
                         },
                     ],
                     "layout": {
@@ -576,29 +578,37 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     metar = weatherUtils.get_metar(dropZone.airportIdentifier)
     historicalMetar = weatherUtils.get_metar(dropZone.airportIdentifier, hours=4)
     return [
-        html.Div(
+        renderMetarError(
+            dropZone.airportIdentifier,
+            dropZone.friendlyName,
+            dropZone.id,
+        )
+        if not metar or not metar.code
+        else None,
+        dbc.Row(
             [
-                renderMetarError(
-                    dropZone.airportIdentifier, dropZone.friendlyName, dropZone.id
-                )
-                if not metar or not metar.code
-                else None,
-                renderCurrentWeather(dropZone, metar) if metar else None,
-                renderManifest(
-                    dropZone,
+                dbc.Col(
+                    [
+                        renderCurrentWeather(dropZone, metar) if metar else None,
+                        renderManifest(dropZone),
+                        calenderComponents.renderCalendarCurrentDay(dropZone),
+                    ],
+                    md=6,
                 ),
-                calenderComponents.renderCalendarCurrentDay(dropZone),
-                renderWeatherOutlook(dropZone),
-                renderAdsbInfo(dropZone),
-                renderWindTrends(dropZone, historicalMetar)
-                if historicalMetar
-                else None,
+                dbc.Col(
+                    [
+                        renderWeatherOutlook(dropZone),
+                        renderAdsbInfo(dropZone),
+                        renderWindTrends(dropZone, historicalMetar),
+                    ],
+                    md=6,
+                ),
             ],
             style={
                 "borderRadius": "15px",
                 "backgroundColor": "rgba(47, 62, 70, 0.5)",
                 "width": "80vw",
-                "maxWidth": "750px",
+                "maxWidth": "1300px",
             },
         ),
     ]

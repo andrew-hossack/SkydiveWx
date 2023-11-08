@@ -128,7 +128,7 @@ def render(dropZone: DropzoneType) -> html.Div:
                         style={
                             "float": "left",
                             "color": "white",
-                            "opacity": "0.8",
+                            "opacity": "0.5",
                             "position": "absolute",
                         },
                         href="/search",
@@ -180,13 +180,13 @@ def render(dropZone: DropzoneType) -> html.Div:
                             dbc.NavLink(
                                 "Home", href=f"/home?id={dropZone.id}", active="exact"
                             ),
+                            cameras,
                             calendarComponent,
                             dbc.NavLink(
                                 "Winds",
                                 href=f"/winds?id={dropZone.id}",
                                 active="exact",
                             ),
-                            cameras,
                             # dbc.NavLink(
                             #     "Manifest",
                             #     href=f"/manifest?id={dropZone.id}",
@@ -251,10 +251,22 @@ def render(dropZone: DropzoneType) -> html.Div:
 def searchpageHeader() -> html.Div:
     return html.Div(
         [
-            html.Img(src=get_asset_url("logo.png"), style={"width": "180px"}),
+            html.Img(
+                src=get_asset_url("logo.png"),
+                style={
+                    "width": "180px",
+                    "filter": "invert(100%) brightness(300%) contrast(100%)",
+                },
+            ),
             html.Button(
                 id="help-modal-button",
-                children=[DashIconify(icon="fluent:chat-help-24-regular", height=20)],
+                children=[
+                    DashIconify(
+                        icon="fluent:chat-help-24-regular",
+                        height=20,
+                        color="rgb(182, 194, 207)",
+                    )
+                ],
                 style={
                     "flex-direction": "column",
                     "align-items": "center",
@@ -267,7 +279,8 @@ def searchpageHeader() -> html.Div:
             ),
         ],
         style={
-            "backgroundColor": "rgb(245, 245, 246)",
+            "backgroundColor": "rgb(22,25,28)",
+            "color": "white",
             "padding": "10px",
             "width": "100vw",
             "box-shadow": "0 0 2px rgba(0,0,0,0.5)",

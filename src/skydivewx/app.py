@@ -1,12 +1,11 @@
 import datetime
 import os
 
-import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc
 import pytz
 from components.footer import footerComponent
 from components.header import headerComponent
-from components.home import weatherComponents
+from components.home import homePageComponents
 from components.webcam import webcamComponents
 from components.winds import windsComponents
 from dash import (
@@ -187,7 +186,7 @@ def update_footer(n, search):
     State("url", "search"),
 )
 def refresh_weather(refresh, search):
-    return weatherComponents.getAllComponents(_get_dropzone_from_search(search))
+    return homePageComponents.getAllComponents(_get_dropzone_from_search(search))
 
 
 @app.callback(
@@ -277,7 +276,7 @@ def help_modal(nc1, opened):
 
 
 @app.callback(
-    Output({"type": "live-manifest-image-container", "index": ALL}, "children"),
+    Output("live-manifest-image-container", "children"),
     Input("refresh-interval", "n_intervals"),
     State("url", "search"),
     prevent_initial_call=False,
@@ -295,10 +294,10 @@ def updateManifest(_, search):
 
 @app.callback(
     Output("live-manifest-fullscreen-modal", "style"),
-    Input({"type": "live-manifest-image-container", "index": ALL}, "n_clicks"),
+    Input("live-manifest-image-container", "n_clicks"),
 )
 def expandManifest(n):
-    if n[0] % 2 == 0:
+    if n % 2 == 0:
         return {"width": "100%"}
     else:
         return {

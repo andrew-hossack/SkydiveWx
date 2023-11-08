@@ -231,5 +231,21 @@ body::after {
         /* --height: 50px;
         height: 50px;
         height: calc(var(--height) + var(--fsAncillary)) !important; */
-    }
+    /* }
 } */
+
+.react-entry-point {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+._dash-loading {
+  margin: 100px auto;
+  font-size: 25px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  text-indent: -9999em;
+  position: relative;
+}

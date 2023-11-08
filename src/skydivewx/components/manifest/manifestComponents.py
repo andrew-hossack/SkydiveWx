@@ -34,7 +34,7 @@ def getScreenshotImageContainer() -> html.Div:
                 style={"width": "100%", "textAlign": "center", "padding-top": "20px"},
             )
         ],
-        id={"type": "live-manifest-image-container", "index": str(uuid1())},
+        id="live-manifest-image-container",
     )
 
 
