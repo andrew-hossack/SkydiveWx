@@ -99,7 +99,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
             "height": "100%",
             "maxWidth": "420px",
             "backgroundColor": "rgb(22,25,28)",
-            "color": "rgb(182, 194, 207)",
+            "color": "white",
             "paddingTop": "80px",
             "paddingLeft": "30px",
             "paddingRight": "30px",
@@ -108,7 +108,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
             html.H2(
                 f"{len(dropZones)} Dropzones Available",
                 style={
-                    "color": "rgb(182, 194, 207)",
+                    "color": "white",
                     "textAlign": "center",
                     "fontWeight": "330",
                     "marginTop": "15px",
