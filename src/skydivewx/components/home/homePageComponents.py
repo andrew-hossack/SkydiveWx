@@ -489,23 +489,23 @@ def renderJumpability(
                         """
                         The Jump Score is calculated from the current wind, 
                         gust, precipitation, temperature and cloud coverage,
-                        and can be used as a guide on how pleasant jump 
+                        and can be used as a gauge on how pleasant jump 
                         conditions will feel.
                         """,
                     ],
                 ),
                 html.P(
                     children=[
-                        "Today's Jump Score",
+                        "Jump Score",
                         html.Button(
                             id="jump-score-help-button",
                             children=DashIconify(
-                                icon="fluent:chat-help-24-regular",
+                                icon="mdi:about-circle-outline",
                                 color="#3498db",
                                 height=24,
                                 style={
-                                    "padding-left": "5px",
-                                    "padding-bottom": "1px",
+                                    "padding-left": "4px",
+                                    "padding-bottom": "3px",
                                     "display": "inline-block",
                                 },
                             ),

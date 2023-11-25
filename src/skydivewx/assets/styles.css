@@ -227,6 +227,10 @@ body::after {
   color: white;
 }
 
+.white-text .needle {
+  stroke: #c0c0c0 !important;
+}
+
 @media only screen and (max-width: 950px) {
   .alert-div {
       display: none;
