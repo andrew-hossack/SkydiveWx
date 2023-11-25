@@ -496,7 +496,7 @@ def renderJumpability(
                 ),
                 html.P(
                     children=[
-                        "Jump Score",
+                        "Current Jump Score",
                         html.Button(
                             id="jump-score-help-button",
                             children=DashIconify(
@@ -505,7 +505,7 @@ def renderJumpability(
                                 height=24,
                                 style={
                                     "padding-left": "4px",
-                                    "padding-bottom": "3px",
+                                    "padding-bottom": "2px",
                                     "display": "inline-block",
                                 },
                             ),

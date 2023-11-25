@@ -93,16 +93,16 @@ def getJumpability(metar: Metar.Metar, forecastData: dict) -> dict:
 
 def describeJumpability(jump_score: int) -> str:
     if jump_score <= 0:
-        return "Not Jumpable"
+        return "Unsuitable for Skydiving"
     elif 0 < jump_score <= 20:
-        return "Hardly Jumpable"
+        return "Skydiving Not Advised"
     elif 20 < jump_score <= 40:
-        return "Poor Jump Conditions"
+        return "Sub-optimal Jump Conditions"
     elif 40 < jump_score <= 60:
-        return "Moderate Jump Conditions"
+        return "Adequate Jump Conditions"
     elif 60 < jump_score <= 80:
-        return "Good Jump Conditions"
+        return "Favorable Jump Conditions"
     elif 80 < jump_score < 100:
-        return "Excellent Jump Conditions"
+        return "Optimal Jump Conditions"
     else:  # 100
-        return "Very Jumpable"
+        return "Ideal Jump Conditions"
