@@ -215,6 +215,18 @@ body::after {
   margin: 0;
 }
 
+.white-text text {
+  fill: white;
+}
+
+.white-text div {
+  color: white;
+}
+
+.white-text label {
+  color: white;
+}
+
 @media only screen and (max-width: 950px) {
   .alert-div {
       display: none;

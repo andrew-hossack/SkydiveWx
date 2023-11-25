@@ -1,3 +1,4 @@
+from typing import Union
 from utils.metar import Metar
 import requests
 
@@ -57,9 +58,12 @@ def _fetch_hourly_forecast_data(gridpointLocation: str):
     return None
 
 
-def get_forecast(hours: int, gridpointLocation: str):
-    data = _fetch_hourly_forecast_data(gridpointLocation)
-    return data[:hours]
+def get_forecast(hours: int, gridpointLocation: str) -> Union[list, None]:
+    try:
+        data = _fetch_hourly_forecast_data(gridpointLocation)
+        return data[:hours]
+    except Exception:
+        return None
 
 
 def _calculate_density_altitude(altimeter_in: float, outside_air_temp_c: float):

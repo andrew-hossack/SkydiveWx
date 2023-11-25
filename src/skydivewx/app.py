@@ -316,23 +316,32 @@ def expandManifest(n):
         }
 
 
-# @app.callback(
-#     Output('graph-output-none', 'children'),
-#     Input('search-graph', 'clickData')
-# )
-# def map_click_data(clickData):
-#     print(clickData)
-#     return ''
+@app.callback(
+    Output("url", "href", allow_duplicate=True), Input("search-graph", "clickData")
+)
+def map_click_data(clickData):
+    if clickData:
+        dz: DropzoneType = dropzones.Dropzones.get_dropzone_by_friendlyName(
+            clickData["points"][0]["hovertext"]
+        )
+        return f"/home?id={dz.id}"
+
+
+# 'jump-score-help-button' open help modal
+@app.callback(
+    Output("jump-score-help-modal", "opened"),
+    Input("jump-score-help-button", "n_clicks"),
+    State("jump-score-help-modal", "opened"),
+)
+def map_click_data(n, opened):
+    if n:
+        return not opened
 
 
 if __name__ == "__main__":
-    # 1 print('TODO: More information menu change per dz')
-    # 3. TODO update local time in header
-    # print('TODO: changeable dz page background')
-    # print('TODO: update tab titles')
-    # print('TODO: Clickable map data')
-    # print('TODO: Replace compass with https://metar-taf.com/embed-info/KTVY')
-    # TODO re style dashboard pages https://dribbble.com/shots/20454260--Responsive-Search-for-Camping-Platform
-    # Fonts? https://fonts.google.com/specimen/Mulish
-    # TODO variable wind direction handler
+    # TODO AWS Hosting
+    # TODO lambda for live manifest
+    # TODO lambda for jumpability percentage
+    # TODO caching for improved load time
+    # TODO: changeable dz page background
     app.run_server(debug=True, port=8050)

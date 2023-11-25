@@ -4,14 +4,27 @@ from components.calendar import calenderComponents
 from components.home.weatherRadarComponents import radarComponent
 from components.plane.trackerComponents import planeTrackIframe
 from components.manifest.manifestComponents import getScreenshotImageContainer
+from utils.jumpability.jumpabilityService import getJumpability, describeJumpability
 from utils.dropzones.dropzoneUtils import DropzoneType
 from utils import timeUtils, weatherUtils
 import dash_mantine_components as dmc
 from utils.metar import Metar
 import dash_bootstrap_components as dbc
+import dash_daq as daq
+from dash_iconify import DashIconify
 
 
-def renderCurrentWeather(dropZone: DropzoneType, metar: Metar) -> html.Div:
+def renderCurrentWeather(
+    dropZone: DropzoneType, metar: Metar, forecastData: list
+) -> html.Div:
+    try:
+        shortForecast = [
+            data.get("shortForecast")
+            for data in forecastData
+            if data.get("shortForecast")
+        ][0]
+    except Exception:
+        shortForecast = None
     return html.Div(
         style={
             "padding": "20px",
@@ -127,6 +140,20 @@ def renderCurrentWeather(dropZone: DropzoneType, metar: Metar) -> html.Div:
                                     html.Span(metar.temp.string("F")),
                                 ],
                             ),
+                            html.Div(
+                                style={
+                                    "display": "flex",
+                                    "justifyContent": "space-between",
+                                },
+                                children=[
+                                    html.Strong(
+                                        "Forecast: ", style={"marginRight": "10px"}
+                                    ),
+                                    html.Span(shortForecast),
+                                ],
+                            )
+                            if shortForecast
+                            else None,
                         ],
                     ),
                 ],
@@ -163,7 +190,7 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
                     "-moz-transform": f"rotate({rotation}deg)",
                     "-ms-transform": f"rotate({rotation}deg)",
                     "-o-transform": f"rotate({rotation}deg)",
-                    "display": "hidden" if showDisplay else "",
+                    "display": "none" if not showDisplay else "",
                 },
             ),
         ],
@@ -187,11 +214,16 @@ def _renderCompass(dropZone: DropzoneType) -> html.Div:
         wind_dir_str = f"{metar.wind_dir.compass()} ({wind_dir}°)"
         direction = metar.wind_dir.compass()
 
+    windSpeedString = (
+        f"Winds from {wind_dir_str} at {wind_speed}"
+        if str(wind_speed) != "0 mph"
+        else f"No Wind Reported"
+    )
     # If css_degrees = -1 then handle below
     return html.Div(
         children=[
             html.Div(
-                f"Winds from {wind_dir_str} at {wind_speed}",
+                windSpeedString,
                 className="wind-direction-text",
             ),
             _generate_compass_component(direction, wind_speed, css_degrees),
@@ -314,26 +346,19 @@ def renderWindTrends(dropZone: DropzoneType, historicalMetar: any) -> html.Div:
     )
 
 
-def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
-    # Fetch weather data
-    forecast_num_hours = 6
-    try:
-        forecast_data = weatherUtils.get_forecast(
-            forecast_num_hours, dropZone.weatherGovGridpointLocation
-        )
-    except Exception:
-        return None
-
+def renderWeatherOutlook(
+    dropZone: DropzoneType, forecastData: list, forecastNumHours: int
+) -> html.Div:
     # Calculate the maximum probability of rain
     max_rain_chance = max(
         [
             data.get("probabilityOfPrecipitation").get("value", 0)
-            for data in forecast_data
+            for data in forecastData
         ]
     )
     rain_hours = [
         data
-        for data in forecast_data[::-1]
+        for data in forecastData[::-1]
         if data.get("probabilityOfPrecipitation").get("value", 0) == max_rain_chance
     ]
     rain_hours = (
@@ -345,7 +370,7 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
     # Calculate wind speed changes
     wind_speeds = [
         int(data.get("windSpeed").split()[0])
-        for data in forecast_data
+        for data in forecastData
         if data.get("windSpeed")
     ]
     min_wind_speed, max_wind_speed = min(wind_speeds), max(
@@ -368,7 +393,7 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
 
     # Determine wind direction
     wind_directions = {
-        data.get("windDirection") for data in forecast_data if data.get("windDirection")
+        data.get("windDirection") for data in forecastData if data.get("windDirection")
     }
     if len(wind_directions) > 1:
         wind_direction_info = (
@@ -382,14 +407,12 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
         )
 
     # Generate weather forecast summary
-    forecast_summary = (
-        "In the next {} hours, there is a **{}%** chance of rain till {}.{}{}".format(
-            forecast_num_hours,
-            max_rain_chance,
-            rain_hours if rain_hours else "unknown",
-            wind_speed_info,
-            wind_direction_info,
-        )
+    forecast_summary = "In the next {} hours, there is a **{}%** chance of precipitation till {}.{}{}".format(
+        forecastNumHours,
+        max_rain_chance,
+        rain_hours if rain_hours else "unknown",
+        wind_speed_info,
+        wind_direction_info,
     )
     return html.Div(
         style={
@@ -436,6 +459,110 @@ def renderWeatherOutlook(dropZone: DropzoneType) -> html.Div:
                 "flex-direction": "column",
                 "margin": "auto",
                 "maxWidth": "550px",
+            },
+        ),
+    )
+
+
+def renderJumpability(
+    dropZone: DropzoneType, metar: Metar.Metar, forecastData: list
+) -> html.Div:
+    jump_score_results = getJumpability(metar, forecastData[0])
+    return html.Div(
+        style={
+            "padding": "20px",
+            "fontSize": "20px",
+            "color": "white",
+            "margin": "auto",
+            "marginBottom": "0",
+        },
+        children=html.Div(
+            [
+                dmc.Modal(
+                    title="About Jump Score",
+                    id="jump-score-help-modal",
+                    overflow="inside",
+                    centered=True,
+                    closeOnEscape=True,
+                    zIndex=100000,
+                    children=[
+                        """
+                        The Jump Score is calculated from the current wind, 
+                        gust, precipitation, temperature and cloud coverage,
+                        and can be used as a guide on how pleasant jump 
+                        conditions will feel.
+                        """,
+                    ],
+                ),
+                html.P(
+                    children=[
+                        "Today's Jump Score",
+                        html.Button(
+                            id="jump-score-help-button",
+                            children=DashIconify(
+                                icon="fluent:chat-help-24-regular",
+                                color="#3498db",
+                                height=24,
+                                style={
+                                    "padding-left": "5px",
+                                    "padding-bottom": "1px",
+                                    "display": "inline-block",
+                                },
+                            ),
+                            style={
+                                "border": "none",
+                                "background": "none",
+                            },
+                        ),
+                    ],
+                    style={
+                        "textAlign": "center",
+                        "fontSize": "26px",
+                        "color": "#3498db",
+                        "display": "block",
+                        "margin-top": "0",
+                        "margin-bottom": "0.5rem",
+                        "font-weight": "500",
+                        "line-height": "1.2",
+                    },
+                ),
+                dcc.Markdown(
+                    describeJumpability(jump_score_results["results"]["jump_score"]),
+                    # "todo - prediction and description using getJumpability limits and penalty results",
+                    style={
+                        "flex-direction": "column",
+                        "align-items": "center",
+                        "textAlign": "center",
+                        "justify-content": "center",
+                    },
+                    className="nomargin-p wind-direction-text",
+                ),
+                daq.Gauge(
+                    color={
+                        "gradient": True,
+                        "ranges": {
+                            "red": [0, 50],
+                            "yellow": [50, 70],
+                            "green": [70, 100],
+                        },
+                    },
+                    value=jump_score_results["results"]["jump_score"],
+                    showCurrentValue=True,
+                    max=100,
+                    min=0,
+                    style={"maxHeight": "210px"},
+                    className="white-text",
+                    units="Jump Score",
+                ),
+            ],
+            style={
+                "maxWidth": "80vw",
+                "flex-direction": "column",
+                "margin": "auto",
+                "maxWidth": "550px",
+                "justify-content": "center",
+                "align-items": "center",
+                "display": "flex",
             },
         ),
     )
@@ -577,6 +704,10 @@ def renderMetarError(airportIdentifier: str, friendlyName: str, id: str) -> html
 def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
     metar = weatherUtils.get_metar(dropZone.airportIdentifier)
     historicalMetar = weatherUtils.get_metar(dropZone.airportIdentifier, hours=4)
+    forecastNumHours = 6
+    forecastData = weatherUtils.get_forecast(
+        forecastNumHours, dropZone.weatherGovGridpointLocation
+    )
     return [
         renderMetarError(
             dropZone.airportIdentifier,
@@ -589,7 +720,12 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
             [
                 dbc.Col(
                     [
-                        renderCurrentWeather(dropZone, metar) if metar else None,
+                        renderCurrentWeather(dropZone, metar, forecastData)
+                        if metar
+                        else None,
+                        renderJumpability(dropZone, metar, forecastData)
+                        if metar
+                        else None,
                         renderManifest(dropZone),
                         calenderComponents.renderCalendarCurrentDay(dropZone),
                     ],
@@ -597,7 +733,7 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 ),
                 dbc.Col(
                     [
-                        renderWeatherOutlook(dropZone),
+                        renderWeatherOutlook(dropZone, forecastData, forecastNumHours),
                         renderAdsbInfo(dropZone),
                         renderWindTrends(dropZone, historicalMetar),
                     ],

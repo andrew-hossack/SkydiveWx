@@ -291,7 +291,12 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
                 """
             _Credit to [Mark Schulze](http://markschulze.net/winds) for providing API access to winds aloft data._
             """,
-                style={"color": "white", "font-size": "12px", "margin-top": "10px"},
+                style={
+                    "color": "white",
+                    "font-size": "12px",
+                    "margin-top": "10px",
+                    "opacity": "0.5",
+                },
             ),
         ],
     )

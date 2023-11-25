@@ -43,7 +43,10 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
     fig.update_layout(mapbox=dict(center=dict(lat=40.6117, lon=-120.3475), zoom=3))
 
     return html.Div(
-        [dcc.Graph(id="search-graph", figure=fig, style={"height": "100vh"})]
+        [
+            dcc.Graph(id="search-graph", figure=fig, style={"height": "100vh"}),
+            html.Div(id="graph-output-none", style={"visibility": "hidden"}),
+        ]
     )
 
 

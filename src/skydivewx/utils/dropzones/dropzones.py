@@ -37,9 +37,6 @@ class Dropzones(DropzoneType, Enum):
             dayFrameUrl=f"https://calendar.google.com/calendar/u/0/embed?height=110&wkst=1&bgcolor=%23ffffff&ctz=America/Boise&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=day",
         ),
         Cameras(
-            "Tooele North / Erda East Camera",
-            "https://www.wrh.noaa.gov/images/slc/camera/latest/TooeleN.latest.jpg",
-        ).add(
             "Tooele Camera",
             "https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
         ),

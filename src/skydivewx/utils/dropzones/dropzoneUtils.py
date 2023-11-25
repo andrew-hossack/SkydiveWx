@@ -176,3 +176,10 @@ class DropzoneType:
             if dropzone.value[0] == dropzone_id:
                 return dropzone
         return None
+
+    @classmethod
+    def get_dropzone_by_friendlyName(self, friendlyName: str) -> ("DropzoneType", None):
+        for dropzone in self:
+            if dropzone.value[1] == friendlyName:
+                return dropzone
+        return None
