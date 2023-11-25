@@ -110,3 +110,93 @@ class Dropzones(DropzoneType, Enum):
         # TODO rararbox
         # TODO menu drawer
     )
+    # SKYDIVE_DELAND = (
+    #     "sdd",
+    #     # https://api.weather.gov/points/lat,long
+    #     "Skydive DeLand",
+    #     "MLB/27,92",
+    #     "KDED",
+    #     "29.0670278",
+    #     "-81.2837500",
+    #     Calendars(
+    #         # fullFrameUrl="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FDenver&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0",
+    #         # dayFrameUrl=f"https://calendar.google.com/calendar/u/0/embed?height=110&wkst=1&bgcolor=%23ffffff&ctz=America/Boise&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=day",
+    #     ),
+    #     Cameras(
+    #         # "Tooele Camera",
+    #         # "https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
+    #     ),
+    #     "https://www.radarbox.com/?widget=1&z=10&lat=29.0670278&lng=-81.2837500&labels=true",
+    #      Cannot find burble id
+    #      TODO no burble ID found
+    #     "https://dzm.burblesoft.com/jmp?dz_id=<TODO>",
+    #     "https://embed.windy.com/embed2.html?lat=40.342&lon=-112.365&detailLat=40.530&detailLon=-112.300&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+    #     Socials(
+    #         # web=Link(title="Skydive Utah Website", url="https://skydiveutah.com/"),
+    #         # facebook=Link(url="http://www.facebook.com/skydiveutah"),
+    #         # tiktok=Link(url="https://www.tiktok.com/@skydiveutah"),
+    #         # email=Link(url="mailto:fly@skydiveutah.com"),
+    #         # instagram=Link(url="https://www.instagram.com/skydiveutah/"),
+    #     ),
+    #     AircraftInfo(),
+    # )
+    # SKYDIVE_PERRIS = (
+    #     "sdp",
+    #     # https://api.weather.gov/points/lat,long
+    #     "Skydive Perris",
+    #     "SGX/62,60",
+    #     TODO no metar - needs to add option to use close metar
+    #     "L65",
+    #     "33.7646389",
+    #     "-117.2190000",
+    #     Calendars(
+    #         # fullFrameUrl="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FDenver&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0",
+    #         # dayFrameUrl=f"https://calendar.google.com/calendar/u/0/embed?height=110&wkst=1&bgcolor=%23ffffff&ctz=America/Boise&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=day",
+    #     ),
+    #     Cameras(
+    #         # "Tooele Camera",
+    #         # "https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
+    #     ),
+    #     "https://www.radarbox.com/?widget=1&z=10&lat=33.7646389&lng=-117.2190000&labels=true",
+    #     "https://dzm.burblesoft.com/jmp?dz_id=99",
+    #     "https://embed.windy.com/embed2.html?lat=33.7646389&lon=-117.2190000&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+    #     Socials(
+    #         web=Link(title="Skydive Perris Website", url="https://skydiveperris.com/"),
+    #         facebook=Link(url="https://www.facebook.com/skydiveperris1"),
+    #         # tiktok=Link(url="https://www.tiktok.com/@skydiveutah"),
+    #         # email=Link(url="mailto:fly@skydiveutah.com"),
+    #         # instagram=Link(url="https://www.instagram.com/skydiveutah/"),
+    #     ),
+    #     AircraftInfo(),
+    # )
+    SKYDIVE_COSTAL_CAROLINAS = (
+        "scc",
+        # https://api.weather.gov/points/lat,long
+        "Skydive Coastal Carolinas",
+        "ILM/86,54",
+        "KSUT",
+        "33.9308156",
+        "-78.0733636",
+        Calendars(
+            # fullFrameUrl="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FDenver&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0",
+            # dayFrameUrl=f"https://calendar.google.com/calendar/u/0/embed?height=110&wkst=1&bgcolor=%23ffffff&ctz=America/Boise&src=c2t5ZGl2ZXV0YWguY29tX28xbGE0NTcxMXQ0MHBkbzVsbGtvNTF1ajRnQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=c2t5ZGl2ZXV0YWguY29tX2ZjcWM2Zmk0M2pqZ2tzNzBna2t2dmxuY2tjQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23E4C441&color=%232276b9&showTitle=0&showNav=0&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=day",
+        ),
+        Cameras(
+            # "Tooele Camera",
+            # "https://www.wrh.noaa.gov/images/slc/camera/latest/tooele.latest.jpg",
+        ),
+        "https://www.radarbox.com/?widget=1&z=10&lat=33.9308156&lng=-78.0733636&labels=true",
+        "https://dzm.burblesoft.com/jmp?dz_id=2521",
+        "https://embed.windy.com/embed2.html?lat=33.9308156&lon=-78.0733636&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        Socials(
+            web=Link(
+                title="Skydive Coastal Carolinas Website",
+                url="https://www.skydivecoastalcarolinas.com",
+            ),
+            # facebook=Link(url="https://www.facebook.com/skydiveperris1"),
+            # tiktok=Link(url="https://www.tiktok.com/@skydiveutah"),
+            # email=Link(url="mailto:fly@skydiveutah.com"),
+            # instagram=Link(url="https://www.instagram.com/skydiveutah/"),
+        ),
+        AircraftInfo(),
+    )
