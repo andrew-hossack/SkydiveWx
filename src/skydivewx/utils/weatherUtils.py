@@ -21,6 +21,15 @@ def _get_raw_metar(airport_code, hours=0):
     return None
 
 
+def _ensure_values(metar: Metar.Metar) -> Metar.Metar:
+    # Checks for non-existant required values
+    if not metar.wind_dir:
+        metar.wind_dir = Metar.direction(0.0)
+    if not metar.wind_speed:
+        metar.wind_speed = Metar.speed(0.0)
+    return metar
+
+
 def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar | None:
     try:
         metar = _get_raw_metar(airportIdentifier, hours=hours)
@@ -28,10 +37,10 @@ def get_metar(airportIdentifier: str, hours=0) -> Metar.Metar | None:
             print("No metar found, returning None")
             return None
         if hours == 0:
-            return Metar.Metar(metar)
+            return _ensure_values(Metar.Metar(metar))
         else:
             return [
-                Metar.Metar(metar)
+                _ensure_values(Metar.Metar(metar))
                 for metar in _get_raw_metar(airportIdentifier, hours=hours)
             ]
     except IndexError as e:

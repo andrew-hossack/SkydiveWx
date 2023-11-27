@@ -209,10 +209,10 @@ def _renderCompass(dropZone: DropzoneType) -> html.Div:
         css_degrees = -1
         direction = -1
     else:
-        wind_dir = metar.wind_dir.value() if metar.wind_dir.value() else 0
+        wind_dir = metar.wind_dir.value()
         css_degrees = (wind_dir + 180) % 360 if wind_speed != "0 mph" else -1
         wind_dir_str = f"{metar.wind_dir.compass()} ({wind_dir}°)"
-        direction = metar.wind_dir.compass()
+        direction = metar.wind_dir.compass() if wind_speed != "0 mph" else "N/A"
 
     windSpeedString = (
         f"Winds from {wind_dir_str} at {wind_speed}"
@@ -496,7 +496,7 @@ def renderJumpability(
                 ),
                 html.P(
                     children=[
-                        "Current Jump Score",
+                        "Jump Score",
                         html.Button(
                             id="jump-score-help-button",
                             children=DashIconify(
