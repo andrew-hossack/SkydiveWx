@@ -1,6 +1,25 @@
 from utils.metar import Metar
 
 
+def _convert_to_float(frac_str):
+    try:
+        return float(frac_str)
+    except ValueError:
+        try:
+            num, denom = frac_str.split("/")
+        except ValueError:
+            return None
+        try:
+            leading, num = num.split(" ")
+        except ValueError:
+            return float(num) / float(denom)
+        if float(leading) < 0:
+            sign_mult = -1
+        else:
+            sign_mult = 1
+        return float(leading) + sign_mult * (float(num) / float(denom))
+
+
 def getJumpability(metar: Metar.Metar, forecastData: dict) -> dict:
     ##### Thresholds #####
     wind_limit_mph = 15
@@ -73,8 +92,15 @@ def getJumpability(metar: Metar.Metar, forecastData: dict) -> dict:
         sub_results["results"]["penalties"]["snowRain"] = 100
 
     # Handle visibility from metar
-    visibility_miles = int(str(metar.visibility("SM").split(" ")[0]))
-    if (
+    try:
+        visibility_miles = int(str(metar.visibility("SM").split(" ")[0]))
+    except ValueError:
+        # Visibility is a float (1/2 mile vis for example)
+        visibility_miles = _convert_to_float(str(metar.visibility("SM").split(" ")[0]))
+    else:
+        # Visibility sometimes is "missing"
+        visibility_miles = None
+    if visibility_miles and (
         visibility_miles < visibility_limit_miles
     ):  # Arbitrary threshold, adjust as needed
         jump_score -= visibility_penalty

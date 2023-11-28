@@ -217,12 +217,16 @@ def drawer_demo(icn, lbl):
 
 @app.callback(
     Output("url", "href"),
-    Input("dropzone-select", "value"),
+    Input("dropzone-select-mobile", "value"),
+    Input("dropzone-select-web", "value"),
 )
-def search_router(dropzoneId):
-    if dropzoneId != None:
+def search_router(dz1, dz2):
+    if dz1 != None:
         # dropzoneId will always be valid from this callback
-        return f"/home?id={dropzoneId}"
+        return f"/home?id={dz1}"
+    if dz2 != None:
+        # dropzoneId will always be valid from this callback
+        return f"/home?id={dz2}"
     return no_update
 
 
