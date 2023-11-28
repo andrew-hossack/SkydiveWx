@@ -64,7 +64,7 @@ def help_modal() -> html.Div():
                 zIndex=100000,
                 children=[
                     dcc.Markdown(
-                        "SkydiveWx is an application developed for skydivers to view current weather and jump conditions at their dropzone. Contact [hello@skydivewx.com](mailto:hello@skydivewx.com) for any inquiries"
+                        "SkydiveWx is an application developed for skydivers to view current weather and jump conditions at their dropzone. Contact [hello@skydivewx.com](mailto:hello@skydivewx.com) for any inquiries."
                     )
                 ],
             ),
@@ -114,13 +114,17 @@ def renderSearchbarMobile(dropZones: Dropzones) -> html.Div:
                     "color": "white",
                     "textAlign": "center",
                     "fontWeight": "330",
-                    "marginTop": "15px",
+                    "margin": "15px",
                 },
             ),
             html.Div(
                 style={"textAlign": "justify", "fontSize": "16px", "padding": "20px"},
                 children=[
-                    "Select your dropzone from the list below for real-time weather updates and more with SkydiveWx. Let the skies be your playground. Blue skies and happy landings await!"
+                    dcc.Markdown(
+                        """
+                        Search for or select a dropzone from the list below for real-time condition and weather updates with SkydiveWx.
+                        """
+                    )
                 ],
             ),
             html.Div(
@@ -142,10 +146,14 @@ def renderSearchbarMobile(dropZones: Dropzones) -> html.Div:
                         initiallyOpened=True,
                         clearable=True,
                         radius=10,
-                        maxDropdownHeight="30vh",
+                        maxDropdownHeight="35vh",
                     )
                 ],
-                style={"margin": "auto", "padding": "20px"},
+                style={
+                    "margin": "auto",
+                    "padding-left": "20px",
+                    "padding-right": "20px",
+                },
             ),
             html.Div(
                 [
@@ -177,6 +185,7 @@ def renderSearchbarMobile(dropZones: Dropzones) -> html.Div:
                     "justify-content": "center",
                     "marginBottom": "20px",
                     "marginLeft": "20px",
+                    # "width": "260px",
                 },
             ),
         ],
