@@ -523,7 +523,7 @@ class Dropzones(DropzoneType, Enum):
         ),
         "https://www.radarbox.com/?widget=1&z=10&lat=29.3423889&lng=-98.8512222&labels=true",
         "https://dzm.burblesoft.com/jmp?dz_id=8681",
-        "https://embed.windy.com/embed2.html?lat=29.3423889&lon=-98.8512222&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        "https://embed.windy.com/embed2.html?lat=29.3423889&lon=-98.8512222&detailedLat=29.3423889&detailedLon=-98.8512222&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
         Socials(
             web=Link(
                 title="Skydive Castroville Website",

@@ -265,3 +265,24 @@ body::after {
   text-indent: -9999em;
   position: relative;
 }
+
+@media only screen and (max-width: 480px) {
+    .mobile {
+        display: block;
+    }
+}
+@media only screen and (min-width: 481px) {
+    .mobile {
+        display: none;
+    }
+}
+@media only screen and (min-width: 481px) {
+    .web {
+        display: block;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .web {
+        display: none;
+    }
+}

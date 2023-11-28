@@ -4,6 +4,7 @@ import plotly.express as px
 from dash import dcc, html
 from dash_iconify import DashIconify
 from utils.dropzones.dropzones import Dropzones
+from components.common.html import mobileDiv, webDiv
 
 
 def mapBox(dropZones: Dropzones) -> dcc.Graph:
@@ -40,7 +41,7 @@ def mapBox(dropZones: Dropzones) -> dcc.Graph:
         mapbox_style="carto-positron",
     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    fig.update_layout(mapbox=dict(center=dict(lat=40.6117, lon=-120.3475), zoom=3))
+    fig.update_layout(mapbox=dict(center=dict(lat=39.5, lon=-98.35), zoom=3))
 
     return html.Div(
         [
@@ -92,7 +93,7 @@ def info_modal() -> html.Div():
     )
 
 
-def renderSearchbar(dropZones: Dropzones) -> html.Div:
+def renderSearchbarMobile(dropZones: Dropzones) -> html.Div:
     return html.Div(
         style={
             "z-index": "9999",
@@ -100,8 +101,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
             "left": "0",
             "top": "0",
             "height": "100%",
-            "maxWidth": "420px",
-            "backgroundColor": "rgb(22,25,28)",
+            "maxWidth": "480px",
             "color": "white",
             "paddingTop": "80px",
             "paddingLeft": "30px",
@@ -138,13 +138,14 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
                         id="dropzone-select",
                         size="md",
                         variant="default",
+                        dropdownPosition="bottom",
                         initiallyOpened=True,
                         clearable=True,
                         radius=10,
-                        maxDropdownHeight=400,
+                        maxDropdownHeight="30vh",
                     )
                 ],
-                style={"margin": "auto", "paddingTop": "20px"},
+                style={"margin": "auto", "padding": "20px"},
             ),
             html.Div(
                 [
@@ -175,6 +176,124 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
                     "align-items": "center",
                     "justify-content": "center",
                     "marginBottom": "20px",
+                    "marginLeft": "20px",
+                },
+            ),
+        ],
+    )
+
+
+def renderSearchbarWeb(dropZones: Dropzones) -> html.Div:
+    return html.Div(
+        style={
+            "z-index": "9999",
+            "position": "absolute",
+            "margin": "100px 50px",
+            "height": "80vh",
+            "width": "360px",
+            "backgroundColor": "rgba(22,25,28, 0.7)",
+            "color": "white",
+            "paddingTop": "20px",
+            "paddingLeft": "30px",
+            "paddingRight": "30px",
+            "backdrop-filter": "blur(10px)",
+            "border-radius": "10px",
+            "overflow": "auto",
+        },
+        children=[
+            html.H2(
+                f"{len(dropZones)} Dropzones Available",
+                style={
+                    "color": "white",
+                    "textAlign": "center",
+                    "fontWeight": "330",
+                    "marginTop": "15px",
+                    "padding-left": "20px",
+                    "padding-right": "20px",
+                },
+            ),
+            html.Div(
+                style={"textAlign": "justify", "fontSize": "16px", "padding": "20px"},
+                children=[
+                    dcc.Markdown(
+                        """
+                        Select your dropzone from the list below for real-time weather and jump condition updates with SkydiveWx. 
+                        
+                        If you do not see your dropzone and would like to add it to the map, please click the "Missing your location?" button below.
+                        """
+                    ),
+                    html.Div(
+                        [
+                            dmc.Select(
+                                data=[
+                                    {"value": dz.id, "label": dz.friendlyName}
+                                    for dz in dropZones
+                                ],
+                                searchable=True,
+                                nothingFound="No match found",
+                                style={"width": "auto"},
+                                placeholder="Find a Dropzone",
+                                icon=DashIconify(icon="radix-icons:magnifying-glass"),
+                                id="dropzone-select",
+                                size="md",
+                                variant="default",
+                                dropdownPosition="bottom",
+                                initiallyOpened=True,
+                                clearable=True,
+                                radius=10,
+                                maxDropdownHeight="250px",
+                            )
+                        ],
+                        style={
+                            "margin": "auto",
+                            "padding-top": "10px",
+                            "width": "260px",
+                            "height": "100%",
+                            "max-height": "50%",
+                            "position": "absolute",
+                            "overflow": "hidden",
+                        },
+                    ),
+                ],
+            ),
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            dmc.Divider(
+                                variant="dotted",
+                                style={
+                                    "width": "100%",
+                                },
+                                color="rgba(182, 194, 207, 0.4)",
+                                size=1,
+                            ),
+                            html.Button(
+                                id="info-modal-button",
+                                children=["Missing your location?"],
+                                style={
+                                    "color": "rgb(182, 194, 207)",
+                                    "border": "none",
+                                    "background": "none",
+                                    "fontSize": "13px",
+                                },
+                                className="nomargin-p",
+                            ),
+                        ],
+                        style={
+                            "width": "260px",
+                            "margin": "auto",
+                        },
+                    )
+                ],
+                style={
+                    "flex-direction": "column",
+                    "position": "absolute",
+                    "bottom": "0",
+                    "align-items": "center",
+                    "justify-content": "center",
+                    "marginBottom": "20px",
+                    "width": "300px",
                 },
             ),
         ],
@@ -183,7 +302,7 @@ def renderSearchbar(dropZones: Dropzones) -> html.Div:
 
 def renderInfo() -> html.Div:
     return dmc.Alert(
-        "Scroll and zoom to find a dropzone location near you.",
+        "Select a dropzone location from the dropdown or on the map.",
         title="Info",
         icon=DashIconify(icon="fe:info"),
         color="yellow",
@@ -206,8 +325,17 @@ def getAllComponents(dropZones: Dropzones) -> list[html.Div]:
                 info_modal(),
                 help_modal(),
                 renderInfo(),
-                renderSearchbar(dropZones),
-                mapBox(dropZones),
+                mobileDiv(
+                    children=[
+                        renderSearchbarMobile(dropZones),
+                    ]
+                ),
+                webDiv(
+                    children=[
+                        renderSearchbarWeb(dropZones),
+                        mapBox(dropZones),
+                    ]
+                ),
             ],
             style={
                 "width": "100%",

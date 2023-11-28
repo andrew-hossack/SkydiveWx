@@ -141,10 +141,8 @@ def render_content(pathname, search):
             elif pathname == "/manifest":
                 return _with_header_footer(manifestPage.render(dropZone), dropZone)
             else:
-                # Default to main page if url is invalid
                 return _with_header_footer(dropzoneMainPage.render(dropZone), dropZone)
         else:
-            # If not valid dropzone, return to '/search' page
             return html.Div(
                 [
                     html.Div(
