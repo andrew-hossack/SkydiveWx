@@ -212,7 +212,7 @@ def _renderCompass(dropZone: DropzoneType) -> html.Div:
         wind_dir = metar.wind_dir.value()
         css_degrees = (wind_dir + 180) % 360 if wind_speed != "0 mph" else -1
         wind_dir_str = f"{metar.wind_dir.compass()} ({wind_dir}°)"
-        direction = metar.wind_dir.compass() if wind_speed != "0 mph" else "N/A"
+        direction = metar.wind_dir.compass() if wind_speed != "0 mph" else "-"
 
     windSpeedString = (
         f"Winds from {wind_dir_str} at {wind_speed}"

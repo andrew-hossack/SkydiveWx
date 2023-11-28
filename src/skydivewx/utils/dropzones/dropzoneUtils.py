@@ -60,7 +60,7 @@ class AircraftInfo:
             aircraftIcao and aircraftRegistraionNumber
         ):
             raise ValueError(
-                "aircraftRegistraionNumber and aircraftIcao are both required if used"
+                "aircraftRegistraionNumber and aircraftIcao are both required if used. Use https://api.adsbdb.com/v0/n-number/[N-NUMBER] to get mode s"
             )
 
     def get(self) -> dict:
