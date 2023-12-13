@@ -721,10 +721,10 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 dbc.Col(
                     [
                         renderCurrentWeather(dropZone, metar, forecastData)
-                        if metar
+                        if metar and forecastData
                         else None,
                         renderJumpability(dropZone, metar, forecastData)
-                        if metar
+                        if metar and forecastData
                         else None,
                         renderManifest(dropZone),
                         calenderComponents.renderCalendarCurrentDay(dropZone),
@@ -733,7 +733,9 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 ),
                 dbc.Col(
                     [
-                        renderWeatherOutlook(dropZone, forecastData, forecastNumHours),
+                        renderWeatherOutlook(dropZone, forecastData, forecastNumHours)
+                        if forecastData
+                        else None,
                         renderAdsbInfo(dropZone),
                         renderWindTrends(dropZone, historicalMetar),
                     ],
