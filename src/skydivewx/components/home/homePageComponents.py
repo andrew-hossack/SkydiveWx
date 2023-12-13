@@ -175,8 +175,8 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
             html.Div(
                 [
                     html.P(
-                        [direction, html.Br(), html.Span(f"{speed}")],
-                        style={"marginTop": "20px"},
+                        [direction, html.Br(), speed],
+                        style={"display": "contents", "font-size": "20px"},
                     )
                 ],
                 className="direction",
