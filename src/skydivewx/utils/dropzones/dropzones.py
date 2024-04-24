@@ -7,7 +7,7 @@ class Dropzones(DropzoneType, Enum):
     # List of all currently supported dropzones used the app
     SKYDIVE_CHICAGO = (
         "sdc",
-        "Skydive Chicago",
+        "Chicagoland Skydiving Center",
         "LOT/26,75",
         "KRPJ",
         "41.8926389",
