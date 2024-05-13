@@ -405,7 +405,7 @@ class Dropzones(DropzoneType, Enum):
         "cpi",
         "Connecticut Parachutists, Inc.",
         "BOX/28,62",
-        AirportAndWeatherIdentifiers("KBDL", "KBDL"),
+        AirportAndWeatherIdentifiers("K7B9", "KBDL"),
         GeoLocation("41.922176", "-72.4582421"),
         Calendars(),
         Cameras(),
