@@ -403,7 +403,7 @@ class Dropzones(DropzoneType, Enum):
     # # brett.mickelson @ gmail.com
     SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
         "cpi",
-        "Connecticut Parachutists, Inc. (CPI)",
+        "Connecticut Parachutists, Inc.",
         "BOX/28,62",
         AirportAndWeatherIdentifiers("KBDL", "KBDL"),
         GeoLocation("41.922176", "-72.4582421"),
