@@ -347,32 +347,6 @@ class Dropzones(DropzoneType, Enum):
         AircraftInfo(aircraftRegistraionNumber="N895SF", aircraftIcao="AC597D"),
     )
 
-    # # brett.mickelson @ gmail.com
-    # SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
-    #     "cpi",
-    #     "Connecticut Parachutists, Inc. (CPI)",
-    #     "BOX/28,62",
-    #     "KBDL",
-    #     "41.922176",
-    #     "-72.4582421",
-    #     Calendars(
-    #         # TODO -> Need to get back to brett.mickelson@gmail.com and ask for new link
-    #     ),
-    #     Cameras(),
-    #     "https://www.radarbox.com/?widget=1&z=10&lat=41.922176&lng=-72.4582421&labels=true",
-    #     # TODO manifest link
-    #     "https://displays.skydivect.net/manifest",
-    #     "https://embed.windy.com/embed2.html?lat=41.922176&lon=-72.4582421&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-    #     Socials(
-    #         instagram=Link(
-    #             title="Instagram", url="https://www.instagram.com/skydivecpi/"
-    #         )
-    #     ),
-    #     # aircraftRegistraionNumber="", aircraftIcao=""
-    #     # TODO N6193B, N8097F, N90JF icao from https://globe.adsbexchange.com/
-    #     AircraftInfo(),
-    # )
-
     # # arnett.daniel@gmail.com
     CLEVELAND_SKYDIVING_CENTER = (
         "csk",
@@ -398,30 +372,56 @@ class Dropzones(DropzoneType, Enum):
     )
 
     # # events@skydivesuffolk.com
-    # SKYDIVE_SUFFOLK = (
-    #     "sds",
-    #     "Skydive Suffolk",
-    #     # https://api.weather.gov/points/lat,lng
-    #     "AKQ/80,43",
-    #     # https://metar-taf.com/
-    #     AirportAndWeatherIdentifiers("KSFQ", "KSFQ"),
-    #     GeoLocation("36.6828884", "-76.5996232"),
-    #     Calendars(),
-    #     Cameras(),
-    #     "https://www.radarbox.com/?widget=1&z=10&lat=36.6828884&lng=-76.5996232&labels=true",
-    #     "https://dzm.burblesoft.com/jmp?dz_id=1421&display_menu=1",
-    #     "https://embed.windy.com/embed2.html?lat=36.6828884&lon=-76.5996232&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-    #     Socials(
-    #         web=Link(
-    #             title="Website",
-    #             url="https://skydivesuffolk.com/",
-    #         ),
-    #         facebook=Link(
-    #             title="Facebook",
-    #             url="https://www.facebook.com/groups/446324455546456/",
-    #         ),
+    SKYDIVE_SUFFOLK = (
+        "sds",
+        "Skydive Suffolk",
+        # https://api.weather.gov/points/lat,lng
+        "AKQ/80,43",
+        # https://metar-taf.com/
+        AirportAndWeatherIdentifiers("KSFQ", "KSFQ"),
+        GeoLocation("36.6828884", "-76.5996232"),
+        Calendars(),
+        Cameras(),
+        "https://www.radarbox.com/?widget=1&z=10&lat=36.6828884&lng=-76.5996232&labels=true",
+        "https://dzm.burblesoft.com/jmp?dz_id=1421&display_menu=1",
+        "https://embed.windy.com/embed2.html?lat=36.6828884&lon=-76.5996232&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        Socials(
+            web=Link(
+                title="Website",
+                url="https://skydivesuffolk.com/",
+            ),
+            facebook=Link(
+                title="Facebook",
+                url="https://www.facebook.com/groups/446324455546456/",
+            ),
+        ),
+        # https://globe.adsbexchange.com/
+        # TODO N893MM, N716MM, N750XL, NII28L
+        AircraftInfo(),
+    )
+
+    # # brett.mickelson @ gmail.com
+    # SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
+    #     "cpi",
+    #     "Connecticut Parachutists, Inc. (CPI)",
+    #     "BOX/28,62",
+    #     "KBDL",
+    #     "41.922176",
+    #     "-72.4582421",
+    #     Calendars(
+    #         # TODO -> Need to get back to brett.mickelson@gmail.com and ask for new link
     #     ),
-    #     # https://globe.adsbexchange.com/
-    #     # TODO N893MM, N716MM, N750XL, NII28L
+    #     Cameras(),
+    #     "https://www.radarbox.com/?widget=1&z=10&lat=41.922176&lng=-72.4582421&labels=true",
+    #     # TODO manifest link
+    #     "https://displays.skydivect.net/manifest",
+    #     "https://embed.windy.com/embed2.html?lat=41.922176&lon=-72.4582421&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+    #     Socials(
+    #         instagram=Link(
+    #             title="Instagram", url="https://www.instagram.com/skydivecpi/"
+    #         )
+    #     ),
+    #     # aircraftRegistraionNumber="", aircraftIcao=""
+    #     # TODO N6193B, N8097F, N90JF icao from https://globe.adsbexchange.com/
     #     AircraftInfo(),
     # )
