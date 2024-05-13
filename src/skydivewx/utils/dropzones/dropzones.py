@@ -347,7 +347,7 @@ class Dropzones(DropzoneType, Enum):
         AircraftInfo(aircraftRegistraionNumber="N895SF", aircraftIcao="AC597D"),
     )
 
-    # brett.mickelson@gmail.com
+    # # brett.mickelson @ gmail.com
     # SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
     #     "cpi",
     #     "Connecticut Parachutists, Inc. (CPI)",
@@ -374,28 +374,28 @@ class Dropzones(DropzoneType, Enum):
     # )
 
     # # arnett.daniel@gmail.com
-    # CLEVELAND_SKYDIVING_CENTER = (
-    #     "csk",
-    #     "Cleveland Skydiving Center",
-    #     # https://api.weather.gov/points/lat,lng
-    #     "CLE/104,61",
-    #     # https://metar-taf.com/
-    #     AirportAndWeatherIdentifiers("K7D8", "KPOV"),
-    #     GeoLocation("41.3511658", "-81.0995414"),
-    #     Calendars(),
-    #     Cameras(),
-    #     "https://www.radarbox.com/?widget=1&z=10&lat=41.3511658&lng=-81.0995414&labels=true",
-    #     "https://dzm.burblesoft.com/jmp?dz_id=3481&display_menu=1",
-    #     "https://embed.windy.com/embed2.html?lat=41.3511658&lon=-81.0995414&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-    #     Socials(
-    #         instagram=Link(
-    #             title="Instagram",
-    #             url="https://www.instagram.com/clevelandskydivingcenter/",
-    #         ),
-    #     ),
-    #     # https://globe.adsbexchange.com/
-    #     AircraftInfo(),
-    # )
+    CLEVELAND_SKYDIVING_CENTER = (
+        "csk",
+        "Cleveland Skydiving Center",
+        # https://api.weather.gov/points/lat,lng
+        "CLE/104,61",
+        # https://metar-taf.com/
+        AirportAndWeatherIdentifiers("K7D8", "KPOV"),
+        GeoLocation("41.3511658", "-81.0995414"),
+        Calendars(),
+        Cameras(),
+        "https://www.radarbox.com/?widget=1&z=10&lat=41.3511658&lng=-81.0995414&labels=true",
+        "https://dzm.burblesoft.com/jmp?dz_id=3481&display_menu=1",
+        "https://embed.windy.com/embed2.html?lat=41.3511658&lon=-81.0995414&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        Socials(
+            instagram=Link(
+                title="Instagram",
+                url="https://www.instagram.com/clevelandskydivingcenter/",
+            ),
+        ),
+        # https://globe.adsbexchange.com/
+        AircraftInfo(),
+    )
 
     # # events@skydivesuffolk.com
     # SKYDIVE_SUFFOLK = (
