@@ -734,7 +734,11 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                             if metar and forecastData
                             else None
                         ),
-                        renderManifest(dropZone),
+                        (
+                            renderManifest(dropZone)
+                            if dropZone.liveManifestUrl
+                            else None
+                        ),
                         calenderComponents.renderCalendarCurrentDay(dropZone),
                     ],
                     md=6,

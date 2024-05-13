@@ -401,27 +401,23 @@ class Dropzones(DropzoneType, Enum):
     )
 
     # # brett.mickelson @ gmail.com
-    # SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
-    #     "cpi",
-    #     "Connecticut Parachutists, Inc. (CPI)",
-    #     "BOX/28,62",
-    #     "KBDL",
-    #     "41.922176",
-    #     "-72.4582421",
-    #     Calendars(
-    #         # TODO -> Need to get back to brett.mickelson@gmail.com and ask for new link
-    #     ),
-    #     Cameras(),
-    #     "https://www.radarbox.com/?widget=1&z=10&lat=41.922176&lng=-72.4582421&labels=true",
-    #     # TODO manifest link
-    #     "https://displays.skydivect.net/manifest",
-    #     "https://embed.windy.com/embed2.html?lat=41.922176&lon=-72.4582421&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
-    #     Socials(
-    #         instagram=Link(
-    #             title="Instagram", url="https://www.instagram.com/skydivecpi/"
-    #         )
-    #     ),
-    #     # aircraftRegistraionNumber="", aircraftIcao=""
-    #     # TODO N6193B, N8097F, N90JF icao from https://globe.adsbexchange.com/
-    #     AircraftInfo(),
-    # )
+    SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
+        "cpi",
+        "Connecticut Parachutists, Inc. (CPI)",
+        "BOX/28,62",
+        AirportAndWeatherIdentifiers("KBDL", "KBDL"),
+        GeoLocation("41.922176", "-72.4582421"),
+        Calendars(),
+        Cameras(),
+        "https://www.radarbox.com/?widget=1&z=10&lat=41.922176&lng=-72.4582421&labels=true",
+        # "https://displays.skydivect.net/manifest",  # TODO manifest link is not burble
+        None,
+        "https://embed.windy.com/embed2.html?lat=41.922176&lon=-72.4582421&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        Socials(
+            instagram=Link(
+                title="Instagram", url="https://www.instagram.com/skydivecpi/"
+            )
+        ),
+        # TODO N6193B, N8097F, N90JF icao from https://globe.adsbexchange.com/
+        AircraftInfo(),
+    )
