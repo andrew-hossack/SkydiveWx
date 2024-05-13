@@ -4,7 +4,9 @@ from utils.dropzones.dropzoneUtils import DropzoneType
 
 
 def render(dropZone: DropzoneType) -> html.Div:
-    currentMetar = weatherUtils.get_metar(dropZone.airportIdentifier)
+    currentMetar = weatherUtils.get_metar(
+        dropZone.airportIdentifier.metarAirportIdentifier
+    )
     return html.Div(
         [
             html.Div(

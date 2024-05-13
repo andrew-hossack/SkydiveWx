@@ -11,7 +11,7 @@ def planeTrackIframe(
 ) -> html.Iframe:
     return html.Iframe(
         # https://www.adsbexchange.com/map-help/
-        src=f"https://globe.adsbexchange.com?scale=1{'&hideSidebar' if hideSidebar else ''}{'&hideButtons' if hideButtons else ''}&airport={dropZone.airportIdentifier}&zoom=11&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
+        src=f"https://globe.adsbexchange.com?scale=1{'&hideSidebar' if hideSidebar else ''}{'&hideButtons' if hideButtons else ''}&airport={dropZone.airportIdentifier.airportIdentifier}&zoom=11&extendedLabels=1&icao={dropZone.aircraftInfo.aircraftIcao if dropZone.aircraftInfo.aircraftIcao else ''}",
         style={
             "width": width,
             "height": height,

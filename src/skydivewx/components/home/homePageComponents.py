@@ -199,7 +199,7 @@ def _generate_compass_component(direction, speed, rotation) -> html.Div:
 
 
 def _renderCompass(dropZone: DropzoneType) -> html.Div:
-    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier.metarAirportIdentifier)
     if not metar:
         return None
     # Access the wind direction and speed
@@ -615,7 +615,7 @@ def renderManifest(dropZone: DropzoneType) -> html.Div:
 
 
 def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
-    description = f"Live airspace for the {dropZone.airportIdentifier} airport."
+    description = f"Live airspace for the {dropZone.airportIdentifier.metarAirportIdentifier} airport."
 
     # validate if aircraftInfo is not None
     if dropZone.aircraftInfo is not None:
@@ -702,30 +702,38 @@ def renderMetarError(airportIdentifier: str, friendlyName: str, id: str) -> html
 
 
 def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
-    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
-    historicalMetar = weatherUtils.get_metar(dropZone.airportIdentifier, hours=4)
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier.metarAirportIdentifier)
+    historicalMetar = weatherUtils.get_metar(
+        dropZone.airportIdentifier.metarAirportIdentifier, hours=4
+    )
     forecastNumHours = 6
     forecastData = weatherUtils.get_forecast(
         forecastNumHours, dropZone.weatherGovGridpointLocation
     )
     return [
-        renderMetarError(
-            dropZone.airportIdentifier,
-            dropZone.friendlyName,
-            dropZone.id,
-        )
-        if not metar or not metar.code
-        else None,
+        (
+            renderMetarError(
+                dropZone.airportIdentifier.metarAirportIdentifier,
+                dropZone.friendlyName,
+                dropZone.id,
+            )
+            if not metar or not metar.code
+            else None
+        ),
         dbc.Row(
             [
                 dbc.Col(
                     [
-                        renderCurrentWeather(dropZone, metar, forecastData)
-                        if metar and forecastData
-                        else None,
-                        renderJumpability(dropZone, metar, forecastData)
-                        if metar and forecastData
-                        else None,
+                        (
+                            renderCurrentWeather(dropZone, metar, forecastData)
+                            if metar and forecastData
+                            else None
+                        ),
+                        (
+                            renderJumpability(dropZone, metar, forecastData)
+                            if metar and forecastData
+                            else None
+                        ),
                         renderManifest(dropZone),
                         calenderComponents.renderCalendarCurrentDay(dropZone),
                     ],
@@ -733,9 +741,13 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                 ),
                 dbc.Col(
                     [
-                        renderWeatherOutlook(dropZone, forecastData, forecastNumHours)
-                        if forecastData
-                        else None,
+                        (
+                            renderWeatherOutlook(
+                                dropZone, forecastData, forecastNumHours
+                            )
+                            if forecastData
+                            else None
+                        ),
                         renderAdsbInfo(dropZone),
                         renderWindTrends(dropZone, historicalMetar),
                     ],

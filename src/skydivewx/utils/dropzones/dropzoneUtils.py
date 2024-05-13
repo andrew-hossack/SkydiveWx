@@ -70,6 +70,32 @@ class AircraftInfo:
         }
 
 
+class AirportAndWeatherIdentifiers:
+    def __init__(
+        self, airportIdentifier: str = None, metarAirportIdentifier: str = None
+    ):
+        self.airportIdentifier = airportIdentifier
+        self.metarAirportIdentifier = metarAirportIdentifier
+
+    def get(self) -> dict:
+        return {
+            "airportIdentifier": self.airportIdentifier,
+            "metarAirportIdentifier": self.metarAirportIdentifier,
+        }
+
+
+class GeoLocation:
+    def __init__(self, latitude: str = None, longitude: str = None):
+        self.latitude = latitude
+        self.longitude = longitude
+
+    def get(self) -> dict:
+        return {
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+        }
+
+
 class Socials:
     def __init__(
         self,
@@ -132,14 +158,14 @@ class Socials:
 
 
 class DropzoneType:
+
     def __init__(
         self,
         id: str,
         friendlyName: str = None,
         weatherGovGridpointLocation: str = None,
-        airportIdentifier: str = None,
-        latitude: str = None,
-        longitude: str = None,
+        airportIdentifiers: AirportAndWeatherIdentifiers = None,
+        geoLocation: GeoLocation = None,
         calendars: Calendars = None,
         cameras: Cameras = None,
         radarBoxUrl: str = None,
@@ -153,10 +179,9 @@ class DropzoneType:
         # If you do not know the grid that correlates to your location, you can use the /points endpoint to retrieve the exact grid endpoint by coordinates:
         # https://api.weather.gov/points/{latitude},{longitude}
         self.weatherGovGridpointLocation = weatherGovGridpointLocation
-        self.airportIdentifier = airportIdentifier
         # See https://www.airnav.com/airport/<IDENTIFIER>
-        self.lat = latitude
-        self.long = longitude
+        self.airportIdentifier = airportIdentifiers
+        self.geoLocation = geoLocation
         self.calendars = calendars
         self.cameras = cameras
         # https://www.radarbox.com

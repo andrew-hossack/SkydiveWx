@@ -89,9 +89,11 @@ def _handleWindsData(data) -> dict:
 
 
 def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
-    winds_aloft_data = _get_data(dropZone.lat, dropZone.long)
+    winds_aloft_data = _get_data(
+        dropZone.geoLocation.latitude, dropZone.geoLocation.longitude
+    )
     winds_aloft_data = _handleWindsData(winds_aloft_data)
-    metar = weatherUtils.get_metar(dropZone.airportIdentifier)
+    metar = weatherUtils.get_metar(dropZone.airportIdentifier.metarAirportIdentifier)
 
     # # UNCOMMENT FOR "DISJOINTED" WIND DIRECTION TEST DATA
     # ##############

@@ -8,8 +8,8 @@ from components.common.html import mobileDiv, webDiv
 
 
 def mapBox(dropZones: Dropzones) -> dcc.Graph:
-    latitudes = [float(dropzone.lat) for dropzone in dropZones]
-    longitudes = [float(dropzone.long) for dropzone in dropZones]
+    latitudes = [float(dropzone.geoLocation.latitude) for dropzone in dropZones]
+    longitudes = [float(dropzone.geoLocation.longitude) for dropzone in dropZones]
     dropzone_names = [dropzone.friendlyName for dropzone in dropZones]
 
     data = {
@@ -85,7 +85,7 @@ def info_modal() -> html.Div():
                 zIndex=100000,
                 children=[
                     dcc.Markdown(
-                        "To request a new dropzone be added, please reach out to [hello@skydivewx.com](mailto:hello@skydivewx.com) for more information on enrolling a new location."
+                        "To request a new dropzone be added, please reach out to [hello@skydivewx.com](mailto:hello@skydivewx.com) for more information on enrolling a new location, or fill out the [onboarding form](https://forms.gle/U1Md6xguNMCAG23A7) directly."
                     )
                 ],
             ),
