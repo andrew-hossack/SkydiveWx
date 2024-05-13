@@ -400,7 +400,7 @@ class Dropzones(DropzoneType, Enum):
         AircraftInfo(),
     )
 
-    # # brett.mickelson @ gmail.com
+    # # brett.mickelson@gmail.com
     SKYDIVE_CONNECTICUT_PARACHUTISTS_INC = (
         "cpi",
         "Connecticut Parachutists, Inc.",
