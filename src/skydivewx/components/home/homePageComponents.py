@@ -615,7 +615,9 @@ def renderManifest(dropZone: DropzoneType) -> html.Div:
 
 
 def renderAdsbInfo(dropZone: DropzoneType) -> html.Div:
-    description = f"Live airspace for the {dropZone.airportIdentifier.metarAirportIdentifier} airport."
+    description = (
+        f"Live airspace for the {dropZone.airportIdentifier.airportIdentifier} airport."
+    )
 
     # validate if aircraftInfo is not None
     if dropZone.aircraftInfo is not None:
