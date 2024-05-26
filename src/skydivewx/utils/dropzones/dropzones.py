@@ -421,3 +421,36 @@ class Dropzones(DropzoneType, Enum):
         # TODO N6193B, N8097F, N90JF icao from https://globe.adsbexchange.com/
         AircraftInfo(),
     )
+
+    # clarkeairsports@gmail.com
+    NEW_ENGLAND = (
+        "sne",
+        "Skydive New England",
+        "GYX/56,42",
+        AirportAndWeatherIdentifiers("ME64", "KDAW"),
+        GeoLocation("43.3750814", "-70.9292286"),
+        # Calendars(
+        #     # TODO LINKS
+        #     dayFrameUrl="https://www.google.com/calendar/render?cid=webcal%3A%2F%2Fwww.skydivenewengland.com%2F%3Fpost_type%3Dtribe_events%26ical%3D1%26eventDisplay%3Dlist",
+        #     fullFrameUrl="https://www.google.com/calendar/render?cid=webcal%3A%2F%2Fwww.skydivenewengland.com%2F%3Fpost_type%3Dtribe_events%26ical%3D1%26eventDisplay%3Dlist",
+        # ),
+        Calendars(),
+        Cameras(),
+        "https://www.radarbox.com/?widget=1&z=10&lat=43.3750814&lng=-70.9292286&labels=true",
+        "https://dzm.burblesoft.com/jmp?dz_id=2921&_ga=2.27996732.1091037565.1715708886-605153076.1715708886&_gl=1*1djgtiv*_ga*NjA1MTUzMDc2LjE3MTU3MDg4ODY.*_ga_1W3J6BGX7Y*MTcxNTcwODg4NS4xLjEuMTcxNTcwOTA0Ny4wLjAuMA..",  # TODO manifest link is not burble
+        "https://embed.windy.com/embed2.html?lat=43.3750814&lon=-70.9292286&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        Socials(
+            instagram=Link(
+                title="Instagram", url="https://www.instagram.com/skydivenewengland/"
+            ),
+            web=Link(
+                title="Skydive New England Homepage",
+                url="https://www.skydivenewengland.com",
+            ),
+            facebook=Link(
+                title="Funjumpers Facebook Group",
+                url="https://www.facebook.com/groups/548448901928817",
+            ),
+        ),
+        AircraftInfo(aircraftIcao="ABF580", aircraftRegistraionNumber="N87RM"),
+    )
