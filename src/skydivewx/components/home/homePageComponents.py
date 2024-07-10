@@ -728,7 +728,7 @@ def getAllComponents(dropZone: DropzoneType) -> list[html.Div]:
                     [
                         (
                             renderCurrentWeather(dropZone, metar, forecastData)
-                            if metar and forecastData
+                            if metar and forecastData and metar.temp
                             else None
                         ),
                         (
