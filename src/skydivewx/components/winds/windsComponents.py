@@ -176,53 +176,55 @@ def renderWindsAloft(dropZone: DropzoneType) -> html.Div:
                 f'Winds Aloft - Updated at {timeUtils.zulu_to_mst_string(winds_aloft_data["validtime"])}',
                 style={"textAlign": "center", "fontSize": "26px", "color": "#3498db"},
             ),
-            html.Div(
-                style={
-                    "backgroundColor": "rgba(47, 62, 70, 0)",
-                    "padding": "10px",
-                    "maxWidth": "400px",
-                    "margin": "auto",
-                    "color": "white",
-                    "fontSize": "12px",
-                    "display": "grid",
-                    "gridTemplateColumns": "1fr 2fr",
-                    "alignItems": "center",
-                    "justifyContent": "space-between",
-                    "gridGap": "5px",
-                },
-                children=[
-                    html.Strong("Altimeter: "),
-                    html.Span(
-                        str.capitalize(metar.press.string("in")),
-                        style={
-                            "text-align": "right",
-                            "white-space": "normal",
-                        },
-                    ),
-                    html.Strong("Density Altitude: "),
-                    html.Span(
-                        f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft',
-                        style={
-                            "text-align": "right",
-                            "white-space": "normal",
-                        },
-                    ),
-                    # html.Strong(
-                    #     "Updated At: ",
-                    #     style={"text-align": "left"},
-                    # ),
-                    # html.Span(
-                    #     timeUtils.time_diff(metar.time),
-                    #     id="time-since-last-update",
-                    #     style={
-                    #         "text-align": "right",
-                    #         "white-space": "normal",
-                    #     },
-                    # ),
-                ],
-            )
-            if metar
-            else None,
+            (
+                html.Div(
+                    style={
+                        "backgroundColor": "rgba(47, 62, 70, 0)",
+                        "padding": "10px",
+                        "maxWidth": "400px",
+                        "margin": "auto",
+                        "color": "white",
+                        "fontSize": "12px",
+                        "display": "grid",
+                        "gridTemplateColumns": "1fr 2fr",
+                        "alignItems": "center",
+                        "justifyContent": "space-between",
+                        "gridGap": "5px",
+                    },
+                    children=[
+                        html.Strong("Altimeter: "),
+                        html.Span(
+                            str.capitalize(metar.press.string("in")),
+                            style={
+                                "text-align": "right",
+                                "white-space": "normal",
+                            },
+                        ),
+                        html.Strong("Density Altitude: "),
+                        html.Span(
+                            f'{weatherUtils._calculate_density_altitude(metar.press.value("in"), metar.temp.value("C"))} ft',
+                            style={
+                                "text-align": "right",
+                                "white-space": "normal",
+                            },
+                        ),
+                        # html.Strong(
+                        #     "Updated At: ",
+                        #     style={"text-align": "left"},
+                        # ),
+                        # html.Span(
+                        #     timeUtils.time_diff(metar.time),
+                        #     id="time-since-last-update",
+                        #     style={
+                        #         "text-align": "right",
+                        #         "white-space": "normal",
+                        #     },
+                        # ),
+                    ],
+                )
+                if metar and metar.temp
+                else None
+            ),
             dcc.Graph(
                 style={"width": "100%", "display": "inline-block", "height": "600px"},
                 figure=dict(
