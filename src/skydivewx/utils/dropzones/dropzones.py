@@ -454,3 +454,24 @@ class Dropzones(DropzoneType, Enum):
         ),
         AircraftInfo(aircraftIcao="ABF580", aircraftRegistraionNumber="N87RM"),
     )
+
+    # Badger-hogdriver@comcast.net
+    PALATKA = (
+        "pal",
+        "Skydive Palatka",
+        "JAX/67,35",
+        AirportAndWeatherIdentifiers("K28J", "K28J"),
+        GeoLocation("29.6583825", "-81.6895031"),
+        Calendars(),
+        Cameras(),
+        "https://www.radarbox.com/?widget=1&z=10&lat=29.6583825&lng=-81.6895031&labels=true",
+        None,
+        "https://embed.windy.com/embed2.html?lat=29.6583825&lon=-81.6895031&width=650&height=450&zoom=9&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=12&pressure=&type=map&location=coordinates&detail=true&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1",
+        Socials(
+            web=Link(
+                title="Skydive Palatka Homepage",
+                url="http://www.skydivepalatka.com/",
+            ),
+        ),
+        AircraftInfo(),
+    )
