@@ -46,10 +46,44 @@ app = Dash(
     prevent_initial_callbacks=True,
 )
 
+announcements = html.Div(
+    id="announcement-banner",
+    children=[
+        html.H6(
+            children=[
+                "Announcement: Suggest new dropzones ",
+                html.A(
+                    "here",
+                    href="https://forms.gle/SNdLyJrp1p3mBjwS7",
+                    target="_blank",
+                    style={
+                        "color": "#0056b3",
+                        "textDecoration": "underline",
+                    },
+                ),
+                " to help us grow!",
+            ],
+            style={"margin": "0"},
+        ),
+    ],
+    style={
+        "backgroundColor": "#e9ecef",
+        "color": "#333333",
+        "padding": "3px",
+        "textAlign": "center",
+        "fontSize": "14px",
+        "fontWeight": "normal",
+        "borderRadius": "5px",
+        "border": "1px solid #ced4da",
+    },
+)
+
+
 app.layout = html.Div(
     [
         dcc.Location(id="url"),
         html.Div(id="hidden-div-callbacks", style={"display": "hidden"}),
+        announcements,
         # Refresh interval component - refreshes components every 60 seconds
         dcc.Interval(id="refresh-interval", interval=1000 * 60, n_intervals=0),
         dcc.Interval(id="quick-refresh-interval", interval=1000 * 10, n_intervals=0),
