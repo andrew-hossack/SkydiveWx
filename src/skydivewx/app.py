@@ -51,24 +51,24 @@ announcements = html.Div(
     children=[
         html.H6(
             children=[
-                "Announcement: We are currently working on a fix to the winds aloft page. Thanks!",
-                # html.A(
-                #     "here",
-                #     href="https://forms.gle/SNdLyJrp1p3mBjwS7",
-                #     target="_blank",
-                #     style={
-                #         "color": "#0056b3",
-                #         "textDecoration": "underline",
-                #     },
-                # ),
-                # " to help us grow!",
+                "We kindly ask you to ",
+                html.A(
+                    "consider supporting this project",
+                    href="https://github.com/sponsors/andrew-hossack",
+                    target="_blank",
+                    style={
+                        "color": "#0056b3",
+                        "textDecoration": "underline",
+                    },
+                ),
+                " to help ensure its continued operation.",
             ],
             style={"margin": "0"},
         ),
     ],
     style={
-        "backgroundColor": "#e9ecef",
-        "color": "#333333",
+        "backgroundColor": "rgb(22, 25, 28)",
+        "color": "white",
         "padding": "3px",
         "textAlign": "center",
         "fontSize": "14px",

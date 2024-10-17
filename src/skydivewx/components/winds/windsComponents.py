@@ -10,9 +10,9 @@ import dash_mantine_components as dmc
 
 def _get_data(lat: str, long: str) -> dict:
     # Getting the data from the url
-    url = f"https://markschulze.net/winds/winds.php?lat={lat}&lon={long}&hourOffset=0%3F&referrer=SkydiveUtah"
+    url = f"https://markschulze.net/winds/winds.php?lat={lat}&lon={long}&hourOffset=0&referrer=SkydiveUtah"
     response = requests.get(url)
-    return json.loads(response.text)
+    return response.json()
 
 
 def _render_table(data) -> dmc.Table:
