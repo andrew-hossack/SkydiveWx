@@ -51,17 +51,17 @@ announcements = html.Div(
     children=[
         html.H6(
             children=[
-                "We kindly ask you to ",
+                "NEW: Pick up ",
                 html.A(
-                    "consider supporting this project",
-                    href="https://github.com/sponsors/andrew-hossack",
+                    "🛍️ SkydiveWx Swag on Redbubble",
+                    href="https://www.redbubble.com/people/SkydiveWx/shop",
                     target="_blank",
                     style={
                         "color": "#0056b3",
                         "textDecoration": "underline",
                     },
                 ),
-                " to help ensure its continued operation.",
+                " to help support us!",
             ],
             style={"margin": "0"},
         ),
@@ -74,7 +74,7 @@ announcements = html.Div(
         "fontSize": "14px",
         "fontWeight": "normal",
         "borderRadius": "5px",
-        "border": "1px solid #ced4da",
+        "border": "0.5px solid #A6B3B9",
     },
 )
 
