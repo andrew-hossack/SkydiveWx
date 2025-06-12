@@ -51,17 +51,16 @@ announcements = html.Div(
     children=[
         html.H6(
             children=[
-                "NEW: Pick up ",
+                "Track Your Skydive Live With ",
                 html.A(
-                    "🛍️ SkydiveWx Swag on Redbubble",
-                    href="https://www.redbubble.com/people/SkydiveWx/shop",
+                    "Paratag",
+                    href="https://flyparatag.com/",
                     target="_blank",
                     style={
                         "color": "#0056b3",
                         "textDecoration": "underline",
                     },
                 ),
-                " to help support us!",
             ],
             style={"margin": "0"},
         ),
